@@ -1,8 +1,4 @@
-Compass vault template
-
-Code, templates, dashboards, scripts, and configuration in this vault
-(everything except the Guide/ folder and the third-party plugin binaries)
-are licensed under the MIT License:
+MIT License:
 
 MIT License
 
@@ -25,9 +21,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-The prose in the Guide/ folder is licensed under Creative Commons
-Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
-
-Third-party plugin binaries under .obsidian/plugins/ keep their own licenses;
-see THIRD_PARTY_NOTICES.md.

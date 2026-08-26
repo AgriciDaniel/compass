@@ -35,5 +35,4 @@ Read `Guide/17 Search Providers.md` and `Guide/19 Obsidian MCP Bridge.md` for th
 - If you publish your own copy, run `python3 scripts/verify_template.py .` first.
 
 ## Reporting a problem
-
-This repository is public.
+This repository is public. For a security problem (a key or personal data that slipped into the template, a plugin setting that exposes the vault), use GitHub's private vulnerability reporting: Security tab → "Report a vulnerability". It stays private until a fix ships. Do not open a public issue for security problems. For everything else, open a normal issue with the bug template.

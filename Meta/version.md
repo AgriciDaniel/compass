@@ -1,5 +1,5 @@
 ---
-template_version: 1.0.0
+template_version: 1.0.1
 released: 2026-08-26
 min_obsidian: 1.13.1
 plugins:

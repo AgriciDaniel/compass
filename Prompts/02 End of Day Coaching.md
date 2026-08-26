@@ -5,10 +5,7 @@ when: "End of day, with today's daily note open."
 writes: "dq_* and habit_* properties in today's note, with approval per batch; optional lines under Wins or Gratitude"
 risk: "edit"
 inputs:
-  - "today's daily note (Journal"
-  - "Wins"
-  - "Gratitude"
-  - "current dq_* and habit_* values)"
+  - "today's daily note (Journal, Wins, Gratitude, current dq_* and habit_* values)"
   - "yesterday's note"
   - "the questions list in Meta/Compass Config.md"
 tools:

@@ -19,6 +19,7 @@ Boards are markdown, so "move this card to Drafting" is a `vault_patch` on the b
 - `.claude/settings.json` pre-approves the read-only tools for Claude Code (`vault_read`, `vault_list`, `vault_get_document_map`, `search_*`, `tag_list`, `active_file_get_path`, `command_list`, `open_file`); everything that writes or executes still asks.
 
 ## Setup on a machine (once)
+Optional and terminal-based. Skip if you do not use a terminal; the Agent Client chat works without this, it just cannot open notes or run commands on its own.
 1. Local REST API is enabled with the HTTP server on 27123 (shipped).
 2. Register the server for Claude Code at user scope, key kept outside the vault:
    ```bash
@@ -36,4 +37,4 @@ The chat panel in [[Assistant]] and a terminal `claude` session are separate pro
 ## Safety
 - Loopback only; the key is the password. Everything the agent does through the API is a normal Obsidian action, so Agent Client still shows each tool call and asks permission unless you turn auto-allow on. Keep it off.
 - `vault_delete` moves to trash by default. `vault_write` replaces a whole file; prefer `vault_patch` or `vault_append`.
-- The vault-root `CLAUDE.md` tells the agent which folders are edit-on-request only.
+- The vault-root `AGENTS.md` tells the agent which folders are edit-on-request only.

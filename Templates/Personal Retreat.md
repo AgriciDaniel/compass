@@ -3,12 +3,11 @@ date: <% tp.date.now("YYYY-MM-DD") %>
 quarter: <% tp.file.title.slice(0, 7) %>
 tags:
   - retreat
-<%* const _cf = app.vault.getAbstractFileByPath("Meta/Compass Config.md"); const _cfg = _cf ? (app.metadataCache.getFileCache(_cf)?.frontmatter ?? {}) : {}; const _ws = Array.isArray(_cfg.wheel_areas) && _cfg.wheel_areas.length ? _cfg.wheel_areas : ["wheel_health","wheel_relationships","wheel_family","wheel_career","wheel_finances","wheel_growth","wheel_fun","wheel_meaning"]; tR += _ws.map(k => k + ": ").join("
-"); %>
+<%* const _cf = app.vault.getAbstractFileByPath("Meta/Compass Config.md"); const _cfg = _cf ? (app.metadataCache.getFileCache(_cf)?.frontmatter ?? {}) : {}; const _ws = Array.isArray(_cfg.wheel_areas) && _cfg.wheel_areas.length ? _cfg.wheel_areas : ["wheel_health","wheel_relationships","wheel_family","wheel_career","wheel_finances","wheel_growth","wheel_fun","wheel_meaning"]; tR += _ws.map(k => k + ": ").join("\n"); %>
 ---
 > Name this note `YYYY-QN Personal Retreat` (for example `2026-Q3 Personal Retreat`). The Compass dashboard finds this quarter's retreat by that naming convention and renders the wheel of life from the `wheel_*` properties above. No code changes needed.
 
-Previous retreat: [[<% moment(tp.file.title.slice(0, 7), "YYYY-[Q]Q").subtract(1, "quarter").format("YYYY-[Q]Q") %> Personal Retreat]] · Quarter note: [[<% tp.file.title.slice(0, 7) %>]] · Same quarter last year: [[<% moment(tp.file.title.slice(0, 7), "YYYY-[Q]Q").subtract(1, "year").format("YYYY-[Q]Q") %> Personal Retreat]]
+Previous retreat: [[02 Retreats/<% moment(tp.file.title.slice(0, 7), "YYYY-[Q]Q").subtract(1, "quarter").format("YYYY-[Q]Q") %> Personal Retreat]] · Quarter note: [[01 Journal/Quarterly/<% tp.file.title.slice(0, 7) %>]] · Same quarter last year: [[02 Retreats/<% moment(tp.file.title.slice(0, 7), "YYYY-[Q]Q").subtract(1, "year").format("YYYY-[Q]Q") %> Personal Retreat]]
 
 Block a full day. You do not need a cabin in the woods: a few hours, this one document, and the willingness to answer the hard questions.
 

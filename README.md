@@ -7,7 +7,7 @@
 
 Compass is a complete Obsidian vault template of the system Mike Schmitz describes in "How I Run My Whole Life Out of Obsidian": journaling with daily questions, quarterly personal retreats, multi-scale planning, habit tracking, daily reading, task management, writing boards, and a DataviewJS dashboard that ties it together. On top of that sits an AI assistant that lives in the vault, reads `AGENTS.md`, and runs a library of prompts for the recurring jobs. Everything is plain Markdown and properties; the ten plugins it needs ship inside the folder with their licenses.
 
-**Status: public beta.** Version 1.0.0 (2026-08-26). Requires Obsidian 1.13.1 or newer, desktop.
+**Status: public beta.** Version 1.0.1 (2026-08-26). Requires Obsidian 1.13.1 or newer, desktop.
 
 ## Watch the idea
 
@@ -44,7 +44,9 @@ Meta/            Compass Config.md (the single config), views/*.js (dashboard wi
 Guide/           principles, plugins, one page per workflow, build order, agents, MCP, prompt library
 wiki/, inbox/    knowledge layer for the claude-obsidian plugin (optional; plain Markdown without it)
 scripts/         reading plan generator, Bible splitter, template build and verify
-\.github/          CI workflow (verify) and issue templates
+  .github/         CI workflow (verify) and issue templates
+CHANGELOG.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, CREDITS.md, LICENSE, LICENSE-GUIDE.md, THIRD_PARTY_NOTICES.md
+.claude-obsidian.json  marker for the claude-obsidian knowledge layer
 AGENTS.md        rules and folder map for any AI agent; CLAUDE.md and GEMINI.md point to it
 .claude/         settings.json: read-only MCP tool allowlist for Claude Code (no secrets)
 .mcp.example.json  how to point an agent at Obsidian's MCP server (Local REST API)
@@ -115,6 +117,6 @@ Upgrades overwrite system files (dashboards, views, guide, scripts, plugins) and
 
 Workflows follow Mike Schmitz's public video (Practical PKM). Daily questions: Marshall Goldsmith and Mark Reiter, *Triggers* (2015). Multi-scale planning: Cal Newport. Full credits in `CREDITS.md`.
 
-Code, templates, dashboards, scripts, and configuration are MIT. The prose in `Guide/` is CC BY 4.0. Third-party plugin binaries under `.obsidian/plugins/` keep their own licenses; see `LICENSE` and `THIRD_PARTY_NOTICES.md`.
+Code, templates, dashboards, scripts, and configuration are MIT (`LICENSE`). The prose in `Guide/` is CC BY 4.0 (`LICENSE-GUIDE.md`). Third-party plugin binaries under `.obsidian/plugins/` keep their own licenses; see `THIRD_PARTY_NOTICES.md`. Community rules: `CODE_OF_CONDUCT.md`.
 
 Contributing: `CONTRIBUTING.md`. Security: `SECURITY.md`.

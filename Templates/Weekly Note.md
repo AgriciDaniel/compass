@@ -4,15 +4,15 @@ quarter: <% moment(tp.file.title, "gggg-[W]ww").format("YYYY-[Q]Q") %>
 tags:
   - weekly
 ---
-« [[<% moment(tp.file.title, "gggg-[W]ww").subtract(1, "week").format("gggg-[W]ww") %>|Last week]] · [[<% moment(tp.file.title, "gggg-[W]ww").format("YYYY-[Q]Q") %>|Quarter]] · [[Compass Dashboard]] · [[<% moment(tp.file.title, "gggg-[W]ww").add(1, "week").format("gggg-[W]ww") %>|Next week]] »
+« [[01 Journal/Weekly/<% moment(tp.file.title, "gggg-[W]ww").subtract(1, "week").format("gggg-[W]ww") %>|Last week]] · [[01 Journal/Quarterly/<% moment(tp.file.title, "gggg-[W]ww").format("YYYY-[Q]Q") %>|Quarter]] · [[Compass Dashboard]] · [[01 Journal/Weekly/<% moment(tp.file.title, "gggg-[W]ww").add(1, "week").format("gggg-[W]ww") %>|Next week]] »
 
 # Week <% moment(tp.file.title, "gggg-[W]ww").format("w, gggg") %>
 <% moment(tp.file.title, "gggg-[W]ww").startOf("week").format("MMM D") %> to <% moment(tp.file.title, "gggg-[W]ww").endOf("week").format("MMM D") %>
 
-Days: <%* const s = moment(tp.file.title, "gggg-[W]ww").startOf("week"); const parts = []; for (let i = 0; i < 7; i++) parts.push(`[[${s.clone().add(i, "day").format("YYYY-MM-DD")}|${s.clone().add(i, "day").format("ddd")}]]`); tR += parts.join(" · "); %>
+Days: <%* const s = moment(tp.file.title, "gggg-[W]ww").startOf("week"); const parts = []; for (let i = 0; i < 7; i++) parts.push(`[[01 Journal/Daily/${s.clone().add(i, "day").format("YYYY-MM-DD")}|${s.clone().add(i, "day").format("ddd")}]]`); tR += parts.join(" · "); %>
 
 > [!intention]- Quarterly intentions
-> ![[<% moment(tp.file.title, "gggg-[W]ww").format("YYYY-[Q]Q") %>#Quarterly intentions]]
+> ![[01 Journal/Quarterly/<% moment(tp.file.title, "gggg-[W]ww").format("YYYY-[Q]Q") %>#Quarterly intentions]]
 
 ## Weekly intentions
 The 3 things that, if done this week, move the quarterly intentions forward.

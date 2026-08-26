@@ -9,6 +9,7 @@ Plugin: Agent Client 0.12.1 (`agent-client`, https://github.com/RAIT-09/obsidian
 - With the Obsidian MCP bridge (see [[19 Obsidian MCP Bridge]]) the agent can open notes and boards, run any Obsidian command, search, and patch notes from inside the chat.
 
 ## Setup (once per machine)
+Optional. The vault works completely without this. It needs a terminal, Node.js (https://nodejs.org, LTS), and a Claude account or API key. If you do not use a terminal, skip this page.
 1. Install Claude Code and log in: `curl -fsSL https://claude.ai/install.sh | bash`, then run `claude` once. (An Anthropic API key stored in Obsidian's Keychain works instead; see the plugin docs.)
 2. Install the adapter: `npm install -g @agentclientprotocol/claude-agent-acp`.
 3. Obsidian: Settings → Agent Client → Preset agents → Claude Code. Click **Auto-detect**, or paste the path from `which claude-agent-acp`.
@@ -20,9 +21,9 @@ The Flatpak sandbox cannot see `/usr/local/bin`, and its `PATH` is only `/usr/bi
 #!/bin/sh
 exec "$HOME/.local/bin/node" "/path/to/lib/node_modules/@agentclientprotocol/claude-agent-acp/dist/index.js" "$@"
 ```
-Make it executable and set it as the Claude Code path in the plugin settings (use the full path to the wrapper, for example `$HOME/.local/bin/claude-agent-acp` expanded). No `flatpak override` is needed. The maintainer-documented alternative is `flatpak override --user --filesystem=host-os:ro md.obsidian.Obsidian` and pointing the plugin at `/var/run/host/usr/...`; that widens the sandbox and is not required.
+Replace `/path/to/lib/node_modules/...` with the output of `npm root -g` plus `/@agentclientprotocol/claude-agent-acp/dist/index.js`. Make the file executable (`chmod +x`) and paste its full path (for example `~/.local/bin/claude-agent-acp`, written out in full) as the Claude Code path in the plugin settings. No `flatpak override` is needed. The maintainer-documented alternative is `flatpak override --user --filesystem=host-os:ro md.obsidian.Obsidian` and pointing the plugin at `/var/run/host/usr/...`; that widens the sandbox and is not required.
 
-To verify, send an ACP `initialize` request to the wrapper from inside the sandbox (`flatpak run --command=<wrapper> md.obsidian.Obsidian`); the adapter answers with its capabilities.
+To verify: open the Agent Client chat and send "hello"; a reply means the wrapper works.
 
 ## Embedding chats and buttons in notes
 Fenced blocks with language `agent-client` or `agent`, body in YAML (docs: https://rait-09.github.io/obsidian-agent-client/usage/embeddable-blocks.html).

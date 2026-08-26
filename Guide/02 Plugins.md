@@ -1,7 +1,7 @@
 ## Named in the video
 | Plugin | ID (community) | Used for | Where configured |
 | --- | --- | --- | --- |
-| **QuickAdd** | `quickadd` | Capture journal entries, wins, gratitude to the daily note; tasks to the master list; ideas to the Kanban backlogs (4:40, 17:51) | `.obsidian/plugins/quickadd/data.json` (7 capture choices, all registered as commands) |
+| **QuickAdd** | `quickadd` | Capture journal entries, wins, gratitude to the daily note; tasks to the master list; ideas to the Kanban backlogs (4:40, 17:51) | `.obsidian/plugins/quickadd/data.json` (8 capture choices, all registered as commands) |
 | **Periodic Notes** | `periodic-notes` | Daily, weekly, quarterly notes with their own templates and folders (9:16) | `.obsidian/plugins/periodic-notes/data.json` |
 | **Obsidian Tasks** | `obsidian-tasks-plugin` | Inline tasks, `tasks` query blocks on dashboards, people, projects, and the Bible reading callout (14:37) | `.obsidian/plugins/obsidian-tasks-plugin/data.json` |
 | **Dataview** (DataviewJS) | `dataview` | Habit dashboard, daily questions widget, wheel of life, projects dashboard (10:47, 18:49) | `.obsidian/plugins/dataview/data.json`, JS enabled |
@@ -61,7 +61,7 @@ To update a plugin later use Settings → Community plugins → Check for update
 | 📰 Article idea | `06 Writing/Articles/Article Board.md` | `- [ ] {{VALUE}}` | `## Backlog` |
 | 💡 Project idea | `04 Projects/Projects Board.md` | `- [ ] {{VALUE}}` | `## Ideas` |
 
-The dashboard's capture buttons call these by command id (`quickadd:choice:lifeos-journal` etc., set in `data.json`). If you recreate the choices by hand the ids change; update `Meta/views/quicklinks.js` or just use the hotkeys.
+The dashboard's capture buttons find these choices by name at click time, so you can rename ids freely.
 
 ## "On this day" with Bases (optional swap)
 Create `Meta/On This Day.base` and embed it in the daily template with `![[On This Day.base]]`:

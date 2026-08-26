@@ -49,8 +49,8 @@ def copy_tree(live, out):
             rel = os.path.join(rel_root, f) if rel_root else f
             if dropped(rel):
                 continue
-            if any(rel.startswith(u) for u in USER_CONTENT) and rel.endswith(".md") and not KEEP_IN_USER_FOLDERS.match(f):
-                if not has_example_tag(os.path.join(root, f)):
+            if any(rel.startswith(u) for u in USER_CONTENT) and not KEEP_IN_USER_FOLDERS.match(f):
+                if not rel.endswith(".md") or not has_example_tag(os.path.join(root, f)):
                     continue
             dst = os.path.join(out, rel)
             os.makedirs(os.path.dirname(dst), exist_ok=True)

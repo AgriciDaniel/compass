@@ -30,7 +30,7 @@ Four items are self-declared because no script can see them (your Claude login, 
 ## This week
 - Every morning Ctrl/Cmd+Shift+D, every night Ctrl/Cmd+Shift+Q.
 - Day 3: open [[Compass Config]] and reword one question you did not mean. Keep 3 to 5 habits.
-- Day 7: look at [[Daily Questions]]. Change nothing. Decide the reading module: fill [[Reading Plan]] or delete `09 Reading`.
+- Day 7: look at [[Daily Questions]]. Change nothing. Fill in [[Ideal Week]] roughly and delete its `example` property. Decide the reading module: fill [[Reading Plan]] or delete `09 Reading`.
 
 ## This month
 - Day 8: delete the notes tagged `example` (the [[16 Onboarding Assistant]] can do it one file at a time, or use search `tag:#example`).

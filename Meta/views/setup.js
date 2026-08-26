@@ -26,7 +26,7 @@ const theme = await readText("03 Planning/Life Theme.md");
 add(1, "Life theme written", theme.length > 0 && !theme.includes("Replace this line with your life theme"), "[[Life Theme]]");
 const values = await readText("03 Planning/Core Values.md");
 add(1, "Core values written", values.length > 0 && !/\*\*Value one\*\*/.test(values), "[[Core Values]]");
-add(1, "Ideal week is yours (example flag removed)", !((dv.page("03 Planning/Ideal Week") || {}).example === true), "[[Ideal Week]]");
+add(1, "Ideal week is yours (example property removed)", !((dv.page("03 Planning/Ideal Week") || {}).example === true), "[[Ideal Week]]", "fill the grid, then delete the example property");
 add(1, "Questions, habits, wheel areas reviewed", Array.isArray(cfg.questions) && cfg.questions.length > 0 && Array.isArray(cfg.habits) && cfg.habits.length <= 5, "[[Compass Config]]", Array.isArray(cfg.habits) && cfg.habits.length > 5 ? "more than 5 habits; keep 3 to 5 per season" : "");
 const examples = dv.pages("#example").length;
 add(1, "Example notes deleted", examples === 0, "[[16 Onboarding Assistant]] step 6, or delete notes tagged example", examples ? `${examples} example notes remain` : "");
@@ -42,14 +42,15 @@ add(2, "First real daily questions answered", answered.length > 0, "Ctrl/Cmd+Shi
 add(2, `Days answered in the last 30 (goal 25)`, last30 >= 25, "keep going", `${last30}/30`);
 add(2, "This week's weekly note exists", !!dv.page(`${cfg.weekly_folder || "01 Journal/Weekly"}/${today.format("gggg-[W]ww")}`), "Command palette: Periodic Notes: Open weekly note", "from week 2");
 add(2, "A personal retreat note exists for this quarter", !!dv.page(`${cfg.retreat_folder || "02 Retreats"}/${today.format("YYYY-[Q]Q")} Personal Retreat`), "[[04 Workflow - Personal Retreat]]", "from day 60");
-const plan = await readText("09 Reading/Reading Plan.md");
+const plan = (await readText("09 Reading/Reading Plan.md")).replace(/```[\s\S]*?```/g, "");
 if (app.vault.getAbstractFileByPath("09 Reading")) add(2, "Reading module decided (plan filled, or delete the folder)", /^- \[ \]/m.test(plan), "[[07 Workflow - Daily Reading]]", "optional");
 
 // Tier 3: AI in the vault (optional)
 add(3, "Agent Client plugin enabled", enabled("agent-client"), "Settings → Community plugins", "optional");
 const ac = await readJson(".obsidian/plugins/agent-client/data.json");
 const cmd = ac?.presetAgents?.["claude-code-acp"]?.command || "";
-add(3, "Claude Code path set in Agent Client", cmd.length > 0, "Settings → Agent Client → Claude Code → Auto-detect", "optional; Linux Flatpak needs the full path, see Guide 14");
+const isLinux = navigator.userAgent.includes("Linux") && !navigator.userAgent.includes("Android");
+add(3, "Claude Code path set in Agent Client", cmd.length > 0 && (!isLinux || cmd.startsWith("/")), "Settings → Agent Client → Claude Code → Auto-detect", "optional; on Linux Flatpak paste the full path to the wrapper, see Guide 14");
 add(3, "Claude Code login done (self-declared)", cur.setup_claude_login === true, "tick setup_claude_login in this note's properties", "optional");
 add(3, "Obsidian MCP server registered for your agent (self-declared)", cur.setup_mcp_registered === true, "[[19 Obsidian MCP Bridge]] then tick setup_mcp_registered", "optional");
 add(3, "Agent Client has had a conversation", (ac?.savedSessions || []).length > 0, "[[Assistant]]", "optional");

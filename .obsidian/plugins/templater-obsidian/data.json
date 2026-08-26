@@ -10,6 +10,18 @@
   "user_scripts_folder": "",
   "folder_templates": [
     {
+      "folder": "01 Journal/Quarterly",
+      "template": "Templates/Quarterly Note.md"
+    },
+    {
+      "folder": "01 Journal/Weekly",
+      "template": "Templates/Weekly Note.md"
+    },
+    {
+      "folder": "01 Journal/Daily",
+      "template": "Templates/Daily Note.md"
+    },
+    {
       "folder": "02 Retreats",
       "template": "Templates/Personal Retreat.md"
     },

@@ -22,7 +22,8 @@ def main():
     def check(name, ok, detail=""):
         results.append((name, bool(ok), detail))
     files = []
-    for r, _, fs in os.walk(root):
+    for r, ds, fs in os.walk(root):
+        ds[:] = [d for d in ds if d != ".git"]
         for f in fs: files.append(os.path.relpath(os.path.join(r, f), root))
     files.sort()
     texts = {}
@@ -98,16 +99,23 @@ def main():
     for must in ["AGENTS.md", "CLAUDE.md", "GEMINI.md", ".mcp.example.json", "LICENSE", "THIRD_PARTY_NOTICES.md", "CREDITS.md", "CHANGELOG.md", "Meta/version.md", "00 Dashboards/Setup.md", "Prompts/16 Onboarding Assistant.md"]:
         check("present: %s" % must, exists(must))
     check("CLAUDE.md and GEMINI.md import AGENTS.md", "@AGENTS.md" in texts.get("CLAUDE.md", "") and "@AGENTS.md" in texts.get("GEMINI.md", ""))
-    # wikilinks resolve
+    # wikilinks resolve (by basename; Templates/ skipped because their targets are generated) and heading fragments exist
     names = {os.path.basename(f)[:-3] for f in files if f.endswith(".md")}
-    unresolved = {}
+    by_name = {os.path.basename(f)[:-3]: f for f in files if f.endswith(".md")}
+    unresolved, badfrag = {}, {}
     for rel, t in texts.items():
-        if not rel.endswith(".md") or rel.startswith("Guide/Source"): continue
+        if not rel.endswith(".md") or rel.startswith("Guide/Source") or rel.startswith("Templates/"): continue
         body = re.sub(r"```.*?```", "", t, flags=re.S); body = re.sub(r"`[^`\n]*`", "", body); body = re.sub(r"<%.*?%>", "", body, flags=re.S)
-        for m in re.finditer(r"\[\[([^\]\|#]+)(?:#[^\]\|]*)?(?:\|[^\]]*)?\]\]", body):
-            tgt = m.group(1).strip()
-            if tgt in names or DATE_LINK.match(tgt) or tgt.endswith(".base"): continue
-            unresolved.setdefault(tgt, []).append(rel)
+        for m in re.finditer(r"\[\[([^\]\|#]*)(?:#([^\]\|]*))?(?:\|[^\]]*)?\]\]", body):
+            tgt = m.group(1).strip().rstrip("/"); frag = (m.group(2) or "").strip()
+            base = tgt.split("/")[-1] if tgt else os.path.basename(rel)[:-3]
+            if base not in names and not DATE_LINK.match(base) and not base.endswith(".base"):
+                unresolved.setdefault(base, []).append(rel); continue
+            if frag and not frag.startswith("^") and base in by_name:
+                target_text = texts.get(by_name[base], "")
+                if not re.search(r"^#+\s+" + re.escape(frag) + r"\s*$", target_text, re.M):
+                    badfrag.setdefault(base + "#" + frag, []).append(rel)
+    check("all heading fragments in links exist", not badfrag, "; ".join("%s <- %s" % (k, v[0]) for k, v in list(badfrag.items())[:8]))
     check("all wikilinks resolve (except periodic dates)", not unresolved, "; ".join("%s <- %s" % (k, v[0]) for k, v in list(unresolved.items())[:8]))
     # js syntax
     for rel in files:
@@ -115,6 +123,18 @@ def main():
             src = texts.get(rel, "")
             r = subprocess.run(["node", "-e", "new (Object.getPrototypeOf(async function(){}).constructor)('dv','input','moment','app','Notice', require('fs').readFileSync(process.argv[1],'utf8'))", os.path.join(root, rel)], capture_output=True, text=True)
             check("js syntax %s" % rel, r.returncode == 0, r.stderr[-200:])
+    # templater property generators must produce valid property lines (config path and fallback)
+    sim = r"""
+const fs=require('fs');const cfg={questions:[{key:'dq_a',text:'a'},{key:'dq_b',text:'b'}],habits:['habit_x'],wheel_areas:['wheel_y','wheel_z']};
+const mk=c=>({vault:{getAbstractFileByPath:()=>c?{}:null},metadataCache:{getFileCache:()=>c?{frontmatter:c}:null}});
+for(const p of process.argv.slice(1)){const s=fs.readFileSync(p,'utf8');const m=s.match(/<%\*([\s\S]*?)%>/);if(!m){console.log('NOBLOCK '+p);process.exit(2)}
+ if(m[1].includes('\n')){console.log('NEWLINE '+p);process.exit(3)}
+ for(const c of [cfg,null]){const out=new Function('app','tR',m[1]+'; return tR;')(mk(c),'');if(!out.split('\n').every(l=>/^(dq_|habit_|wheel_)\w+: (false)?$/.test(l))){console.log('BAD '+p+' '+JSON.stringify(out));process.exit(4)}}}
+console.log('ok');"""
+    tpls = [os.path.join(root, t) for t in ["Templates/Daily Note.md", "Templates/Personal Retreat.md"] if exists(t)]
+    if tpls:
+        r = subprocess.run(["node", "-e", sim] + tpls, capture_output=True, text=True)
+        check("templater property generators produce valid properties", r.returncode == 0 and "ok" in r.stdout, (r.stdout + r.stderr)[-200:])
     total = sum(os.path.getsize(os.path.join(root, f)) for f in files)
     check("total size under 20 MB", total < 20e6, "%.1f MB" % (total / 1e6))
     failed = [r for r in results if not r[1]]
