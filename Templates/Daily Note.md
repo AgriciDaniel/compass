@@ -24,7 +24,7 @@ tags:
 
 > [!intention]- Intentions this week
 > ![[01 Journal/Weekly/<% tp.date.now("gggg-[W]ww", 0, tp.file.title, "YYYY-MM-DD") %>#Weekly intentions]]
-> (Shows "unable to find" until this week's note exists; click **Week** above to create it from the template.)
+> (Shows "unable to find" until this week's note exists; press Ctrl/Cmd+Alt+W to create it.)
 
 ## Today
 ```tasks

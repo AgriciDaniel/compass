@@ -7,7 +7,7 @@
 
 Compass is a complete Obsidian vault template of the system Mike Schmitz describes in "How I Run My Whole Life Out of Obsidian": journaling with daily questions, quarterly personal retreats, multi-scale planning, habit tracking, daily reading, task management, writing boards, and a DataviewJS dashboard that ties it together. On top of that sits an AI assistant that lives in the vault, reads `AGENTS.md`, and runs a library of prompts for the recurring jobs. Everything is plain Markdown and properties; the ten plugins it needs ship inside the folder with their licenses.
 
-**Status: public beta.** Version 1.0.1 (2026-08-26). Requires Obsidian 1.13.1 or newer, desktop.
+**Status: public beta.** Version 1.0.2 (2026-08-27). Requires Obsidian 1.13.1 or newer, desktop.
 
 ## Watch the idea
 

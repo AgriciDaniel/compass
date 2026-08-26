@@ -18,7 +18,7 @@ add(0, "CSS snippet lifeos on", (() => { try { return app.customCss.enabledSnipp
 add(0, "Periodic Notes daily folder matches config", (() => { const pn = pset("periodic-notes"); return !!pn && pn.daily?.folder === (cfg.daily_folder || "01 Journal/Daily") && /Daily Note\.md$/.test(pn.daily?.template || ""); })(), "Settings → Periodic Notes");
 add(0, "Templater triggers on new files", (() => { const t = pset("templater-obsidian"); return !!t && (t.trigger_on_file_creation === true || t.trigger_on_file_creation_mode === "folder"); })(), "Settings → Templater");
 add(0, "QuickAdd captures available as commands", (() => { const ch = pset("quickadd")?.choices || []; return ["Journal entry", "Log a win", "Gratitude", "Add task"].every(n => ch.find(c => (c.name || "").includes(n))?.command === true); })(), "Settings → QuickAdd (lightning icon per choice)");
-add(0, "Hotkeys for today's note and the questions prompt", (() => { try { const hk = app.hotkeyManager.customKeys || {}; return ["periodic-notes:open-daily-note", "templater-obsidian:Templates/Daily Questions Prompt.md"].every(id => (hk[id] || []).length > 0); } catch (e) { return false; } })(), "Settings → Hotkeys");
+add(0, "Hotkeys for today's note and the questions prompt", (() => { try { const hk = app.hotkeyManager.customKeys || {}; return ["quickadd:choice:lifeos-daily", "templater-obsidian:Templates/Daily Questions Prompt.md"].every(id => (hk[id] || []).length > 0); } catch (e) { return false; } })(), "Settings → Hotkeys");
 
 // Tier 1: make it yours
 add(1, "Birthdate set", !!cfg.birthdate && String(cfg.birthdate).slice(0, 10) !== "1990-01-01", "[[Compass Config]]");

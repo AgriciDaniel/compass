@@ -1,6 +1,6 @@
 ---
-template_version: 1.0.1
-released: 2026-08-26
+template_version: 1.0.2
+released: 2026-08-27
 min_obsidian: 1.13.1
 plugins:
   agent-client: "0.12.1"

@@ -2,7 +2,10 @@
 
 Format: Added, Changed, Templates (manual merge notes), Plugins, Breaking. Semver: major = path or property rename, minor = new widget or workflow, patch = docs and fixes.
 
-## 1.0.1 (2026-08-26)
+## 1.0.2 (2026-08-27)
+### Fixed
+- Note creation no longer depends on Templater's on-create trigger, which does not fire reliably when Periodic Notes creates a note (the note then shows raw `<%` code and has no properties). Ctrl/Cmd+Shift+D, Ctrl/Cmd+Alt+W, Ctrl/Cmd+Alt+Q, and "New personal retreat" are QuickAdd template commands that create the note in the right folder, run Templater, and open it (or just open it if it exists). Periodic Notes and Calendar remain for navigation. Setup, Guide 02, AGENTS.md, and prompts 01 and 16 updated.
+
 Fixes from the full post-publication review. Everyone on 1.0.0 should re-download; the daily note template in 1.0.0 did not create the question and habit properties.
 
 ### Fixed

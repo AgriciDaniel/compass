@@ -25,7 +25,7 @@ Four items are self-declared because no script can see them (your Claude login, 
 2. [[Compass Config]]: set `birthdate`.
 3. [[Life Theme]]: one draft sentence under `## Theme` (it shows in every daily note; refine it at the first retreat).
 4. Open [[Compass Dashboard]]; it renders from the example data.
-5. Tonight: Ctrl/Cmd+Shift+D opens today's note; Ctrl/Cmd+Shift+Q asks the questions. Answer 1 to 10, write one line under `## Journal`. Stop there.
+5. Tonight: Ctrl/Cmd+Shift+D creates or opens today's note (with its questions and habits filled in); Ctrl/Cmd+Shift+Q asks the questions. Answer 1 to 10, write one line under `## Journal`. Stop there.
 
 ## This week
 - Every morning Ctrl/Cmd+Shift+D, every night Ctrl/Cmd+Shift+Q.
@@ -34,7 +34,7 @@ Four items are self-declared because no script can see them (your Claude login, 
 
 ## This month
 - Day 8: delete the notes tagged `example` (the [[16 Onboarding Assistant]] can do it one file at a time, or use search `tag:#example`).
-- Day 14: open this week's weekly note (command palette: Periodic Notes: Open weekly note) and fill only "What went well".
+- Day 14: open this week's weekly note (Ctrl/Cmd+Alt+W) and fill only "What went well".
 - Day 21: optional, AI in the vault: [[14 Agent Client and Claude Code]], then press **Help me set up this vault** below.
 - Day 30: if 25 of 30 days are scored (the checklist counts), read [[04 Workflow - Personal Retreat]] and book a retreat for day 60 to 90. Tasks, writing boards, the browser extension come after that ([[11 Build Order]]).
 

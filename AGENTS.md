@@ -46,7 +46,7 @@ Prefer these tools over raw file access when they are available; they act inside
 - Read: `vault_read`, `vault_get_document_map` (one section), `vault_list`, `search_simple`, `search_query`, `tag_list`.
 - Show: `open_file` to put a note, board, or dashboard on screen.
 - Write: `vault_append` and `vault_patch` under an existing heading or frontmatter key. Never `vault_write` over an existing note. `vault_move`, `vault_copy`, `vault_delete` only when explicitly asked, one file at a time. `vault_delete` goes to trash.
-- Commands: `command_list` to discover ids, then `command_execute`. Known ids: QuickAdd captures `quickadd:choice:lifeos-journal`, `lifeos-win`, `lifeos-gratitude`, `lifeos-task`, `lifeos-project-idea`; `periodic-notes:open-daily-note`; Templater `templater-obsidian:Templates/Daily Questions Prompt.md`; SEO `seo:run-current`, `seo:run-global`. Confirm an id exists before running it.
+- Commands: `command_list` to discover ids, then `command_execute`. Known ids: QuickAdd captures `quickadd:choice:lifeos-journal`, `lifeos-win`, `lifeos-gratitude`, `lifeos-task`, `lifeos-project-idea`; `quickadd:choice:lifeos-daily` (create or open today's note), `lifeos-weekly`, `lifeos-quarterly`, `lifeos-retreat`; Templater `templater-obsidian:Templates/Daily Questions Prompt.md`; SEO `seo:run-current`, `seo:run-global`. Confirm an id exists before running it.
 - Boards: move a card with `vault_patch` on the board file; never rewrite the whole board.
 If the `obsidian` server is not connected, say so once, then use plain file reading; do not write files without the person's approval in that mode either.
 

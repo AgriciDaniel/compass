@@ -4,7 +4,7 @@ How Claude (in the Obsidian chat panel, or in a terminal) drives Obsidian itself
 | Tool | Use |
 | --- | --- |
 | `open_file` | open any note in the UI (a board, a dashboard, today's note) |
-| `command_list`, `command_execute` | run any Obsidian command by id: QuickAdd captures (`quickadd:choice:lifeos-journal`), Kanban (`obsidian-kanban:create-new-kanban-board`, archive completed cards), Periodic Notes (`periodic-notes:open-daily-note`), Templater, SEO audits, `app:reload`, workspace and view switching |
+| `command_list`, `command_execute` | run any Obsidian command by id: QuickAdd captures (`quickadd:choice:lifeos-journal`), Kanban (`obsidian-kanban:create-new-kanban-board`, archive completed cards), Periodic Notes (`quickadd:choice:lifeos-daily` (create or open today's note)), Templater, SEO audits, `app:reload`, workspace and view switching |
 | `active_file_get_path` | know what you are looking at |
 | `vault_list`, `vault_read`, `vault_get_document_map` | navigate folders, read notes or one section |
 | `vault_write`, `vault_append`, `vault_patch`, `vault_move`, `vault_copy`, `vault_delete` | edit (append under a heading, patch a section, move a note) |

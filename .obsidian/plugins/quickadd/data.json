@@ -359,6 +359,126 @@
         "focus": true,
         "mode": "default"
       }
+    },
+    {
+      "id": "lifeos-daily",
+      "name": "📅 Open today's note",
+      "type": "Template",
+      "command": true,
+      "templatePath": "Templates/Daily Note.md",
+      "folder": {
+        "enabled": true,
+        "folders": [
+          "01 Journal/Daily"
+        ],
+        "chooseWhenCreatingNote": false,
+        "createInSameFolderAsActiveFile": false,
+        "chooseFromSubfolders": false
+      },
+      "fileNameFormat": {
+        "enabled": true,
+        "format": "{{DATE:YYYY-MM-DD}}"
+      },
+      "appendLink": false,
+      "openFile": true,
+      "openFileInNewTab": {
+        "enabled": false,
+        "direction": "vertical",
+        "focus": true
+      },
+      "openFileInMode": "default",
+      "fileExistsMode": "Nothing",
+      "setFileExistsBehavior": true
+    },
+    {
+      "id": "lifeos-weekly",
+      "name": "🗓️ Open this week's note",
+      "type": "Template",
+      "command": true,
+      "templatePath": "Templates/Weekly Note.md",
+      "folder": {
+        "enabled": true,
+        "folders": [
+          "01 Journal/Weekly"
+        ],
+        "chooseWhenCreatingNote": false,
+        "createInSameFolderAsActiveFile": false,
+        "chooseFromSubfolders": false
+      },
+      "fileNameFormat": {
+        "enabled": true,
+        "format": "{{DATE:gggg-[W]ww}}"
+      },
+      "appendLink": false,
+      "openFile": true,
+      "openFileInNewTab": {
+        "enabled": false,
+        "direction": "vertical",
+        "focus": true
+      },
+      "openFileInMode": "default",
+      "fileExistsMode": "Nothing",
+      "setFileExistsBehavior": true
+    },
+    {
+      "id": "lifeos-quarterly",
+      "name": "🧭 Open this quarter's note",
+      "type": "Template",
+      "command": true,
+      "templatePath": "Templates/Quarterly Note.md",
+      "folder": {
+        "enabled": true,
+        "folders": [
+          "01 Journal/Quarterly"
+        ],
+        "chooseWhenCreatingNote": false,
+        "createInSameFolderAsActiveFile": false,
+        "chooseFromSubfolders": false
+      },
+      "fileNameFormat": {
+        "enabled": true,
+        "format": "{{DATE:YYYY-[Q]Q}}"
+      },
+      "appendLink": false,
+      "openFile": true,
+      "openFileInNewTab": {
+        "enabled": false,
+        "direction": "vertical",
+        "focus": true
+      },
+      "openFileInMode": "default",
+      "fileExistsMode": "Nothing",
+      "setFileExistsBehavior": true
+    },
+    {
+      "id": "lifeos-retreat",
+      "name": "🏕️ New personal retreat (this quarter)",
+      "type": "Template",
+      "command": true,
+      "templatePath": "Templates/Personal Retreat.md",
+      "folder": {
+        "enabled": true,
+        "folders": [
+          "02 Retreats"
+        ],
+        "chooseWhenCreatingNote": false,
+        "createInSameFolderAsActiveFile": false,
+        "chooseFromSubfolders": false
+      },
+      "fileNameFormat": {
+        "enabled": true,
+        "format": "{{DATE:YYYY-[Q]Q}} Personal Retreat"
+      },
+      "appendLink": false,
+      "openFile": true,
+      "openFileInNewTab": {
+        "enabled": false,
+        "direction": "vertical",
+        "focus": true
+      },
+      "openFileInMode": "default",
+      "fileExistsMode": "Nothing",
+      "setFileExistsBehavior": true
     }
   ],
   "inputPrompt": "single-line",

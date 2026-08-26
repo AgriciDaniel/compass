@@ -30,7 +30,7 @@ All ten plugins are **already installed** in `.obsidian/plugins/` (Dataview 0.5.
 1. Settings → Community plugins → **Turn off Restricted mode** (Obsidian asks this once per vault; it is not stored in the vault files). If the plugins do not light up immediately, run the command **Reload app without saving**.
 2. Settings → Appearance → CSS snippets → make sure `lifeos` is on (custom callouts: `reading`, `intention`, `memento`, `theme`).
 3. Templater: confirm **Trigger Templater on new file creation** and **Folder templates** are on.
-4. Periodic Notes: confirm daily `YYYY-MM-DD` → `01 Journal/Daily`, weekly `gggg-[W]ww` → `01 Journal/Weekly`, quarterly `YYYY-[Q]Q` → `01 Journal/Quarterly`, each with its template. The core Daily Notes plugin is off.
+4. Periodic Notes: confirm daily `YYYY-MM-DD` → `01 Journal/Daily`, weekly `gggg-[W]ww` → `01 Journal/Weekly`, quarterly `YYYY-[Q]Q` → `01 Journal/Quarterly`, each with its template. The core Daily Notes plugin is off. Note creation goes through the QuickAdd template commands (hotkeys below), which run Templater on the new note; Periodic Notes and the Calendar are used to navigate. If a note opened from a link is empty or shows `<%` code, press `Alt+E` (Templater: Insert template) and pick the template.
 5. QuickAdd: confirm the eight choices show and each has the lightning-bolt "command" toggle on. (The dashboard buttons find choices by name, so ids may change.)
 6. Dataview: **Enable JavaScript queries** is on (pre-set).
 7. Open `00 Dashboards/Compass Dashboard.md`. If a widget says "No … found", that is the empty-state message, not an error.
@@ -38,7 +38,9 @@ All ten plugins are **already installed** in `.obsidian/plugins/` (Dataview 0.5.
 ## Hotkeys (pre-seeded in `.obsidian/hotkeys.json`)
 | Keys | Action |
 | --- | --- |
-| Ctrl/Cmd+Shift+D | Open today's daily note |
+| Ctrl/Cmd+Shift+D | Create or open today's daily note (QuickAdd runs the template through Templater) |
+| Ctrl/Cmd+Alt+W | Create or open this week's note |
+| Ctrl/Cmd+Alt+Q | Create or open this quarter's note |
 | Ctrl/Cmd+Shift+J | Journal entry (timestamped, into today's note) |
 | Ctrl/Cmd+Shift+W | Log a win |
 | Ctrl/Cmd+Shift+G | Gratitude |
@@ -60,6 +62,7 @@ To update a plugin later use Settings → Community plugins → Check for update
 | 🎬 Video idea | `06 Writing/YouTube Scripts/YouTube Board.md` | `- [ ] {{VALUE}}` | `## Backlog` |
 | 📰 Article idea | `06 Writing/Articles/Article Board.md` | `- [ ] {{VALUE}}` | `## Backlog` |
 | 💡 Project idea | `04 Projects/Projects Board.md` | `- [ ] {{VALUE}}` | `## Ideas` |
+| 📅 Open today's note, 🗓️ this week's, 🧭 this quarter's, 🏕️ New personal retreat | Template choices: create the note from the template in the right folder with the date name, run Templater, open it (or just open it if it exists) | | |
 
 The dashboard's capture buttons find these choices by name at click time, so you can rename ids freely.
 
