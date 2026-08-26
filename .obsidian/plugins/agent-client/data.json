@@ -1,0 +1,113 @@
+{
+  "presetAgents": {
+    "claude-code-acp": {
+      "id": "claude-code-acp",
+      "displayName": "Claude Code",
+      "apiKeySecretId": "",
+      "command": "claude-agent-acp",
+      "args": [],
+      "enabled": true,
+      "env": {}
+    },
+    "codex-acp": {
+      "id": "codex-acp",
+      "displayName": "Codex",
+      "apiKeySecretId": "",
+      "command": "codex-acp",
+      "args": [],
+      "enabled": true,
+      "env": {}
+    },
+    "gemini-cli": {
+      "id": "gemini-cli",
+      "displayName": "Gemini CLI",
+      "apiKeySecretId": "",
+      "command": "gemini",
+      "args": [
+        "--experimental-acp"
+      ],
+      "enabled": true,
+      "env": {}
+    },
+    "mistral-vibe": {
+      "id": "mistral-vibe",
+      "displayName": "Mistral Vibe",
+      "apiKeySecretId": "",
+      "command": "vibe-acp",
+      "args": [],
+      "enabled": true,
+      "env": {}
+    },
+    "opencode": {
+      "id": "opencode",
+      "displayName": "OpenCode",
+      "apiKeySecretId": "",
+      "command": "opencode",
+      "args": [
+        "acp"
+      ],
+      "enabled": true,
+      "env": {}
+    },
+    "kiro-cli": {
+      "id": "kiro-cli",
+      "displayName": "Kiro",
+      "apiKeySecretId": "",
+      "command": "kiro-cli",
+      "args": [
+        "acp"
+      ],
+      "enabled": true,
+      "env": {}
+    },
+    "hermes-agent": {
+      "id": "hermes-agent",
+      "displayName": "Hermes Agent",
+      "apiKeySecretId": "",
+      "command": "hermes",
+      "args": [
+        "acp"
+      ],
+      "enabled": true,
+      "env": {}
+    }
+  },
+  "customAgents": [],
+  "defaultAgentId": "claude-code-acp",
+  "autoAllowPermissions": false,
+  "autoMentionActiveNote": true,
+  "expandWikilinkContext": true,
+  "enableSystemNotifications": true,
+  "promptInjection": {
+    "enabled": true,
+    "latex": true,
+    "wikiLinks": true,
+    "tables": true
+  },
+  "debugMode": false,
+  "exportSettings": {
+    "defaultFolder": "Meta/Agent Chats",
+    "filenameTemplate": "agent_client_{date}_{time}",
+    "autoExportOnNewChat": false,
+    "autoExportOnCloseChat": false,
+    "openFileAfterExport": true,
+    "includeImages": true,
+    "imageLocation": "obsidian",
+    "imageCustomFolder": "Meta/Agent Chats",
+    "frontmatterTag": "agent-client"
+  },
+  "windowsWslMode": false,
+  "sendMessageShortcut": "enter",
+  "chatViewLocation": "right-tab",
+  "displaySettings": {
+    "autoCollapseDiffs": false,
+    "diffCollapseThreshold": 10,
+    "maxNoteLength": 10000,
+    "maxSelectionLength": 10000,
+    "showEmojis": true,
+    "fontSize": null
+  },
+  "enableFloatingChat": false,
+  "floatingButtonImage": "",
+  "savedSessions": []
+}

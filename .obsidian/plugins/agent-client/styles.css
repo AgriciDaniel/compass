@@ -1,0 +1,2467 @@
+/*
+
+This CSS file will be included with your plugin, and
+available in the app when your plugin is enabled.
+
+If your plugin does not need CSS, delete this file.
+
+*/
+
+/* ===== Session Manager ===== */
+
+.agent-client-session-manager {
+	padding: 4px 0;
+}
+
+.agent-client-session-manager-empty {
+	padding: 16px;
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	text-align: center;
+}
+
+.agent-client-session-manager .tree-item-self {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding-inline-start: 12px;
+}
+
+.agent-client-session-item-more {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	opacity: 0;
+	cursor: pointer;
+	color: var(--text-muted);
+	margin-left: auto;
+	/* Reset <button> browser defaults so the icon matches the prior <div> */
+	background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+}
+
+.agent-client-session-manager
+	.tree-item-self:hover
+	.agent-client-session-item-more {
+	opacity: 1;
+}
+
+.agent-client-session-item-more:hover {
+	color: var(--text-normal);
+}
+
+.agent-client-session-item-more svg {
+	width: 14px;
+	height: 14px;
+}
+
+.agent-client-session-item-text {
+	min-width: 0;
+	flex: 1;
+}
+
+.agent-client-session-item-title {
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
+	color: var(--text-normal);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.agent-client-session-item-agent {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.agent-client-session-item-embedded-badge {
+	margin-left: var(--size-2-2);
+	padding: 0 var(--size-2-2);
+	border-radius: var(--radius-s);
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+	background-color: var(--background-modifier-border);
+}
+
+.agent-client-session-status-icon {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+}
+
+.agent-client-session-status-icon svg {
+	width: 16px;
+	height: 16px;
+}
+
+.agent-client-session-status-ready svg {
+	color: var(--text-muted);
+}
+
+.agent-client-session-status-busy svg {
+	color: var(--text-accent);
+	animation: agent-client-spin 1.5s linear infinite;
+}
+
+.agent-client-session-status-permission svg {
+	color: var(--color-yellow);
+}
+
+.agent-client-session-status-error svg {
+	color: var(--color-red);
+}
+
+.agent-client-session-status-disconnected svg {
+	color: var(--text-faint);
+}
+
+@keyframes agent-client-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* ===== Settings Tab Documentation Link ===== */
+.agent-client-doc-link {
+	padding: 12px 16px;
+	margin-bottom: 16px;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	font-size: 14px;
+	color: var(--text-muted);
+}
+
+.agent-client-doc-link a {
+	color: var(--text-accent);
+	text-decoration: none;
+}
+
+.agent-client-doc-link a:hover {
+	text-decoration: underline;
+}
+
+/* ===== Settings Tab Collapsible Agent Sections ===== */
+.agent-client-agent-summary {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	padding: var(--size-4-2) 0;
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+/* Text-like button: the summary is a real <button> for keyboard/focus,
+   restyled to read as a heading row. Name left, chevron pushed right. */
+.agent-client-agent-summary-button {
+	display: flex;
+	flex: 1 1 auto;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--size-4-2);
+	padding: 0 var(--size-4-2);
+	background: none;
+	border: none;
+	box-shadow: none;
+	color: var(--text-normal);
+	font-size: var(--font-ui-medium);
+	font-weight: var(--font-semibold);
+	text-align: left;
+	cursor: pointer;
+}
+
+.agent-client-agent-summary-button:hover {
+	color: var(--text-accent);
+}
+
+.agent-client-agent-summary-chevron {
+	display: flex;
+	align-items: center;
+	color: var(--text-muted);
+	transition: transform 100ms ease-in-out;
+}
+
+.agent-client-agent-summary.agent-client-open
+	.agent-client-agent-summary-chevron {
+	transform: rotate(90deg);
+}
+
+.agent-client-agent-section-body.agent-client-collapsed {
+	display: none;
+}
+
+/* ===== Loading Indicator ===== */
+.agent-client-loading-indicator {
+	display: flex;
+	align-items: center;
+	padding: 16px;
+	margin: 4px 0;
+}
+
+.agent-client-loading-indicator.agent-client-hidden {
+	visibility: hidden;
+}
+
+.agent-client-loading-status {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	font-style: italic;
+	margin-left: 8px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+/* ===== Scroll to Bottom Button ===== */
+.agent-client-scroll-to-bottom {
+	position: sticky;
+	bottom: 4px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 6px !important;
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 50%;
+	background-color: var(--background-primary) !important;
+	color: var(--text-muted);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	outline: none !important;
+	appearance: none;
+	box-shadow: none !important;
+	min-width: unset !important;
+	min-height: unset !important;
+	z-index: 10;
+}
+
+.agent-client-scroll-to-bottom svg {
+	color: var(--text-muted);
+	transition: color 0.2s ease;
+}
+
+.agent-client-scroll-to-bottom:hover {
+	background-color: var(--background-primary) !important;
+}
+
+.agent-client-scroll-to-bottom:hover svg {
+	color: var(--interactive-accent);
+}
+
+.agent-client-loading-dots {
+	display: grid;
+	grid-template-columns: repeat(3, 4px);
+	grid-template-rows: repeat(3, 5px);
+	gap: 3px;
+	width: 18px;
+	height: 21px;
+	will-change: transform;
+}
+
+.agent-client-loading-dot {
+	width: 4px;
+	height: 5px;
+	background-color: var(--background-modifier-border);
+	border-radius: 50%;
+	animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+.agent-client-loading-dot:nth-child(1) {
+	animation-delay: 0s;
+}
+
+.agent-client-loading-dot:nth-child(2) {
+	animation-delay: 0.15s;
+}
+
+.agent-client-loading-dot:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+.agent-client-loading-dot:nth-child(4) {
+	animation-delay: 0.9s;
+}
+
+.agent-client-loading-dot:nth-child(5) {
+	animation-delay: 0s;
+}
+
+.agent-client-loading-dot:nth-child(6) {
+	animation-delay: 0.15s;
+}
+
+.agent-client-loading-dot:nth-child(7) {
+	animation-delay: 0.6s;
+}
+
+.agent-client-loading-dot:nth-child(8) {
+	animation-delay: 0.45s;
+}
+
+.agent-client-loading-dot:nth-child(9) {
+	animation-delay: 0.3s;
+}
+
+@keyframes dotPulse {
+	0%,
+	100% {
+		background-color: var(--background-modifier-border);
+	}
+	25% {
+		background-color: var(--interactive-accent);
+	}
+}
+
+/* ===== Inline Lucide Icons (replace emojis) ===== */
+.agent-client-message-tool-call-icon svg,
+.agent-client-collapsible-thought-label-icon svg,
+.agent-client-terminal-renderer-label-icon svg,
+.agent-client-error-overlay-suggestion-icon svg,
+.agent-client-message-plan-label-icon svg {
+	width: 14px;
+	height: 14px;
+	vertical-align: -2px;
+	margin-right: 4px;
+	color: var(--text-muted);
+}
+
+.agent-client-message-plan-entry-icon svg {
+	width: 12px;
+	height: 12px;
+	vertical-align: -2px;
+}
+
+/* ===== Message Content Components ===== */
+
+/* Tool Call */
+.agent-client-message-tool-call {
+	padding: 8px;
+	margin-bottom: 12px;
+	background-color: transparent;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	font-size: 0.85em;
+	user-select: text;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
+}
+
+.agent-client-message-tool-call-title {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: bold;
+	margin-bottom: 4px;
+	user-select: text;
+	white-space: nowrap;
+}
+
+.agent-client-message-tool-call-title-text {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.agent-client-message-tool-call-status-icon {
+	flex-shrink: 0;
+}
+
+.agent-client-message-tool-call-status-icon svg {
+	width: 14px;
+	height: 14px;
+	color: var(--text-muted);
+}
+
+.agent-client-message-tool-call-status-icon.agent-client-status-failed svg {
+	color: var(--color-red);
+}
+
+.agent-client-message-tool-call-locations {
+	color: var(--text-muted);
+	user-select: text;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+.agent-client-message-tool-call-location {
+	display: block;
+	font-family: var(--font-monospace);
+	font-size: 0.9em;
+}
+
+.agent-client-message-tool-call-command {
+	color: var(--text-muted);
+	margin: 4px 0;
+}
+
+.agent-client-message-tool-call-command code {
+	font-family: var(--font-monospace);
+	font-size: 0.9em;
+}
+
+/* Plan */
+.agent-client-message-plan {
+	padding: 8px;
+	margin: 4px 0;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	font-size: 12px;
+	user-select: text;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
+}
+
+.agent-client-message-plan-title {
+	font-weight: bold;
+	margin-bottom: 4px;
+	user-select: text;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+.agent-client-message-plan-entry {
+	margin: 2px 0;
+	padding: 2px 4px;
+	border-left: 2px solid var(--text-muted);
+	user-select: text;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+.agent-client-message-plan-entry-icon.agent-client-status-completed {
+	user-select: text;
+}
+
+.agent-client-message-plan-entry-icon.agent-client-status-in_progress {
+	user-select: text;
+}
+
+.agent-client-message-plan-entry-icon.agent-client-status-pending {
+	user-select: text;
+}
+
+/* Plan entry status text styles (for emoji-off mode) */
+.agent-client-message-plan-entry.agent-client-plan-status-completed {
+	text-decoration: line-through;
+	color: var(--text-muted);
+}
+
+.agent-client-message-plan-entry.agent-client-plan-status-in_progress {
+	font-weight: bold;
+}
+
+/* ===== Permission Request (vertical option list) ===== */
+/* Mirrors .agent-client-tool-call-diff: full-bleed block inside the
+   tool call with a 1px border container. Kind colors live on the icon,
+   not the button background (theme compatibility). */
+.agent-client-message-permission-request {
+	display: flex;
+	flex-direction: column;
+	margin-top: 8px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.agent-client-message-permission-request .agent-client-permission-option {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 0;
+	background-color: var(--background-primary);
+	box-shadow: none;
+	color: var(--text-normal);
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 500;
+	text-align: left;
+}
+
+.agent-client-message-permission-request
+	.agent-client-permission-option
+	+ .agent-client-permission-option {
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.agent-client-message-permission-request .agent-client-permission-option:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.agent-client-message-permission-request
+	.agent-client-permission-option:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: -2px;
+}
+
+.agent-client-permission-option-icon {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.agent-client-permission-option-icon svg {
+	width: 14px;
+	height: 14px;
+}
+
+.agent-client-permission-option-label {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Kind colors (icon only) */
+.agent-client-permission-kind-allow_always
+	.agent-client-permission-option-icon {
+	color: var(--color-green);
+}
+
+.agent-client-permission-kind-allow_once .agent-client-permission-option-icon {
+	color: var(--color-orange);
+}
+
+.agent-client-permission-kind-reject_once .agent-client-permission-option-icon,
+.agent-client-permission-kind-reject_always
+	.agent-client-permission-option-icon {
+	color: var(--color-red);
+}
+
+/* ===== Chat View Components ===== */
+
+/* Remove top padding on view-content so nav-header aligns with other sidebar panes */
+.workspace-leaf-content[data-type="agent-client-chat-view"] > .view-content {
+	padding-top: 0;
+	padding-left: 0;
+	padding-right: 0;
+	overflow: hidden;
+}
+
+/* Hide stale inner view-header title (updateHeader() doesn't refresh it); visibility:hidden preserves flex layout. */
+.workspace-leaf-content[data-type="agent-client-chat-view"]
+	> .view-header
+	.view-header-title-container {
+	visibility: hidden;
+}
+
+/* Main container */
+.agent-client-chat-view-container {
+	--ac-chat-font-size: var(--font-text-size);
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+}
+
+/* Header — uses Obsidian's .nav-header + .nav-buttons-container pattern */
+.agent-client-chat-view-header .nav-buttons-container {
+	display: flex;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+
+.agent-client-chat-view-header-title {
+	flex: 1 1 0;
+	min-width: 0;
+	padding-left: var(--size-4-1);
+	color: var(--nav-item-color);
+	font-size: var(--font-ui-small);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.agent-client-chat-view-header-update {
+	flex: 0 1 auto;
+	padding: 2px 8px;
+	font-size: 11px;
+	color: var(--text-muted);
+	background-color: var(--background-modifier-hover);
+	border-radius: 4px;
+	font-weight: 500;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	min-width: 0;
+}
+
+/* ===== Inline Header (Floating/CodeBlock) ===== */
+.agent-client-inline-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 12px;
+	border-bottom: none;
+	background-color: var(--background-primary);
+	flex-shrink: 0;
+	flex-wrap: nowrap;
+	min-height: 36px;
+}
+
+.agent-client-inline-header-main {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.agent-client-inline-header-actions {
+	display: flex;
+	gap: 4px;
+	justify-content: flex-end;
+	flex-shrink: 0;
+}
+
+/* Messages container */
+.agent-client-chat-view-messages {
+	flex: 1;
+	padding: 16px 8px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	font-size: var(--ac-chat-font-size);
+	min-height: 0;
+	position: relative;
+}
+
+/* Virtual item spacing (replaces flex gap: 2px) */
+.agent-client-virtual-item {
+	padding-bottom: 2px;
+}
+
+/* Allow horizontal scroll for wide tables within messages */
+.agent-client-chat-view-messages table {
+	display: block;
+	overflow-x: auto;
+	max-width: 100%;
+}
+
+/* Error display */
+.agent-client-chat-error-container {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 20px;
+	background-color: var(--background-secondary);
+	border-radius: 8px;
+	border: 1px solid var(--color-red);
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.agent-client-chat-error-title {
+	margin: 0 0 8px 0 !important;
+	color: var(--color-red) !important;
+}
+
+.agent-client-chat-error-message {
+	margin: 0 !important;
+	color: var(--text-normal);
+	font-size: 14px;
+	line-height: 1.4;
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow-wrap: anywhere;
+}
+
+.agent-client-chat-error-suggestion {
+	margin: 8px 0 0 0 !important;
+	color: var(--text-muted);
+	font-size: 13px;
+	font-style: italic;
+	line-height: 1.4;
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow-wrap: anywhere;
+}
+
+.agent-client-chat-error-button {
+	padding: 8px 16px !important;
+	border: 1px solid var(--background-modifier-border) !important;
+	border-radius: 6px !important;
+	background-color: transparent !important;
+	color: var(--text-muted) !important;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+/* ============================================================
+   Notification Overlay (displayed above input field)
+   Supports variants: --error (default), --info
+   ============================================================ */
+
+.agent-client-error-overlay {
+	position: absolute;
+	bottom: 100%;
+	left: 8px;
+	right: 8px;
+	margin-bottom: 8px;
+	padding: 12px 16px;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--color-red);
+	border-radius: 8px;
+	z-index: 10;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Variant border colors */
+.agent-client-error-overlay--error {
+	border-color: var(--color-red);
+}
+
+.agent-client-error-overlay--info {
+	border-color: var(--background-modifier-border);
+}
+
+.agent-client-error-overlay-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.agent-client-error-overlay-title {
+	margin: 0 !important;
+	color: var(--color-red) !important;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+/* Variant title colors */
+.agent-client-error-overlay--error .agent-client-error-overlay-title {
+	color: var(--color-red) !important;
+}
+
+.agent-client-error-overlay--info .agent-client-error-overlay-title {
+	color: var(--text-normal) !important;
+}
+
+.agent-client-error-overlay-close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 14px;
+	height: 14px;
+	background: none !important;
+	background-color: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	color: var(--text-muted);
+	cursor: pointer;
+	padding: 0 !important;
+	margin: 0;
+	outline: none !important;
+}
+
+.agent-client-error-overlay-close svg {
+	width: 14px;
+	height: 14px;
+	color: inherit;
+}
+
+.agent-client-error-overlay-close:hover {
+	background: none !important;
+	box-shadow: none !important;
+	color: var(--interactive-accent);
+}
+
+.agent-client-error-overlay-close:active,
+.agent-client-error-overlay-close:focus {
+	background: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.agent-client-error-overlay-message {
+	margin: 0 !important;
+	color: var(--text-normal);
+	font-size: 13px;
+	line-height: 1.4;
+	white-space: pre-line;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+.agent-client-error-overlay-suggestion {
+	margin: 8px 0 0 0 !important;
+	color: var(--text-muted);
+	font-size: 12px;
+	font-style: italic;
+	line-height: 1.4;
+}
+
+.agent-client-error-overlay-code {
+	display: block;
+	margin-top: 4px;
+	padding: 6px 8px;
+	background-color: var(--background-primary);
+	border-radius: 4px;
+	font-family: var(--font-monospace);
+	font-size: 12px;
+	font-style: normal;
+	line-height: 1.4;
+	color: var(--text-normal);
+	word-break: break-all;
+	user-select: all;
+	cursor: text;
+}
+
+.agent-client-error-overlay-link {
+	display: inline-block;
+	margin-top: 8px;
+	font-size: 12px;
+	color: var(--text-accent);
+	text-decoration: none;
+}
+
+.agent-client-error-overlay-link:hover {
+	text-decoration: underline;
+}
+
+/* Empty state */
+.agent-client-chat-empty-state {
+	color: var(--text-muted);
+	text-align: center;
+	margin-top: 20px;
+}
+
+/* Input area */
+.agent-client-chat-input-container {
+	flex-shrink: 0;
+	padding: 0 8px;
+	position: relative;
+}
+
+/* Input box - outer container with border and background */
+.agent-client-chat-input-box {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	background-color: var(--background-primary);
+	overflow: hidden;
+	transition: box-shadow 0.15s ease;
+}
+
+.agent-client-chat-input-box:focus-within {
+	box-shadow: 0 0 0 1.5px var(--background-modifier-border);
+}
+
+.agent-client-chat-input-box.agent-client-dragging-over {
+	background-color: var(--background-secondary);
+}
+
+/* Auto-mention inline display */
+.agent-client-auto-mention-inline {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+	padding: 6px 12px !important;
+	width: 100%;
+	cursor: pointer;
+	background: none !important;
+	background-color: transparent !important;
+	border: none !important;
+	outline: none !important;
+	appearance: none;
+	box-shadow: none !important;
+	text-align: left;
+	font: inherit;
+	color: inherit;
+	min-width: unset !important;
+	min-height: unset !important;
+}
+
+.agent-client-mention-badge {
+	background-color: transparent;
+	color: var(--interactive-accent-hover);
+	border-radius: 3px;
+	font-size: var(--font-text-size);
+	font-weight: 500;
+	line-height: var(--line-height-normal);
+	cursor: pointer;
+	user-select: none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: calc(100% - 24px);
+}
+
+.agent-client-mention-badge.agent-client-disabled {
+	color: var(--text-faint);
+	text-decoration: line-through;
+}
+
+.agent-client-auto-mention-toggle-icon {
+	color: var(--text-muted);
+	transition: color 0.2s;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.agent-client-auto-mention-toggle-icon svg {
+	width: 14px;
+	height: 14px;
+	color: inherit;
+}
+
+.agent-client-auto-mention-inline:hover .agent-client-auto-mention-toggle-icon {
+	color: var(--interactive-accent);
+}
+
+.agent-client-chat-input-textarea {
+	width: 100%;
+	padding: 12px;
+	border: none;
+	background-color: transparent;
+	color: var(--text-normal);
+	resize: none;
+	min-height: 80px;
+	max-height: 300px;
+	font-family: inherit;
+	font-size: var(--ac-chat-font-size);
+	line-height: var(--line-height-normal);
+	box-sizing: border-box;
+	outline: none;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.agent-client-chat-input-textarea::-webkit-scrollbar {
+	display: none;
+}
+
+.agent-client-chat-input-textarea:hover {
+	border: none !important;
+	background-color: transparent !important;
+}
+
+.agent-client-chat-input-textarea:focus {
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+/* Dynamic textarea height management */
+.agent-client-chat-input-textarea.agent-client-textarea-auto-height {
+	height: auto;
+}
+
+.agent-client-chat-input-textarea.agent-client-textarea-expanded {
+	height: var(--textarea-height, auto);
+}
+
+/* Textarea wrapper for hint overlay */
+.agent-client-textarea-wrapper {
+	position: relative;
+	flex: 1;
+	min-height: 80px;
+}
+
+/* Hint overlay for slash commands */
+.agent-client-hint-overlay {
+	/* Positioning - exact overlay on textarea */
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+	/* Match textarea properties exactly */
+	padding: 12px;
+	box-sizing: border-box;
+	font-family: inherit;
+	font-size: var(--ac-chat-font-size);
+	line-height: var(--line-height-normal);
+	/* Text wrapping */
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	overflow: hidden;
+}
+
+.agent-client-hint-overlay .agent-client-invisible {
+	visibility: hidden;
+}
+
+.agent-client-hint-overlay .agent-client-hint-text {
+	color: var(--text-faint);
+}
+
+/* Input Actions Container */
+.agent-client-chat-input-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: nowrap;
+	gap: 8px;
+	padding: 4px 12px 8px 12px;
+	min-width: 0;
+}
+
+/* Toolbar dropdown — opens an Obsidian Menu on click. */
+
+.agent-client-toolbar-dropdown {
+	display: inline-flex;
+	align-items: center;
+	padding: 0 4px !important;
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 4px !important;
+	background: transparent !important;
+	background-color: transparent !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background-color 0.1s ease;
+	height: 20px;
+	max-width: 120px;
+	min-width: 0;
+	flex-shrink: 1;
+	overflow: hidden;
+}
+
+.agent-client-toolbar-dropdown:hover {
+	background-color: var(--background-modifier-hover) !important;
+}
+
+.agent-client-toolbar-dropdown:focus {
+	background: transparent !important;
+	box-shadow: none !important;
+	outline: none;
+}
+
+.agent-client-toolbar-dropdown-label-area {
+	display: grid;
+	max-width: 100px;
+	overflow: hidden;
+}
+
+.agent-client-toolbar-dropdown-label-area > * {
+	grid-area: 1 / 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
+	font-size: 11px;
+}
+
+.agent-client-toolbar-dropdown-sizer {
+	visibility: hidden;
+}
+
+.agent-client-toolbar-dropdown-label {
+	color: var(--text-faint);
+}
+
+.agent-client-toolbar-dropdown-chevron {
+	display: flex;
+	align-items: center;
+	pointer-events: none;
+	color: var(--text-faint);
+	margin-left: 2px;
+}
+
+.agent-client-toolbar-dropdown-chevron svg {
+	width: 12px;
+	height: 12px;
+}
+
+/* Context Usage Indicator */
+.agent-client-usage-indicator {
+	font-size: var(--font-smallest);
+	margin-right: auto;
+	flex-shrink: 0;
+	cursor: default;
+	user-select: none;
+	white-space: nowrap;
+}
+
+.agent-client-usage-normal {
+	color: var(--text-faint);
+}
+
+.agent-client-usage-caution {
+	color: var(--color-yellow);
+}
+
+.agent-client-usage-warning {
+	color: var(--color-orange);
+}
+
+.agent-client-usage-danger {
+	color: var(--color-red);
+	font-weight: var(--font-semibold);
+}
+
+/* Send button */
+.agent-client-chat-send-button {
+	width: 20px;
+	height: 20px;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background-color: transparent !important;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	outline: none !important;
+	appearance: none;
+	box-shadow: none !important;
+	transition: all 0.2s ease;
+}
+
+.agent-client-chat-send-button.agent-client-disabled {
+	cursor: not-allowed !important;
+}
+
+/* Send button icon states */
+.agent-client-chat-send-button svg {
+	transition: color 0.2s ease;
+}
+
+.agent-client-chat-send-button svg.agent-client-icon-sending {
+	color: var(--color-red);
+}
+
+.agent-client-chat-send-button svg.agent-client-icon-active {
+	color: var(--interactive-accent);
+}
+
+.agent-client-chat-send-button svg.agent-client-icon-inactive {
+	color: var(--text-muted);
+}
+
+/* ===== Other Chat Components ===== */
+
+/* Collapsible Thought */
+.agent-client-collapsible-thought {
+	font-style: italic;
+	color: var(--text-muted);
+	background-color: transparent;
+	font-size: 0.9em;
+	cursor: pointer;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
+	margin-top: 8px;
+	margin-bottom: 12px;
+}
+
+.agent-client-collapsible-thought-header {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.agent-client-collapsible-thought-icon {
+	opacity: 0.7;
+	margin-left: auto;
+}
+
+.agent-client-collapsible-thought-icon svg {
+	width: 14px;
+	height: 14px;
+}
+
+.agent-client-collapsible-thought-content {
+	margin-top: 8px;
+	padding-left: 16px;
+	user-select: text;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+/* Mention Dropdown */
+.agent-client-mention-dropdown {
+	position: absolute;
+	bottom: 100%;
+	left: 8px;
+	right: 8px;
+	max-height: 250px;
+	background-color: var(--background-secondary);
+	border: 2px solid var(--background-modifier-border);
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	overflow-y: auto;
+	font-size: 14px;
+	margin-bottom: 8px;
+	z-index: 1000;
+}
+
+.agent-client-mention-dropdown-item {
+	padding: 4px 16px;
+	cursor: pointer;
+	background-color: transparent;
+	user-select: none;
+	transition: background-color 0.1s ease;
+}
+
+.agent-client-mention-dropdown-item.agent-client-selected {
+	background-color: var(--background-modifier-hover);
+}
+
+.agent-client-mention-dropdown-item.agent-client-has-border {
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.agent-client-mention-dropdown-item-name {
+	font-weight: 500;
+	color: var(--text-normal);
+	margin-bottom: 2px;
+}
+
+.agent-client-mention-dropdown-item-path {
+	font-size: 12px;
+	color: var(--text-muted);
+	opacity: 0.8;
+}
+
+/* Terminal Renderer */
+.agent-client-terminal-renderer {
+	padding: 8px;
+	margin-top: 4px;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	font-size: 12px;
+	font-family: var(--font-monospace);
+	white-space: pre-wrap;
+	word-break: break-word;
+	max-height: 400px;
+	overflow: auto;
+	user-select: text;
+}
+
+.agent-client-terminal-renderer-exit {
+	margin-top: 8px;
+	padding: 4px 8px;
+	color: white;
+	border-radius: 4px;
+	font-size: 11px;
+	font-family: var(--font-interface);
+	user-select: text;
+}
+
+.agent-client-terminal-renderer-exit.agent-client-success {
+	background-color: var(--color-green);
+}
+
+.agent-client-terminal-renderer-exit.agent-client-error {
+	background-color: var(--color-red);
+}
+
+/* Message Renderer */
+.agent-client-message-renderer {
+	position: relative;
+	padding: 0 16px;
+	width: 100%;
+	margin: 4px 0;
+	/* Prevent long strings from overflowing */
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.agent-client-message-renderer.agent-client-message-user {
+	width: auto;
+	margin-left: 8px;
+	margin-right: 8px;
+	background-color: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+}
+
+.agent-client-message-renderer.agent-client-message-assistant {
+	background-color: transparent;
+	border: none;
+	border-radius: 0;
+}
+
+.agent-client-message-renderer.agent-client-message-assistant
+	.agent-client-message-actions {
+	bottom: -8px;
+}
+
+.agent-client-message-actions {
+	position: absolute;
+	bottom: 4px;
+	right: 8px;
+	display: flex;
+	gap: 2px;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s ease;
+}
+
+.agent-client-message-renderer:hover .agent-client-message-actions {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.agent-client-message-action-button {
+	color: var(--text-muted);
+}
+
+.agent-client-message-action-button:hover {
+	background-color: transparent;
+}
+
+.agent-client-message-action-button svg {
+	width: 14px;
+	height: 14px;
+}
+
+/* Text with Mentions */
+.agent-client-text-with-mentions {
+	user-select: text;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	margin: 1em 0;
+	font-size: var(--ac-chat-font-size);
+	max-width: 100%;
+}
+
+.agent-client-text-mention {
+	background-color: transparent;
+	color: var(--interactive-accent-hover);
+	border-radius: 3px;
+	font-size: 0.9em;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+/* Markdown Text Renderer */
+.agent-client-markdown-text-renderer {
+	user-select: text;
+	font-size: var(--ac-chat-font-size);
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
+}
+
+.agent-client-markdown-text-renderer.markdown-rendered pre,
+.agent-client-markdown-text-renderer.markdown-rendered table,
+.agent-client-markdown-text-renderer.markdown-rendered .mermaid,
+.agent-client-markdown-text-renderer.markdown-rendered svg,
+.agent-client-markdown-text-renderer.markdown-rendered .math-block,
+.agent-client-markdown-text-renderer.markdown-rendered
+	mjx-container[display="true"] {
+	overflow-x: auto;
+	display: block;
+}
+
+/* Tool Call Diff Renderer */
+.agent-client-tool-call-diff {
+	margin-top: 8px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	overflow: hidden;
+	font-family: var(--font-monospace);
+	font-size: 12px;
+}
+
+.agent-client-tool-call-diff-content {
+	background-color: var(--background-primary);
+	overflow: auto;
+}
+
+.agent-client-diff-line-info {
+	padding: 4px 12px;
+	background-color: var(--background-secondary);
+	color: var(--text-muted);
+	font-size: 11px;
+	font-style: italic;
+}
+
+.agent-client-diff-line {
+	display: flex;
+	align-items: flex-start;
+	line-height: 1.5;
+	user-select: text;
+}
+
+.agent-client-diff-line-content {
+	flex: 1;
+	padding: 2px 12px;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.agent-client-diff-line-added {
+	background-color: rgba(46, 160, 67, 0.15);
+}
+
+.agent-client-diff-line-removed {
+	background-color: rgba(248, 81, 73, 0.15);
+}
+
+.agent-client-diff-line-context {
+	background-color: transparent;
+}
+
+.agent-client-diff-line-context .agent-client-diff-line-marker {
+	color: var(--text-faint);
+}
+
+/* Hunk header styling */
+.agent-client-diff-hunk-header {
+	padding: 4px 12px;
+	background-color: var(--background-secondary-alt);
+	color: var(--text-muted);
+	font-size: 11px;
+	border-top: 1px solid var(--background-modifier-border);
+	border-bottom: 1px solid var(--background-modifier-border);
+	font-weight: 500;
+}
+
+/* Word-level diff highlighting */
+.agent-client-diff-word-added {
+	background-color: rgba(46, 160, 67, 0.4);
+	font-weight: 600;
+}
+
+.agent-client-diff-word-removed {
+	background-color: rgba(248, 81, 73, 0.4);
+	font-weight: 600;
+	text-decoration: line-through;
+}
+
+/* Diff Expand/Collapse Bar */
+.agent-client-diff-expand-bar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 3px 12px;
+	background-color: var(--background-secondary-alt);
+	border-top: 1px solid var(--background-modifier-border);
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 0.1s ease;
+}
+
+.agent-client-diff-expand-bar:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.agent-client-diff-expand-text {
+	font-size: 11px;
+	color: var(--text-muted);
+	font-family: var(--font-monospace);
+}
+
+.agent-client-diff-expand-icon {
+	display: flex;
+	align-items: center;
+	color: var(--text-muted);
+	margin-left: 8px;
+}
+
+.agent-client-diff-expand-icon svg {
+	width: 14px;
+	height: 14px;
+}
+
+/* Tool Call Details */
+.agent-client-tool-call-read-details,
+.agent-client-tool-call-edit-details,
+.agent-client-tool-call-delete-details,
+.agent-client-tool-call-move-details,
+.agent-client-tool-call-search-details,
+.agent-client-tool-call-execute-details,
+.agent-client-tool-call-fetch-details {
+	padding: 4px 0;
+	font-size: 12px;
+	color: var(--text-muted);
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+	max-width: 100%;
+}
+
+.agent-client-tool-call-location {
+	padding: 2px 0;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+.agent-client-tool-call-line {
+	color: var(--text-accent);
+	font-weight: 500;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+.agent-client-tool-call-content {
+	padding: 8px 0;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+/* ===== Attachment Preview Strip ===== */
+.agent-client-attachment-preview-strip {
+	display: flex;
+	gap: 8px;
+	padding: 8px 12px;
+	background-color: transparent;
+	overflow-x: auto;
+	scrollbar-width: thin;
+	-ms-overflow-style: none;
+}
+
+.agent-client-attachment-preview-strip::-webkit-scrollbar {
+	height: 4px;
+}
+
+.agent-client-attachment-preview-strip::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.agent-client-attachment-preview-strip::-webkit-scrollbar-thumb {
+	background-color: var(--background-modifier-border);
+	border-radius: 2px;
+}
+
+.agent-client-attachment-preview-item {
+	position: relative;
+	flex-shrink: 0;
+	width: 64px;
+	height: 64px;
+}
+
+.agent-client-attachment-preview-thumbnail {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	border-radius: 8px;
+	border: 1px solid var(--background-modifier-border);
+}
+
+/* Non-image file preview: icon + filename */
+.agent-client-attachment-preview-file {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	border-radius: 8px;
+	border: 1px solid var(--background-modifier-border);
+	background-color: var(--background-primary);
+	overflow: hidden;
+}
+
+.agent-client-attachment-preview-file-icon {
+	color: var(--text-muted);
+}
+
+.agent-client-attachment-preview-file-icon svg {
+	width: 24px;
+	height: 24px;
+}
+
+.agent-client-attachment-preview-file-name {
+	font-size: 9px;
+	color: var(--text-muted);
+	text-align: center;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 0 4px;
+}
+
+.agent-client-attachment-preview-remove {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	width: 18px;
+	height: 18px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background-color: var(--background-secondary);
+	color: var(--text-muted);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: opacity 0.15s ease;
+	box-shadow: none !important;
+}
+
+.agent-client-attachment-preview-remove svg {
+	width: 12px;
+	height: 12px;
+}
+
+.agent-client-attachment-preview-item:hover
+	.agent-client-attachment-preview-remove {
+	opacity: 1;
+}
+
+/* ===== Message Resource Link (in chat history) ===== */
+.agent-client-message-resource-link {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	width: 120px;
+	height: 120px;
+	margin: 4px 4px 4px 0;
+	border-radius: 8px;
+	border: 1px solid var(--background-modifier-border);
+	background-color: var(--background-primary);
+	overflow: hidden;
+}
+
+.agent-client-message-resource-link-icon {
+	color: var(--text-muted);
+	display: flex;
+}
+
+.agent-client-message-resource-link-icon svg {
+	width: 32px;
+	height: 32px;
+}
+
+.agent-client-message-resource-link-name {
+	font-size: 10px;
+	color: var(--text-muted);
+	text-align: center;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 0 8px;
+}
+
+/* ===== Message Image (in chat history) ===== */
+.agent-client-message-image {
+	display: inline-block;
+	margin: 4px 4px 4px 0;
+}
+
+.agent-client-message-image-thumbnail {
+	width: 120px;
+	height: 120px;
+	object-fit: cover;
+	object-position: center;
+	border-radius: 8px;
+	border: 1px solid var(--background-modifier-border);
+}
+
+/* ===== Message Images Strip (horizontal scroll in chat history) ===== */
+.agent-client-message-images-strip {
+	display: flex;
+	gap: 8px;
+	padding: 8px 0;
+	overflow-x: auto;
+	scrollbar-width: thin;
+	-ms-overflow-style: none;
+}
+
+.agent-client-message-images-strip::-webkit-scrollbar {
+	height: 4px;
+}
+
+.agent-client-message-images-strip::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.agent-client-message-images-strip::-webkit-scrollbar-thumb {
+	background-color: var(--background-modifier-border);
+	border-radius: 2px;
+}
+
+.agent-client-message-images-strip .agent-client-message-image {
+	flex-shrink: 0;
+	margin: 0;
+}
+
+.agent-client-message-images-strip .agent-client-message-resource-link {
+	flex-shrink: 0;
+	margin: 0;
+}
+
+/* ===== Session History Modal ===== */
+.agent-client-session-history-filter {
+	margin-bottom: 16px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.agent-client-session-history-filter-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	font-size: 14px;
+	color: var(--text-normal);
+}
+
+.agent-client-session-history-filter-label input[type="checkbox"] {
+	cursor: pointer;
+}
+
+.agent-client-session-history-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.agent-client-session-history-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px;
+	background: var(--background-secondary);
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border);
+}
+
+.agent-client-session-history-item-content {
+	flex: 1;
+	min-width: 0;
+}
+
+.agent-client-session-history-item-title {
+	font-weight: 500;
+	font-size: 14px;
+	color: var(--text-normal);
+	margin-bottom: 4px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.agent-client-session-history-item-metadata {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.agent-client-session-history-item-timestamp {
+	font-size: 12px;
+	color: var(--text-muted);
+}
+
+.agent-client-session-history-item-cwd {
+	font-size: 12px;
+	color: var(--text-muted);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	min-width: 0;
+	flex: 1;
+}
+
+.agent-client-session-history-item-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+	margin-left: 12px;
+}
+
+.agent-client-session-history-action-icon {
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	cursor: pointer;
+	color: var(--text-muted);
+	transition: all 0.2s;
+}
+
+.agent-client-session-history-action-icon:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+
+.agent-client-session-history-action-icon svg {
+	width: 16px;
+	height: 16px;
+}
+
+.agent-client-session-history-restore-icon:hover {
+	color: var(--text-accent);
+}
+
+.agent-client-session-history-fork-icon:hover {
+	color: var(--text-accent);
+}
+
+.agent-client-session-history-edit-icon:hover {
+	color: var(--text-accent);
+}
+
+.agent-client-session-history-loading,
+.agent-client-session-history-empty,
+.agent-client-session-history-error {
+	padding: 32px;
+	text-align: center;
+	color: var(--text-muted);
+}
+
+.agent-client-session-history-error-text {
+	color: var(--text-error);
+	margin-bottom: 12px;
+}
+
+.agent-client-session-history-retry-button {
+	padding: 6px 12px;
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.agent-client-session-history-load-more {
+	margin-top: 16px;
+	text-align: center;
+}
+
+.agent-client-session-history-load-more-button {
+	padding: 8px 16px;
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	color: var(--text-normal);
+}
+
+.agent-client-session-history-load-more-button:hover {
+	background: var(--background-modifier-hover);
+}
+
+.agent-client-session-history-load-more-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Debug mode manual input form */
+.agent-client-session-history-debug {
+	margin-bottom: 16px;
+	padding: 12px;
+	background: var(--background-secondary);
+	border-radius: 6px;
+	border: 1px dashed var(--text-muted);
+}
+
+.agent-client-session-history-debug h3 {
+	margin: 0 0 12px 0;
+	font-size: 14px;
+	color: var(--text-muted);
+}
+
+.agent-client-session-history-debug-group {
+	margin-bottom: 10px;
+}
+
+.agent-client-session-history-debug-group label {
+	display: block;
+	margin-bottom: 4px;
+	font-size: 12px;
+	color: var(--text-muted);
+}
+
+.agent-client-session-history-debug-input {
+	width: 100%;
+	padding: 6px 8px;
+	font-size: 13px;
+	font-family: var(--font-monospace);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background: var(--background-primary);
+}
+
+.agent-client-session-history-debug-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.agent-client-session-history-debug-button {
+	padding: 6px 12px;
+	font-size: 13px;
+	border-radius: 4px;
+	cursor: pointer;
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border: none;
+}
+
+.agent-client-session-history-debug-button:hover {
+	background: var(--interactive-accent-hover);
+}
+
+.agent-client-session-history-debug-separator {
+	margin: 16px 0;
+	border: none;
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+/* Local sessions banner */
+.agent-client-session-history-local-banner {
+	padding: 8px 12px;
+	margin-bottom: 12px;
+	background: var(--background-secondary);
+	border-radius: 4px;
+	font-size: 12px;
+	color: var(--text-muted);
+	border-left: 3px solid var(--interactive-accent);
+}
+
+/* Warning banner for agents that don't support restoration */
+.agent-client-session-history-warning-banner {
+	padding: 8px 12px;
+	margin-bottom: 12px;
+	background: var(--background-secondary);
+	border-radius: 4px;
+	border-left: 3px solid var(--text-warning);
+}
+
+.agent-client-session-history-warning-banner p {
+	margin: 0;
+	color: var(--text-muted);
+	font-size: 12px;
+}
+
+/* Delete button */
+.agent-client-session-history-delete-icon {
+	color: var(--text-muted);
+}
+
+.agent-client-session-history-delete-icon:hover {
+	color: var(--text-error);
+}
+
+/* Confirm delete modal */
+.agent-client-confirm-delete-message {
+	margin-bottom: 8px;
+}
+
+.agent-client-confirm-delete-warning {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin-bottom: 16px;
+}
+
+.agent-client-confirm-delete-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+/* Edit title modal */
+.agent-client-edit-title-input {
+	width: 100%;
+	margin-bottom: 16px;
+}
+
+.agent-client-edit-title-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+/* Change directory modal */
+.agent-client-change-dir-description {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin-bottom: 12px;
+}
+
+.agent-client-change-dir-input-row {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+
+.agent-client-change-dir-input {
+	flex: 1;
+}
+
+/* Agent cwd banner (shown when working outside vault) */
+.agent-client-cwd-banner {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+
+.agent-client-cwd-banner-icon {
+	flex-shrink: 0;
+}
+
+.agent-client-cwd-banner-icon svg {
+	width: 14px;
+	height: 14px;
+}
+
+.agent-client-cwd-banner-path {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.agent-client-change-dir-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+/* ===== Floating Chat Button ===== */
+/* Floating button & menu root — higher z-index, always above windows */
+.agent-client-floating-button-root {
+	position: fixed;
+	z-index: 30;
+	pointer-events: none;
+}
+
+.agent-client-floating-button-root > * {
+	pointer-events: auto;
+}
+
+/* Floating chat window root — lower z-index */
+.agent-client-floating-view-root {
+	position: fixed;
+	z-index: 20;
+	pointer-events: none;
+}
+
+.agent-client-floating-view-root.is-focused {
+	z-index: 21;
+}
+
+.agent-client-floating-view-root > * {
+	pointer-events: auto;
+}
+
+.agent-client-floating-button {
+	position: fixed;
+	bottom: 30px;
+	right: 40px;
+	width: 48px;
+	height: 48px;
+	min-width: 48px;
+	min-height: 48px;
+	border-radius: 50%;
+	background: var(--interactive-accent);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
+	overflow: hidden;
+	padding: 0;
+}
+
+.agent-client-floating-button.has-custom-image {
+	background: transparent;
+}
+
+.agent-client-floating-button:hover {
+	transform: scale(1.05);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.agent-client-floating-button.is-dragging {
+	cursor: grabbing;
+	transition: none;
+	user-select: none;
+}
+
+.agent-client-floating-button img {
+	width: 48px;
+	height: 48px;
+	min-width: 48px;
+	min-height: 48px;
+	object-fit: cover;
+	object-position: center;
+	border-radius: 50%;
+	display: block;
+}
+
+.agent-client-floating-button-fallback {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-on-accent);
+}
+
+.agent-client-floating-button-fallback svg {
+	width: 24px;
+	height: 24px;
+}
+
+/* ===== Floating Chat Window ===== */
+.agent-client-floating-window {
+	position: fixed;
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 12px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	resize: both;
+	min-width: 330px;
+	min-height: 460px;
+}
+
+.agent-client-floating-header {
+	cursor: grab;
+	user-select: none;
+	border-radius: 11px 11px 0 0;
+	overflow: hidden;
+}
+
+.agent-client-floating-header:active {
+	cursor: grabbing;
+}
+
+.agent-client-floating-header .agent-client-inline-header {
+	border-radius: 11px 11px 0 0;
+}
+
+.agent-client-floating-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	min-height: 0;
+}
+
+.agent-client-floating-window .agent-client-chat-input-container {
+	padding-bottom: 8px;
+}
+
+.agent-client-floating-messages-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden; /* Let inner .agent-client-chat-view-messages handle scrolling */
+	margin-bottom: 8px;
+	min-height: 0;
+}
+
+/* Floating chat instance selector menu */
+.agent-client-floating-instance-menu {
+	position: fixed;
+	bottom: 100px;
+	right: 20px;
+	min-width: 220px;
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	overflow: hidden;
+}
+
+.agent-client-floating-instance-menu-header {
+	padding: 12px 16px;
+	font-weight: 600;
+	font-size: 13px;
+	color: var(--text-muted);
+	background: var(--background-secondary);
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.agent-client-floating-instance-menu-item {
+	padding: 10px 16px;
+	cursor: pointer;
+	font-size: 13px;
+	color: var(--text-normal);
+	transition: background-color 0.1s;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.agent-client-floating-instance-menu-label {
+	flex: 1;
+}
+
+.agent-client-floating-instance-menu-item:hover {
+	background: var(--background-modifier-hover);
+}
+
+.agent-client-floating-instance-menu-close {
+	width: 20px;
+	height: 20px;
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background-color: transparent !important;
+	box-shadow: none !important;
+	color: var(--text-muted);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	outline: none !important;
+	appearance: none;
+}
+
+.agent-client-floating-instance-menu-close:hover {
+	background-color: var(--background-modifier-hover) !important;
+	color: var(--interactive-accent);
+}
+
+/* ===== Agent Selector (InlineHeader) ===== */
+.agent-client-agent-selector {
+	display: inline-flex;
+	align-items: center;
+	padding: 0 4px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.1s ease;
+	height: 20px;
+	max-width: 160px;
+}
+
+.agent-client-agent-selector:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.agent-client-agent-selector-icon {
+	display: flex;
+	align-items: center;
+	pointer-events: none;
+	color: var(--text-faint);
+	margin-left: 2px;
+	order: 2;
+}
+
+.agent-client-agent-selector-icon svg {
+	width: 12px;
+	height: 12px;
+}
+
+.agent-client-agent-selector select.dropdown {
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background: none !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	color: var(--text-normal) !important;
+	font-size: 12px !important;
+	cursor: pointer !important;
+	outline: none !important;
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+	max-width: 140px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.agent-client-agent-selector select.dropdown:hover,
+.agent-client-agent-selector select.dropdown:focus {
+	color: var(--text-normal) !important;
+	background-color: transparent !important;
+	box-shadow: none !important;
+}
+
+/* Agent label (single agent) */
+.agent-client-agent-label {
+	color: var(--text-normal);
+	font-size: 12px;
+}
+
+/* ============================================================
+   Embedded agent-client code blocks
+   ============================================================ */
+
+.agent-client-code-block-error {
+	border: 1px solid var(--background-modifier-error-border, var(--text-error));
+	background: var(--background-modifier-error);
+	color: var(--text-on-accent, #fff);
+	padding: 10px 14px;
+	border-radius: 6px;
+	font-size: 0.95em;
+	margin: 4px 0;
+	font-family: var(--font-interface);
+}
+
+.agent-client-code-block-error-label {
+	font-weight: 700;
+	margin-right: 4px;
+	color: var(--text-on-accent, #fff);
+}
+
+.agent-client-code-block-error-source {
+	margin-top: 8px;
+	padding: 6px 10px;
+	background: rgba(0, 0, 0, 0.25);
+	border-radius: 4px;
+	font-family: var(--font-monospace);
+	font-size: 0.85em;
+	color: var(--text-on-accent, #fff);
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	max-height: 200px;
+	overflow: auto;
+}
+
+.agent-client-code-block-warning {
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	color: var(--text-muted);
+	padding: 6px 10px;
+	border-radius: 6px;
+	font-size: 0.85em;
+	margin: 4px 0;
+	font-family: var(--font-interface);
+}
+
+.agent-client-code-block-warning-item {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.agent-client-code-block-host {
+	margin: 8px 0;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	overflow: hidden;
+	background: var(--background-primary);
+}
+
+.agent-client-code-block-chat {
+	display: flex;
+	flex-direction: column;
+	height: var(--ac-embedded-max-height, 520px);
+	min-height: 320px;
+	max-height: min(var(--ac-embedded-max-height, 520px), 80vh);
+	overflow: hidden;
+}
+
+.agent-client-embedded-chat-panel {
+	flex: 1 1 auto;
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+	background: var(--background-primary);
+}
+
+.agent-client-embedded-header {
+	flex: 0 0 auto;
+	background: var(--background-primary);
+}
+
+.agent-client-embedded-header .agent-client-inline-header {
+	min-height: 34px;
+	padding: 6px 10px;
+}
+
+.agent-client-embedded-messages-container {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.agent-client-embedded-messages-container .agent-client-chat-view-messages {
+	flex: 1 1 auto;
+	min-height: 0;
+	padding: 12px 10px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+.agent-client-embedded-chat-panel .agent-client-chat-input-container {
+	flex: 0 0 auto;
+	padding: 8px 10px 10px;
+	background: var(--background-primary);
+}
+
+/* ============================================================
+   Quick-action button blocks
+   ============================================================ */
+
+.agent-client-button-block {
+	display: inline-flex;
+	margin: 4px 0;
+}
+
+.agent-client-button-block-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 14px;
+	border-radius: 6px;
+	cursor: pointer;
+	font-weight: 500;
+}
+
+.agent-client-button-block-text {
+	white-space: nowrap;
+}
+
+.agent-client-button-block-icon {
+	display: flex;
+}
+
+.agent-client-button-block-icon svg {
+	width: 16px;
+	height: 16px;
+}

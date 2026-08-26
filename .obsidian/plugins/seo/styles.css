@@ -1,0 +1,742 @@
+/* Search Engine Optimization plugin styles */
+
+/* Center heading for "Files that pass" section */
+.seo-heading-center {
+	display: flex;
+	justify-content: center;
+	flex: 1;
+}
+
+/* Loading state styles */
+.seo-loading-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+	text-align: center;
+}
+
+.seo-loading-spinner {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+	animation: spin 1s linear infinite;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+}
+
+.seo-loading-title {
+	margin: 0 0 0.5rem 0;
+	color: var(--text-normal);
+}
+
+.seo-loading-message {
+	margin: 0;
+	color: var(--text-muted);
+	font-size: 0.9rem;
+}
+
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+/* Collapsible header for issues lists. Flexbox layout plus padding/cursor for the click target. */
+.seo-issues-header-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+	padding: 0.5rem;
+	border-radius: 4px;
+	cursor: default;
+}
+
+/* Collapsible score section */
+.seo-score-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.seo-score-text {
+	font-size: 0.9rem;
+	color: var(--text-normal);
+	font-weight: normal;
+}
+
+.seo-toggle-icon {
+	color: var(--text-muted);
+	padding: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Stats container and audit button */
+.seo-stats-container {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+/* Sort button styling. Specificity is boosted via the .seo-panel scope to beat default button rules through the cascade. */
+.seo-panel .seo-sort-btn,
+.seo-panel .seo-sort-btn.clickable-icon {
+	border: none;
+	background: none;
+	box-shadow: none;
+	cursor: default;
+	padding: 0;
+	color: var(--text-muted);
+	transition: color 0.2s ease;
+}
+
+.seo-panel .seo-sort-btn:hover {
+	background: none;
+	color: var(--text-normal);
+}
+
+.seo-audit-btn {
+	background: none;
+	border: none;
+	padding: 0.25rem;
+	border-radius: 0.25rem;
+	color: var(--text-muted);
+	cursor: default;
+	transition: all 0.2s ease;
+}
+
+.seo-audit-btn:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+
+.seo-panel {
+	padding: 1rem;
+	max-width: 100%;
+	box-sizing: border-box;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	scrollbar-gutter: stable;
+	position: relative;
+}
+
+.seo-panel-header {
+	margin-bottom: 1rem;
+}
+
+.seo-panel-header-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
+.seo-panel-header-row h2 {
+	margin: 0;
+	color: var(--text-normal);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.seo-header-icon-wrap {
+	display: flex;
+	align-items: center;
+	gap: 0;
+}
+
+/*
+ * Header copy/download: match Obsidian's .clickable-icon (vault drawer / workspace icons).
+ * We use <button> for a11y; reset native button chrome so sizing matches span.clickable-icon.
+ */
+.seo-header-icon-wrap button.clickable-icon {
+	-webkit-app-region: no-drag;
+	appearance: none;
+	-webkit-appearance: none;
+	margin: 0;
+	font: inherit;
+	line-height: 1;
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--size-2-2) var(--size-2-3);
+	cursor: var(--cursor);
+	border-radius: var(--clickable-icon-radius);
+	color: var(--icon-color);
+	height: auto;
+}
+
+.seo-header-icon-wrap button.clickable-icon:hover {
+	background-color: var(--background-modifier-hover);
+	cursor: var(--cursor);
+}
+
+.seo-filename {
+	font-size: 0.8rem;
+	color: var(--text-muted);
+	margin-top: 0.25rem;
+}
+
+.seo-panel p {
+	font-size: 0.85rem;
+}
+
+.seo-section {
+	margin-bottom: 2rem;
+	padding: 1rem;
+	background: var(--background-secondary);
+	border-radius: 8px;
+	border: 1px solid var(--background-modifier-border);
+	overflow-x: hidden;
+}
+
+.seo-section h3 {
+	margin: 0 0 1rem 0;
+	color: var(--text-normal);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.seo-no-results {
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+.seo-no-results p {
+	margin: 0.5rem 0;
+}
+
+.seo-score {
+	font-weight: bold;
+	margin-bottom: 1rem;
+	padding: 0.5rem;
+	background: var(--background-secondary);
+	border-radius: 4px;
+}
+
+.seo-issues {
+	color: var(--text-error);
+}
+
+.seo-success {
+	color: var(--text-success);
+}
+
+.seo-checks {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.seo-check {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	padding: 1rem;
+	transition: all 0.2s ease;
+	overflow-x: hidden;
+}
+
+/* Color-coded check blocks */
+.seo-check.seo-passed {
+	background: var(--color-green-bg, rgba(34, 197, 94, 0.1));
+	border-left: 4px solid var(--color-green, #22c55e);
+	border-color: var(--color-green, #22c55e);
+}
+
+.seo-check.seo-warning {
+	background: var(--color-yellow-bg, rgba(234, 179, 8, 0.1));
+	border-left: 4px solid var(--color-yellow, #eab308);
+	border-color: var(--color-yellow, #eab308);
+}
+
+.seo-check.seo-notice {
+	background: var(--color-blue-bg, rgba(59, 130, 246, 0.1));
+	border-left: 4px solid var(--color-blue, #3b82f6);
+	border-color: var(--color-blue, #3b82f6);
+}
+
+.seo-check.seo-error {
+	background: var(--color-red-bg, rgba(239, 68, 68, 0.1));
+	border-left: 4px solid var(--color-red, #ef4444);
+	border-color: var(--color-red, #ef4444);
+}
+
+/* Status icon colors to match the blocks */
+.seo-check.seo-passed .seo-status svg {
+	color: var(--color-green, #22c55e);
+}
+
+.seo-check.seo-warning .seo-status svg {
+	color: var(--color-yellow, #eab308);
+}
+
+.seo-check.seo-notice .seo-status svg {
+	color: var(--color-blue, #3b82f6);
+}
+
+.seo-check.seo-error .seo-status svg {
+	color: var(--color-red, #ef4444);
+}
+
+.seo-check-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 0.5rem;
+	font-weight: 600;
+	font-size: 0.85rem;
+}
+
+.seo-status {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+}
+
+.seo-status svg {
+	width: 16px;
+	height: 16px;
+}
+
+.seo-results {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.seo-result {
+	padding: 0.5rem 0;
+	word-wrap: break-word;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	hyphens: auto;
+}
+
+.seo-result:last-child {
+	border-bottom: none;
+}
+
+.seo-result.seo-error {
+	color: var(--text-error);
+}
+
+.seo-result.seo-warning {
+	color: var(--text-warning);
+}
+
+.seo-result.seo-info {
+	color: var(--text-muted);
+}
+
+.seo-suggestion {
+	font-size: 0.9em;
+	color: var(--text-muted);
+	margin-top: 0.25rem;
+	font-style: italic;
+	word-wrap: break-word;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	hyphens: auto;
+}
+
+.seo-top-btn {
+	margin: 1rem 0;
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border-radius: 6px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	border: 1px solid var(--interactive-accent);
+}
+
+.seo-top-btn:hover:not(:disabled) {
+	background: var(--interactive-accent-hover);
+}
+
+.seo-top-btn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.seo-summary {
+	background: var(--background-secondary);
+	padding: 1rem;
+	border-radius: 4px;
+	margin-bottom: 1rem;
+}
+
+/* Vault audit stats styling */
+.seo-vault-summary {
+	background: var(--background-secondary);
+	padding: 1.5rem;
+	border-radius: 8px;
+	margin-bottom: 1.5rem;
+	border: 1px solid var(--background-modifier-border);
+}
+
+.seo-stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 0;
+}
+
+.seo-stat-item {
+	text-align: center;
+	padding: 0.5rem;
+}
+
+.seo-stat-number {
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--text-normal);
+	margin-bottom: 0.25rem;
+	line-height: 1.2;
+}
+
+.seo-stat-label {
+	font-size: 0.8rem;
+	color: var(--text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-weight: 500;
+}
+
+.seo-file-count {
+	text-align: center;
+	margin-top: 1rem;
+	color: var(--text-muted);
+	font-size: 0.9rem;
+}
+
+/* Color coding for stats numbers. Specificity boosted via .seo-panel scope so these win over inherited text colors. */
+.seo-panel .seo-score-excellent {
+	color: var(--color-green, #22c55e);
+}
+
+.seo-panel .seo-score-good {
+	color: var(--color-lime, #84cc16);
+}
+
+.seo-panel .seo-score-fair {
+	color: var(--color-yellow, #eab308);
+}
+
+.seo-panel .seo-score-poor {
+	color: var(--color-red, #ef4444);
+}
+
+.seo-panel .seo-issues-count {
+	color: var(--color-red, #ef4444);
+}
+
+.seo-panel .seo-warnings-count {
+	color: var(--color-yellow, #eab308);
+}
+
+.seo-panel .seo-notices-count {
+	color: var(--color-blue, #3b82f6);
+}
+
+/* Current note color coding */
+.seo-panel .seo-issues-count-text {
+	color: var(--color-red, #ef4444);
+}
+
+.seo-panel .seo-warnings-count-text {
+	color: var(--color-yellow, #eab308);
+}
+
+.seo-panel .seo-notices-count-text {
+	color: var(--color-blue, #3b82f6);
+}
+
+.seo-issues-list {
+	margin-top: 1rem;
+}
+
+
+.seo-sort-buttons {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.seo-file-issue {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.seo-file-stats {
+	color: var(--text-muted);
+	font-size: 0.8em;
+}
+
+.seo-file-link {
+	color: var(--text-accent);
+	text-decoration: none;
+	cursor: pointer;
+	font-size: 0.8em;
+}
+
+.seo-file-link:hover {
+	text-decoration: underline;
+}
+
+.seo-issues-header {
+	font-size: 0.8rem;
+	margin: 0.5rem 0;
+	color: var(--text-normal);
+}
+
+.seo-status-bar {
+	cursor: pointer;
+	transition: color 0.2s ease;
+}
+
+.seo-status-bar:hover {
+	color: var(--text-accent);
+}
+
+/* Collapsible check sections */
+.seo-collapsible-header {
+	cursor: pointer;
+	user-select: none;
+}
+
+.seo-collapse-icon {
+	display: inline-flex;
+	align-items: center;
+	margin-right: 0.5rem;
+	transition: transform 0.2s ease;
+}
+
+.seo-collapse-icon svg {
+	transition: transform 0.2s ease;
+}
+
+/* Refresh button styling */
+.seo-refresh-btn {
+	margin: 0.5rem 0 0.5rem 0;
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border-radius: 6px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	border: 1px solid var(--interactive-accent);
+}
+
+.seo-refresh-btn:hover:not(:disabled) {
+	background: var(--interactive-accent-hover);
+}
+
+.seo-refresh-btn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+/* Files list container for collapsible functionality */
+.seo-files-list-container {
+	transition: all 0.2s ease;
+	overflow: visible;
+}
+
+
+/* Only the collapse icon should be clickable */
+.seo-collapse-icon.seo-collapsible-header {
+	cursor: default;
+	user-select: none;
+}
+
+/* Prevent layout shifts */
+.seo-panel * {
+	box-sizing: border-box;
+}
+
+/* Ensure consistent spacing - removed problematic overflow hidden */
+
+/* Specific handling for long URLs and links. Targets the link element directly to
+   avoid a parent-containing selector that has performance implications from broad invalidation. */
+.seo-result a[href*="http"] {
+	word-break: break-all;
+}
+
+/* Handle long text in check results */
+.seo-check .seo-results {
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.seo-check .seo-result {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+/* Clickable navigation styles. Specificity boosted via .seo-panel scope so these win over default text styling. */
+.seo-panel .seo-clickable {
+	cursor: pointer;
+	text-decoration: underline;
+	color: var(--text-accent);
+}
+
+.seo-result-message {
+	display: block;
+	margin-bottom: 0.25rem;
+}
+
+/* Navigation tooltip */
+.seo-clickable[title] {
+	position: relative;
+}
+
+/* Highlight animation for navigation */
+@keyframes seo-highlight {
+	0% { background-color: var(--color-yellow-bg, rgba(234, 179, 8, 0.3)); }
+	100% { background-color: transparent; }
+}
+
+.seo-navigation-highlight {
+	animation: seo-highlight 2s ease-out;
+}
+
+/* Progress indicator styles */
+.seo-progress-container {
+	display: none;
+	margin: 10px 0;
+	padding: 10px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background-color: var(--background-secondary);
+}
+
+.seo-progress-text {
+	margin-bottom: 8px;
+	font-size: 14px;
+	color: var(--text-normal);
+}
+
+.seo-progress-bar-container {
+	width: 100%;
+	height: 8px;
+	background-color: var(--background-modifier-border);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.seo-progress-bar {
+	height: 100%;
+	background-color: var(--interactive-accent);
+	width: var(--seo-progress-width, 0%);
+	transition: width 0.3s ease;
+}
+
+.seo-progress-cancel {
+	margin-top: 8px;
+	padding: 4px 8px;
+	font-size: 12px;
+	background-color: var(--background-modifier-error);
+	color: var(--text-on-accent);
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+/* Dynamic styles for results display */
+.seo-results-list-expanded {
+	display: block;
+}
+
+.seo-results-list-collapsed {
+	display: none;
+}
+
+.seo-clickable-message {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.seo-collapse-icon-rotated {
+	transform: rotate(-90deg);
+}
+
+.seo-collapse-icon-normal {
+	transform: rotate(0deg);
+}
+
+/* Button states */
+.seo-btn-disabled {
+	opacity: 0.7;
+}
+
+.seo-btn-enabled {
+	opacity: 1;
+}
+
+/* File links in suggestions */
+.seo-suggestion a.seo-file-link {
+	color: var(--text-accent);
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.seo-suggestion a.seo-file-link:hover {
+	color: var(--text-accent-hover);
+	text-decoration: underline;
+}
+
+/* Styles for dynamic elements that were previously set via JavaScript.
+   Specificity boosted via .seo-panel scope so these toggle classes win over default display. */
+.seo-panel .seo-header-hidden {
+	display: none;
+}
+
+.seo-panel .seo-header-visible {
+	display: block;
+}
+
+.seo-no-results-message {
+	margin-top: 10px;
+	padding: 8px;
+	background-color: var(--background-secondary);
+	border-radius: 4px;
+	font-size: 12px;
+	color: var(--text-muted);
+}
+
+.seo-panel .seo-progress-container-visible {
+	display: block;
+}
+
+.seo-panel .seo-progress-container-hidden {
+	display: none;
+}
+
+.seo-progress-bar-dynamic {
+	transition: width 0.3s ease;
+}
+
+.seo-warning-message {
+	color: #ff6b6b;
+	font-weight: bold;
+	margin-top: 4px;
+}
+
+
+/* Scoped to only this plugin's settings container to avoid affecting other plugins */

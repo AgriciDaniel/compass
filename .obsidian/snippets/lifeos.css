@@ -1,0 +1,39 @@
+/* Compass callouts and dashboard styling */
+
+/* Daily reading callout (Mike's daily note has a custom "Bible reading" callout; "bible" kept as an alias) */
+.callout[data-callout="bible"] {
+  --callout-color: 180, 120, 40;
+  --callout-icon: lucide-book-open;
+}
+/* Daily intentions callout */
+.callout[data-callout="intention"] {
+  --callout-color: 60, 120, 200;
+  --callout-icon: lucide-target;
+}
+/* Memento mori callout */
+.callout[data-callout="memento"] {
+  --callout-color: 110, 110, 110;
+  --callout-icon: lucide-hourglass;
+}
+/* Life theme callout */
+.callout[data-callout="theme"] {
+  --callout-color: 150, 80, 200;
+  --callout-icon: lucide-compass;
+}
+
+/* Dashboard widgets */
+.lifeos-widget { margin: 0.5em 0 1.5em 0; }
+.lifeos-controls { display: flex; flex-wrap: wrap; gap: 0.4em 1em; align-items: center; margin-bottom: 0.5em; font-size: 0.9em; }
+.lifeos-controls label { cursor: pointer; user-select: none; }
+.lifeos-chart svg { width: 100%; height: auto; max-height: 320px; }
+.lifeos-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+.lifeos-table th, .lifeos-table td { padding: 0.25em 0.5em; text-align: left; border-bottom: 1px solid var(--background-modifier-border); }
+.lifeos-grid { font-family: var(--font-monospace); letter-spacing: 0.15em; white-space: nowrap; }
+.lifeos-bar { height: 10px; background: var(--background-modifier-border); border-radius: 5px; overflow: hidden; }
+.lifeos-bar > div { height: 100%; background: var(--interactive-accent); }
+.lifeos-years { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; max-width: 420px; }
+.lifeos-years span { aspect-ratio: 1; border-radius: 2px; background: var(--background-modifier-border); }
+.lifeos-years span.lived { background: var(--text-muted); }
+.lifeos-years span.now { background: var(--interactive-accent); }
+.lifeos-buttons { display: flex; flex-wrap: wrap; gap: 0.5em; margin: 0.5em 0; }
+.lifeos-buttons button { cursor: pointer; }

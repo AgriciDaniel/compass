@@ -1,0 +1,11 @@
+{
+	"id": "seo",
+	"name": "Search Engine Optimization",
+	"version": "0.5.6",
+	"minAppVersion": "1.11.0",
+	"description": "Ensure your public-facing notes are optimized for search engines and AI.",
+	"author": "David V. Kimball",
+	"authorUrl": "https://davidvkimball.com",
+	"fundingUrl": "https://patreon.com/davidvkimball",
+	"isDesktopOnly": false
+}

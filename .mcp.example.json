@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "obsidian": {
+      "type": "http",
+      "url": "http://127.0.0.1:27123/mcp",
+      "headers": {
+        "Authorization": "Bearer PASTE_YOUR_LOCAL_REST_API_KEY"
+      }
+    }
+  }
+}

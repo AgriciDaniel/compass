@@ -1,0 +1,58 @@
+{
+  "data_version": 2,
+  "command_timeout": 5,
+  "templates_folder": "Templates",
+  "templates_pairs": [],
+  "trigger_on_file_creation_mode": "folder",
+  "auto_jump_to_cursor": false,
+  "jump_to_cursor_after_file_name": false,
+  "shell_path": "",
+  "user_scripts_folder": "",
+  "folder_templates": [
+    {
+      "folder": "02 Retreats",
+      "template": "Templates/Personal Retreat.md"
+    },
+    {
+      "folder": "04 Projects",
+      "template": "Templates/Project.md"
+    },
+    {
+      "folder": "05 People",
+      "template": "Templates/Person.md"
+    },
+    {
+      "folder": "06 Writing/Newsletters",
+      "template": "Templates/Newsletter.md"
+    },
+    {
+      "folder": "06 Writing/YouTube Scripts",
+      "template": "Templates/YouTube Script.md"
+    },
+    {
+      "folder": "06 Writing/Articles",
+      "template": "Templates/Article.md"
+    },
+    {
+      "folder": "06 Writing/Course Content",
+      "template": "Templates/Course Lesson.md"
+    },
+    {
+      "folder": "07 Library/Book Notes",
+      "template": "Templates/Book Note.md"
+    },
+    {
+      "folder": "09 Reading/Study Notes",
+      "template": "Templates/Study Note.md"
+    }
+  ],
+  "file_templates": [],
+  "syntax_highlighting": true,
+  "syntax_highlighting_mobile": false,
+  "enabled_templates_hotkeys": [
+    "Templates/Daily Questions Prompt.md"
+  ],
+  "startup_templates": [],
+  "intellisense_render": "1",
+  "ignore_folders_on_creation": []
+}

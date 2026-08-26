@@ -1,0 +1,10 @@
+{
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "current",
+  "attachmentFolderPath": "Meta/attachments",
+  "useMarkdownLinks": false,
+  "showUnsupportedFiles": false,
+  "promptDelete": true,
+  "strictLineBreaks": false,
+  "propertiesInDocument": "visible"
+}

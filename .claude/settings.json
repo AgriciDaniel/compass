@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__obsidian__vault_read",
+      "mcp__obsidian__vault_list",
+      "mcp__obsidian__vault_get_document_map",
+      "mcp__obsidian__search_simple",
+      "mcp__obsidian__search_query",
+      "mcp__obsidian__tag_list",
+      "mcp__obsidian__active_file_get_path",
+      "mcp__obsidian__command_list",
+      "mcp__obsidian__open_file"
+    ],
+    "deny": []
+  }
+}
