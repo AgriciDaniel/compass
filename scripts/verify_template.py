@@ -4,9 +4,13 @@
 """
 import json, os, re, sys, subprocess
 
-FORBIDDEN = [r"agricidaniel", r"/var/home", r"/home/[a-z]", r"/Users/", r"C:\\\\Users", r"Yumeira", r"@gmail\.com", r"@proton",
+FORBIDDEN = [r"agricidaniel", r"/var/home", r"/home/[a-z]", r"/Users/", r"C:\\\\Users", r"@gmail\.com", r"@proton",
              r"BEGIN CERTIFICATE", r"BEGIN RSA", r"privateKey", r"\"apiKey\": \"[A-Za-z0-9]", r"\bsk-[A-Za-z0-9]{8}", r"AKIA[0-9A-Z]{12}", r"xoxb-", r"ghp_[A-Za-z0-9]",
              r"Bearer [A-Za-z0-9]{16}", r"Decision taken 20", r"tested 20\d\d", r"on this machine", "\u2014"]
+# Owner-specific names to forbid can be listed one per line in scripts/template/forbidden.local.txt (never shipped).
+_local = os.path.join(os.path.dirname(os.path.abspath(__file__)), "template", "forbidden.local.txt")
+if os.path.exists(_local):
+    FORBIDDEN += [re.escape(l.strip()) for l in open(_local) if l.strip() and not l.startswith("#")]
 ALLOW_FILES = {"scripts/verify_template.py", "scripts/build_template.py", "scripts/RELEASE.md"}
 SKIP_DIR_PARTS = ("/.obsidian/plugins/",)
 DATE_LINK = re.compile(r"^\d{4}-(\d\d-\d\d|W\d\d|Q\d( Personal Retreat)?)$")

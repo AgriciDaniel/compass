@@ -24,7 +24,7 @@ Our environment triggers behaviour more than our intentions do. Active questions
 > "Did I do my best to..." is the frame: you grade the intention, not the outcome. ^daily-questions
 
 ## How this changes what I do
-- Seven `dq_*` properties in every daily note, answered at 21:00 through the Daily Questions Prompt.
+- One `dq_*` property per question in every daily note (six shipped, editable in Compass Config), answered at 21:00 through the Daily Questions Prompt.
 
 ## Linked writing
 ```dataview

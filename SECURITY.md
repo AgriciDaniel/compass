@@ -36,4 +36,4 @@ Read `Guide/17 Search Providers.md` and `Guide/19 Obsidian MCP Bridge.md` for th
 
 ## Reporting a problem
 
-This repository is private. To report a security issue (a leaked value in a shipped file, an unsafe default, a plugin vulnerability that affects the template), open an issue in this repository marked "security" or contact the maintainer directly through the repository. Please do not post keys or personal note contents in the report; describe the file and the line instead. Plugin bugs belong upstream with the plugin's authors (links in `THIRD_PARTY_NOTICES.md`); mention them here as well if the template's defaults make the problem worse.
+This repository is public.
