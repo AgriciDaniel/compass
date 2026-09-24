@@ -7,9 +7,9 @@ meets:
 tags:
   - person
 ---
-Tag: `#p/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>`
+Tag: `#p/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>`
 
-Capture "remember to talk to them about X" as a task with `#discuss #p/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>` anywhere in the vault. Open this note before the meeting.
+Capture "remember to talk to them about X" as a task with `#discuss #p/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>` anywhere in the vault. Open this note before the meeting.
 
 ```agent
 type: button
@@ -22,14 +22,14 @@ viewType: right-pane
 ```tasks
 not done
 tags include #discuss
-tags include #p/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>
+tags include #p/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>
 sort by created
 ```
 
 ## Open tasks involving them
 ```tasks
 not done
-tags include #p/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>
+tags include #p/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>
 tags do not include #discuss
 sort by due
 ```
