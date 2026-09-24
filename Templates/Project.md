@@ -9,7 +9,7 @@ people: []
 tags:
   - project
 ---
-Tag tasks anywhere in the vault with `#project/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>` and they roll up here. Every task stays one click from the context that explains why it exists.
+Tag tasks anywhere in the vault with `#project/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>` and they roll up here. Every task stays one click from the context that explains why it exists.
 
 ```agent
 type: button
@@ -25,12 +25,12 @@ What "done" looks like:
 ## Next actions
 ```tasks
 not done
-tags include #project/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>
+tags include #project/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>
 sort by due
 ```
 
 ## Inline tasks
-- [ ] First step #project/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>
+- [ ] First step #project/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>
 
 ## Notes
 
@@ -41,7 +41,7 @@ sort by due
 ## Done
 ```tasks
 done
-tags include #project/<% tp.file.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") %>
+tags include #project/<% tp.file.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "-").replace(/(^-|-$)/g, "") %>
 sort by done reverse
 limit 20
 ```
