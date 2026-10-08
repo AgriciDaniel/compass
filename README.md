@@ -3,6 +3,8 @@
 
 # Life OS
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 *Run your whole life out of Obsidian: one honest question set a night, everything else follows.*
 
 Compass is a complete Obsidian vault template of the system Mike Schmitz describes in "How I Run My Whole Life Out of Obsidian": journaling with daily questions, quarterly personal retreats, multi-scale planning, habit tracking, daily reading, task management, writing boards, and a DataviewJS dashboard that ties it together. The first-party Life OS application now sits above those workflows, with an AI assistant that reads `AGENTS.md` and runs a library of approval-aware prompts. Everything remains plain Markdown and properties. Ten community plugins and the first-party Life OS plugin ship inside the folder with their licenses.

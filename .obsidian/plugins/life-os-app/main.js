@@ -9,6 +9,436 @@ const {
   setIcon,
 } = require("obsidian");
 
+// App-owned copy only. Vault paths, keys, commands, and user text stay canonical.
+const ZH_CN_MESSAGES = Object.freeze({
+  "Journal": "日记",
+  "Append a journal entry to today.": "在今日笔记中追加一则日记。",
+  "Log a win": "记录收获",
+  "Record something worth remembering.": "记录值得记住的事情。",
+  "Gratitude": "感恩",
+  "Capture what you appreciate.": "记录让你心怀感激的事情。",
+  "Add a task": "添加任务",
+  "Send a task to the master inbox.": "将任务添加到任务总收件箱。",
+  "Project idea": "项目想法",
+  "Add an idea to the Projects board.": "将想法添加到项目看板。",
+  "Newsletter idea": "电子简报想法",
+  "Add an idea to the newsletter backlog.": "将想法添加到电子简报看板的待办栏。",
+  "Video idea": "视频想法",
+  "Add an idea to the video backlog.": "将想法添加到视频看板的待办栏。",
+  "Article idea": "文章想法",
+  "Add an idea to the article backlog.": "将想法添加到文章看板的待办栏。",
+  "New project": "新建项目",
+  "Create a canonical project note from its template.": "使用标准模板创建项目笔记。",
+  "New person": "新建人物",
+  "Create a private relationship note from its template.": "使用模板创建供自己使用的人际关系笔记。",
+  "New newsletter": "新建电子简报",
+  "Create a newsletter draft from its template.": "使用模板创建电子简报草稿。",
+  "New video script": "新建视频脚本",
+  "Create a video script from its template.": "使用模板创建视频脚本。",
+  "New article": "新建文章",
+  "Create an article draft from its template.": "使用模板创建文章草稿。",
+  "New course lesson": "新建课时笔记",
+  "Create a course lesson from its template.": "使用模板创建课时笔记。",
+  "New book note": "新建读书笔记",
+  "Create a book note in the local library.": "在本地资料库中创建读书笔记。",
+  "New study note": "新建研读笔记",
+  "Create a reading study note from its template.": "使用模板创建研读笔记。",
+  "Today": "今天",
+  "Open or create today’s note.": "打开或创建今天的笔记。",
+  "This week": "本周",
+  "Open or create this week’s review.": "打开或创建本周回顾笔记。",
+  "This quarter": "本季度",
+  "Open the current quarterly note.": "打开当前季度笔记。",
+  "Retreat": "个人复盘",
+  "Open the current personal retreat.": "打开当前的个人复盘笔记。",
+  "Direction, habits, questions, and life wheel.": "方向、习惯、每日问题和生活之轮。",
+  "Tasks": "任务",
+  "See the full task system.": "查看完整的任务系统。",
+  "Projects": "项目",
+  "Review active projects and ideas.": "查看进行中的项目和想法。",
+  "Boards": "看板",
+  "Open writing and project boards.": "打开写作看板和项目看板。",
+  "Home": "首页",
+  "Plan": "规划",
+  "Focus": "专注",
+  "Review": "回顾",
+  "People": "人物",
+  "Create": "创作",
+  "Library": "资料库",
+  "Brain": "大脑图谱",
+  "Daily operating system": "日常生活系统",
+  "Choose what matters, capture what happens, and close the day honestly.": "选择重要的事，记录发生的事，坦诚回顾这一天。",
+  "Today’s tasks": "今日任务",
+  "Open the task recommendation dashboard.": "打开任务推荐仪表盘。",
+  "Habits": "习惯",
+  "Review current habit consistency.": "查看近期的习惯坚持情况。",
+  "Connected time horizons": "贯通日、周与季度",
+  "Keep today, this week, and this quarter connected to the same direction.": "让今天、本周和本季度朝着同一个方向前进。",
+  "Review active projects and quarter alignment.": "查看进行中的项目与季度目标是否一致。",
+  "Ideal week": "理想的一周",
+  "Check whether the plan has a place in time.": "检查计划是否有对应的时间安排。",
+  "Attention, not noise": "关注重要的事",
+  "See the commitments competing for attention and return to the work that matters.": "查看需要投入精力的事项，回到重要的工作上。",
+  "Return to the whole-life overview.": "回到生活全景视图。",
+  "Task recommendations": "任务推荐",
+  "Review due, scheduled, priority, and discuss tasks.": "查看到期、已安排、高优先级和待讨论的任务。",
+  "Project momentum": "项目进展",
+  "Find active projects that need a next action.": "找到需要明确下一步行动的项目。",
+  "Habit signals": "习惯信号",
+  "See consistency alongside the days that explain it.": "结合每日记录，了解习惯坚持的情况。",
+  "Evidence over memory": "用记录帮助回顾",
+  "Look back across days and quarters before deciding what should change next.": "回顾每日和季度记录，再决定接下来要改变什么。",
+  "Daily questions": "每日问题",
+  "Review effort scores and trends.": "查看努力程度评分和趋势。",
+  "Habit canvas": "习惯画布",
+  "Review streaks, gaps, and completion.": "查看连续完成天数、中断情况和完成率。",
+  "Whole-life review": "生活全景回顾",
+  "Open the Compass dashboard and life wheel.": "打开 Compass 仪表盘和生活之轮。",
+  "Outcomes with context": "预期成果与相关信息",
+  "Keep outcomes, next actions, people, notes, and quarter commitments together.": "将预期成果、下一步行动、相关人物、笔记和季度目标汇集在一起。",
+  "Projects dashboard": "项目仪表盘",
+  "Review all active projects.": "查看所有进行中的项目。",
+  "Projects board": "项目看板",
+  "Move ideas and projects through the pipeline.": "在工作流程中推进想法和项目。",
+  "Capture an idea": "记录想法",
+  "Add a project idea to the board.": "将项目想法添加到看板。",
+  "Create a project note with the canonical template.": "使用标准模板创建项目笔记。",
+  "Quarter plan": "季度规划",
+  "Check which projects serve this quarter.": "查看哪些项目有助于实现本季度目标。",
+  "Relationships with memory": "让关系有记录",
+  "Bring follow-ups, meeting context, and discussion items back to the relationship.": "将跟进事项、会面相关信息和待讨论内容关联到相应的人物笔记。",
+  "Create a private person note from its template.": "使用模板创建供自己使用的人物笔记。",
+  "Discuss queue": "待讨论事项",
+  "Open tasks grouped by person and discussion context.": "查看按标签分组的待讨论任务。",
+  "Search people": "搜索人物",
+  "Search the vault for a person or meeting context.": "在笔记库中搜索人物或会面相关信息。",
+  "Ideas into finished work": "从想法到作品",
+  "Move ideas into newsletters, videos, articles, and course material without losing sources.": "将想法转化为电子简报、视频、文章和课程内容，同时保留资料来源。",
+  "Creative boards": "创作看板",
+  "Open every writing pipeline.": "打开各类写作流程。",
+  "Knowledge in context": "结合背景积累知识",
+  "Keep books, sources, reading, and ideas close to the work they inform.": "将书籍、来源、阅读和想法与相关工作连接起来。",
+  "Create a canonical book note.": "创建标准读书笔记。",
+  "Create a reading study note.": "创建研读笔记。",
+  "Reading plan": "阅读计划",
+  "Open the current reading plan.": "打开当前阅读计划。",
+  "Search the library": "搜索资料库",
+  "Search books, sources, and connected notes.": "搜索书籍、来源和关联笔记。",
+  "Writing pipelines": "写作流程",
+  "Use the library in active creative work.": "在当前创作中使用资料库。",
+  "Managed intelligence": "有序使用 AI",
+  "Ask, review, and draft with the vault as context while every change stays visible.": "以笔记库为上下文提问、回顾和起草，让每项修改都清晰可见。",
+  "Open assistant": "打开助手",
+  "Use the complete prompt library.": "使用完整的提示词库。",
+  "What matters today": "今天的重要事项",
+  "Open the Compass brief and daily context.": "打开 Compass 简报和今日相关信息。",
+  "Task triage": "任务梳理",
+  "Open the task dashboard and its AI workflow.": "打开任务仪表盘及其 AI 工作流程。",
+  "Setup and permissions": "设置与权限",
+  "Review AI, MCP, and backup readiness.": "检查 AI、MCP 和备份是否准备就绪。",
+  "Capture": "记录",
+  "Choose what this is. Life OS will route it to the right place.": "选择要记录的内容类型，Life OS 会将其放到对应位置。",
+  "Quick capture": "快速记录",
+  "Ideas": "想法",
+  "Create notes": "创建笔记",
+  "See clearly. Choose deliberately. Live fully.": "看得清楚，审慎选择，充实生活。",
+  "Local-first": "本地优先",
+  "AI tools loaded": "AI 工具已加载",
+  "AI unavailable": "AI 不可用",
+  "Open today": "打开今日笔记",
+  "Start with the current day.": "从今天开始。",
+  "Today’s note": "今日笔记",
+  "Ask Life OS": "向 Life OS 提问",
+  "Open the governed AI workspace.": "打开有明确权限规则的 AI 工作区。",
+  "Now": "现在",
+  "Your connected notes": "你的关联笔记",
+  "Explore Brain": "探索大脑图谱",
+  "Open the full graph in this dashboard.": "在仪表盘中打开完整图谱。",
+  "Put something into the system without breaking your flow.": "不中断当前工作，随手记录内容。",
+  "Recorded signals": "记录概览",
+  "No effort scores yet": "尚无努力程度评分",
+  "Samples included.": "已包含示例。",
+  "Samples excluded.": "已排除示例。",
+  "Explore Review": "查看回顾",
+  "Effort, habit rhythm, and life areas.": "努力程度、习惯记录和生活领域评分。",
+  "Your life, in view": "生活概览",
+  "Sample notes included. These charts may contain demonstration data.": "已包含示例笔记，图表可能含有演示数据。",
+  "Recorded effort and habits. Blank days mean no data, not zero.": "已记录的努力程度和习惯。空白日期表示没有数据，不代表零分。",
+  "Samples on": "已包含示例",
+  "Include samples": "包含示例",
+  "Daily effort": "每日努力程度",
+  "No scores yet": "尚无评分",
+  "Daily effort scores": "每日努力程度评分",
+  "No score recorded": "未记录评分",
+  "Read daily values": "查看每日数值",
+  "Date": "日期",
+  "Effort (1 to 10)": "努力程度（1 到 10 分）",
+  "Not recorded": "未记录",
+  "Life areas": "生活领域",
+  "Your next retreat will bring this view to life.": "完成下一次个人复盘评分后，这里就会呈现数据。",
+  "No life-area scores recorded. Open Retreat from Plan to add your own.": "尚未记录生活领域评分。在规划中打开个人复盘，添加自己的评分。",
+  "Open scored retreat": "打开已评分的个人复盘",
+  "See the source of these life-area scores.": "查看这些生活领域评分的来源。",
+  "Habit rhythm": "习惯记录",
+  "Filled: done · muted: unchecked · outlined: no record. Hover a day for details.": "实心：已完成 · 淡色：未勾选 · 空心：未记录。将鼠标移到日期格上可查看详情。",
+  "Done": "已完成",
+  "Unchecked": "未勾选",
+  "No record": "未记录",
+  "No data": "无数据",
+  "Add your habits in Configure to begin.": "在配置中添加习惯后即可开始。",
+  "Life OS navigation": "Life OS 导航",
+  "Open Life OS home": "打开 Life OS 首页",
+  "Local vault": "本地笔记库",
+  "Search": "搜索",
+  "Configure": "配置",
+  "View": "视图",
+  "This view only. No vault settings changed.": "仅影响当前视图，不会修改笔记库设置。",
+  "Use comfortable spacing": "使用宽松间距",
+  "Use compact spacing": "使用紧凑间距",
+  "Hide optional visuals": "隐藏可选的可视化内容",
+  "Show optional visuals": "显示可选的可视化内容",
+  "Show this module's visual": "显示当前模块的可视化内容",
+  "Hide this module's visual": "隐藏当前模块的可视化内容",
+  "Items per list ": "每个列表的条目数 ",
+  "Items per list": "每个列表的条目数",
+  "Restore view defaults": "恢复视图默认设置",
+  "Open and act": "快捷操作",
+  "Every control below opens a real note, dashboard, or capture workflow.": "下方按钮可打开相应的笔记、仪表盘或记录流程。",
+  "AI-managed, human-authorized": "AI 辅助，由人授权",
+  "Life OS can retrieve, summarize, and draft. Review context before sending. Human approval is the operating policy, not a guarantee enforced across every connected tool.": "Life OS 可以检索、总结和起草内容。发送前请检查上下文。人工授权是使用原则，无法保证所有已连接的工具都会强制遵守。",
+  "Today at a glance": "今日概览",
+  "A private view of today’s properties. Journal text stays out of this screen.": "查看今天的属性，日记正文不会显示在此页面。",
+  "Not started": "尚未开始",
+  "Create today’s note": "创建今日笔记",
+  "Life OS will use your configured questions and habits.": "Life OS 会使用你配置的问题和习惯。",
+  "Start today": "开始今日记录",
+  "Create or open today’s daily note.": "创建或打开今天的日记。",
+  "Ready": "已就绪",
+  "Rate effort from 1 to 10.": "为努力程度打分，范围为 1 到 10 分。",
+  "A signal, never a judgment.": "仅作参考，不作评判。",
+  "Open daily note": "打开日记",
+  "See the complete context for today.": "查看今天的完整记录。",
+  "Run the guided evening check-in.": "按提示进行晚间回顾。",
+  "Invalid value": "无效值",
+  "Not rated": "未评分",
+  "Active commitments": "进行中的项目",
+  "Projects currently asking for attention.": "当前需要关注的项目。",
+  "No active projects yet.": "尚无进行中的项目。",
+  "Project pulse": "项目动态",
+  "Active project notes from your canonical project folder.": "指定项目文件夹中进行中的项目笔记。",
+  "No active project notes yet.": "尚无进行中的项目笔记。",
+  "People directory": "人物目录",
+  "Relationship notes, kept local and opened in place.": "人际关系笔记保存在本地，可直接打开。",
+  "No people notes yet.": "尚无人物笔记。",
+  "Library shelf": "资料书架",
+  "Typed library notes, including finished books and sources. Samples excluded.": "设置了 type 属性的资料笔记，包括已读完的书籍笔记和来源笔记。示例已排除。",
+  "No typed library notes yet. Add a book or source with a type property.": "尚无设置 type 属性的资料笔记。请添加书籍笔记或来源笔记，并设置该属性。",
+  "Connected horizons": "多尺度规划",
+  "Each layer is ready when its canonical note exists.": "各规划层级的对应笔记创建后，即可从这里打开。",
+  "Open note": "打开笔记",
+  "Create note": "创建笔记",
+  "Previous month": "上个月",
+  "This month": "本月",
+  "Next month": "下个月",
+  "Create today's note": "创建今日笔记",
+  "No daily note": "没有日记",
+  "Highlighted days have notes. Open an existing day, or create today. Other empty days are disabled. No entries are generated automatically.": "高亮日期已有笔记，可打开查看，也可创建今日笔记。其他空白日期不可点击，不会自动生成记录。",
+  "Seven-day signal": "近七日记录概览",
+  "Property coverage only. Your journal words remain private.": "仅展示属性记录情况，不显示日记正文。",
+  "No note": "没有笔记",
+  "Newsletters": "电子简报",
+  "Videos": "视频",
+  "Articles": "文章",
+  "Courses": "课程",
+  "Creative studio": "创作工作室",
+  "Every pipeline stays backed by its Markdown notes and Kanban board.": "各流程均以 Markdown 笔记和看板为基础。",
+  "Open board": "打开看板",
+  "Edit cards in the original board.": "在原始看板中编辑卡片。",
+  "Board lane counts unavailable. Open the board to inspect its workflow.": "无法获取看板各分栏的条目数，请打开看板查看流程。",
+  "Sample board excluded from workflow counts.": "示例看板已排除在流程统计之外。",
+  "Loading open items": "正在加载未完成条目",
+  "Open-item index unavailable": "未完成条目索引不可用",
+  "Checkbox items by actual board heading, including checked items. Not a completion percentage.": "按看板的实际分栏标题统计复选框条目，包含已勾选项，不代表完成百分比。",
+  "Configured": "已配置",
+  "Installed": "已安装",
+  "Unavailable": "不可用",
+  "In-vault assistant interface": "笔记库内的助手界面",
+  "Local MCP bridge": "本地 MCP 桥接",
+  "Local server key present": "已检测到本地服务器密钥",
+  "Local tool connection": "本地工具连接",
+  "Prompt library": "提示词库",
+  "Available": "可用",
+  "Permission policy": "授权设置",
+  "Manual prompts": "手动授权",
+  "Auto-allow on": "已开启自动授权",
+  "Unknown": "未知",
+  "Client setting is off. This reports policy, not enforcement.": "客户端已关闭自动授权。此处仅显示设置状态，不保证授权规则会被强制执行。",
+  "Client may auto-approve requests. This reports policy, not enforcement.": "客户端可能会自动批准请求。此处仅显示设置状态，不保证授权规则会被强制执行。",
+  "Permission setting was not observable. No enforcement claim.": "无法读取授权设置，无法确认授权规则的实际执行情况。",
+  "AI control center": "AI 控制中心",
+  "Capability status is local. Installed does not mean authenticated or connected.": "此处显示的是本地功能状态。已安装不代表已通过认证或已建立连接。",
+  "AI integration map": "AI 连接示意图",
+  "How the parts connect": "各部分如何连接",
+  "Life OS · local dashboard": "Life OS · 本地仪表盘",
+  "Selected context →": "所选上下文 →",
+  "configured": "已配置",
+  "loaded, configuration needed": "已加载，尚需配置",
+  "unavailable": "不可用",
+  "Two separate integration paths ↓": "两条不同的连接路径 ↓",
+  "Provider · authentication not tested here": "模型服务商 · 身份认证尚未测试",
+  "key present, connection not tested": "已检测到密钥，连接尚未验证",
+  "not configured": "未配置",
+  "Integration overview, not a live traffic trace. This screen makes no provider requests. Review selected context and permissions before sending.": "此处仅展示连接关系，不是实时通信记录。本页面不会向模型服务商发送请求。发送前请检查所选上下文和权限。",
+  "Type ": "类型 ",
+  "Library type": "资料类型",
+  "All types": "所有类型",
+  "Library status ": "资料状态 ",
+  "Library status": "资料状态",
+  "All statuses": "所有状态",
+  "Note": "笔记",
+  "Status not set": "未设置状态",
+  "Counts use explicit routing tags, not inferred ownership.": "统计只依据明确的任务归属标签，不推断任务归属。",
+  "Task index unavailable": "任务索引不可用",
+  "Open conversations": "待讨论内容",
+  "Task index unavailable.": "任务索引不可用。",
+  "Metadata unavailable": "元数据不可用",
+  "Unreadable file": "文件无法读取",
+  "Where your attention goes": "你的注意力分配",
+  "One group per indexed open task. Past scheduled dates without a current due date fall under Other. Partial indexing may omit tasks.": "每个已索引的待办任务只归入一个分组。安排日期已过、且没有当前截止日期的任务归入“其他”。索引不完整时可能遗漏任务。",
+  "All": "全部",
+  "Overdue": "已逾期",
+  "Upcoming": "即将到来",
+  "Unscheduled / other": "未安排 / 其他",
+  "Loading": "加载中",
+  "Distribution of indexed open tasks": "已索引待办任务的分布",
+  "Needs attention": "需要关注",
+  "Commitment feed": "任务列表",
+  "Overdue, due today, scheduled today, or high priority. Open a task at its source.": "已逾期、今天到期、安排在今天或优先级较高的任务。点击任务可跳转到原始笔记。",
+  "Open tasks from the master inbox, projects, people, and writing notes.": "来自任务总收件箱、项目、人物和写作笔记的待办任务。",
+  "Loading local tasks...": "正在加载本地任务...",
+  "No open tasks indexed. Some task data could not be classified.": "未索引到待办任务，部分任务数据无法分类。",
+  "No open tasks found.": "未找到待办任务。",
+  "Nothing urgent in the indexed tasks. Other open tasks remain available below.": "已索引的任务中没有紧急事项，其他待办任务仍可在下方查看。",
+  "No indexed tasks in this group.": "此分组中没有已索引任务。",
+  "High": "高优先级",
+  "All tasks": "全部任务",
+  "Due today": "今日到期",
+  "Scheduled today": "安排在今天",
+  "Live system": "系统概览",
+  "Finish your Life OS setup": "完成 Life OS 初始设置",
+  "Complete the guided checklist before depending on automations or AI connections.": "在使用自动化或 AI 连接前，请先完成引导检查清单。",
+  "Continue setup": "继续设置",
+  "Review the checklist.": "查看检查清单。",
+  "Not created": "尚未创建",
+  "Active projects": "进行中的项目",
+  "Creative notes": "创作笔记",
+  "Loaded": "已加载",
+  "AI tools": "AI 工具",
+  "Life OS Brain": "Life OS 大脑图谱",
+  "Direction & projects": "方向与项目",
+  "Journal & reflection": "日记与反思",
+  "Knowledge & ideas": "知识与想法",
+  "Tasks & systems": "任务与系统",
+  "Your connected brain": "你的大脑图谱",
+  "Reading vault links…": "正在读取笔记库链接…",
+  "Find a note…": "查找笔记…",
+  "Search brain notes": "搜索大脑图谱笔记",
+  "Reset view": "重置视图",
+  "Note labels": "笔记名称",
+  "Labels: Auto": "名称：自动",
+  "Labels: All": "名称：全部",
+  "Labels: Hover only": "名称：仅悬停时",
+  "Standard graph": "标准关系图谱",
+  "Enable Obsidian's Graph view core plugin first.": "请先启用 Obsidian 的“关系图谱”核心插件。",
+  "Brain regions": "图谱区域",
+  "All regions": "所有区域",
+  "3D brain graph. Drag to rotate, Shift-drag to pan, scroll to zoom. Arrow keys rotate. Browse notes in the adjacent list.": "三维大脑图谱。拖动可旋转，按住 Shift 拖动可平移，滚动可缩放，方向键也可旋转。在旁边的列表中浏览笔记。",
+  "Drag to rotate · Shift-drag to pan · Scroll to zoom": "拖动旋转 · 按住 Shift 拖动平移 · 滚动缩放",
+  "Notes and connections": "笔记与连接",
+  "Canvas is unavailable. Browse and open notes in the list.": "画布不可用，可在列表中浏览并打开笔记。",
+  "Click to explore linked notes": "点击查看关联笔记",
+  "Preview of connected notes. Use Explore Brain for interactive navigation.": "关联笔记预览。使用“探索大脑图谱”进行交互浏览。",
+  "This note is no longer available.": "此笔记已不可用。",
+  "No linked notes yet. Add a wikilink in this note to connect it.": "尚无关联笔记。在此笔记中添加 [[笔记名称]] 链接即可建立关联。",
+  "No matching notes.": "没有匹配的笔记。",
+  "Showing the 60 most connected notes. Search to narrow the list.": "显示连接最多的 60 篇笔记，可通过搜索缩小范围。",
+  "Clear selection": "清除选择",
+  "10,000 links drawn. Select a note to isolate its connections.": "已绘制 10,000 条链接。选择一篇笔记可单独查看其连接。",
+  "Drag to rotate · Shift-drag to pan · Scroll to zoom · Hover or click a note": "拖动旋转 · 按住 Shift 拖动平移 · 滚动缩放 · 悬停或点击笔记",
+  "Open Life OS": "打开 Life OS",
+  "Open Life OS capture": "打开 Life OS 记录窗口",
+  "Open Life OS configuration": "打开 Life OS 配置",
+  "Language": "语言",
+  "Life OS language": "Life OS 界面语言",
+  "Life OS could not load language preference. Using English.": "无法读取 Life OS 语言设置，已使用英文。",
+  "Life OS could not save language preference.": "无法保存 Life OS 语言设置。",
+  "{count} days": "{count} 天",
+  "{value} / 10 mean daily effort": "每日努力程度平均分 {value} / 10",
+  "{scored} scored days in {days} days · {effort}. Missing days are not zero. {samples}": "{days} 天中有 {scored} 天已评分 · {effort}。未记录的日期不计为零分。{samples}",
+  "{count} scored days · mean of recorded daily questions": "已评分 {count} 天 · 按已记录的每日问题计算均分",
+  "{value} out of 10": "{value} 分，满分 10 分",
+  "{date}: {score}": "{date}：{score}",
+  "Latest scored retreat: {title}": "最近一次已评分的个人复盘：{title}",
+  "{date}, {habit}: {state}": "{date}，{habit}：{state}",
+  "{completed} of {total} check-in properties recorded, not a completion score": "已记录 {completed}/{total} 项，不代表完成度评分",
+  "{completed}/{total} recorded": "已记录 {completed}/{total} 项",
+  "{completed} of {total} checked in": "已记录 {completed}/{total} 项",
+  "Week {week}": "第 {week} 周",
+  "{created} of {total} notes created": "已创建 {created}/{total} 篇笔记",
+  "{count} daily notes": "{count} 篇日记",
+  "{count} note": "{count} 篇笔记",
+  "{count} notes": "{count} 篇笔记",
+  "{shown} of {total} indexed open items shown{partial}": "已显示 {shown}/{total} 项已索引待办{partial}",
+  " · partial index": " · 索引不完整",
+  "{count} local session": "{count} 个本地会话",
+  "{count} local sessions": "{count} 个本地会话",
+  "{count} governed workflows": "{count} 个设有授权约定的工作流",
+  "{ready} of {total} available": "{total} 项中有 {ready} 项可用",
+  "Agent Client · {state}": "Agent Client · {state}",
+  "Optional local tools via MCP · {state}": "通过 MCP 连接可选的本地工具 · {state}",
+  "Showing {shown} of {total} matching notes.": "已显示 {shown}/{total} 篇匹配笔记。",
+  "{count} tagged open · {overdue} overdue{partial}": "{count} 项关联待办 · {overdue} 项已逾期{partial}",
+  "{count} indexed person-discussion links{partial}. Explicit person tags only.": "已索引 {count} 条人物与讨论任务的关联{partial}，仅按明确的人物标签统计。",
+  "{label} · {count}": "{label} · {count}",
+  "{label}: {count} of {total}": "{label}：{total} 项中的 {count} 项",
+  "{count} open": "{count} 项待办",
+  "{count} unreadable": "{count} 个文件无法读取",
+  "{count} metadata pending": "{count} 个文件的元数据尚未就绪",
+  "{count} unresolved status": "{count} 项任务状态无法识别",
+  "{count} sample excluded": "已排除 {count} 篇示例笔记",
+  "View all {count} indexed open tasks.": "查看全部 {count} 项已索引待办任务。",
+  "Showing {shown} of {total} matching tasks.": "已显示 {shown}/{total} 项匹配任务。",
+  "Overdue · {date}": "已逾期 · {date}",
+  "Due {date}": "截止日期 {date}",
+  "Scheduled {date}": "安排日期 {date}",
+  "Life OS could not find {path}.": "Life OS 找不到 {path}。",
+  "{region} · {count} connections{sample}": "{region} · {count} 个连接{sample}",
+  " · Sample note": " · 示例笔记",
+  "{notes} notes · {links} links · {samples} sample notes{limit}": "{notes} 篇笔记 · {links} 条链接 · {samples} 篇示例笔记{limit}",
+  " · showing {shown} of {total}": " · 显示 {total} 篇中的 {shown} 篇",
+  "Connected notes ({count})": "关联笔记（{count}）",
+  "Browse notes ({count})": "浏览笔记（{count}）",
+  "{count} links{sample}": "{count} 条链接{sample}",
+  " · Sample": " · 示例",
+  "Open Life OS {screen}": "打开 Life OS {screen}",
+  "{label} is unavailable. Check that its supporting plugin is enabled.": "{label}不可用，请检查对应的插件是否已启用。"
+});
+
+function normalizeLanguage(language) {
+  return String(language || "").toLowerCase() === "zh-cn" ? "zh-CN" : "en";
+}
+
+function translate(language, message, values = {}) {
+  const source = String(message);
+  const localized = normalizeLanguage(language) === "zh-CN" &&
+    Object.prototype.hasOwnProperty.call(ZH_CN_MESSAGES, source)
+    ? ZH_CN_MESSAGES[source]
+    : source;
+  return localized.replace(/\{([a-zA-Z0-9_]+)\}/g, (placeholder, name) =>
+    Object.prototype.hasOwnProperty.call(values, name) ? String(values[name]) : placeholder
+  );
+}
+
 const VIEW_TYPE = "life-os-home";
 
 const DEFAULT_FOLDERS = Object.freeze({
@@ -505,23 +935,27 @@ class LifeOSCaptureModal extends Modal {
     this.plugin = plugin;
   }
 
+  t(message, values = {}) {
+    return this.plugin.t(message, values);
+  }
+
   onOpen() {
     const root = this.contentEl;
     root.empty();
     root.addClass("life-os-capture-modal");
-    root.createEl("h2", { text: "Capture" });
+    root.createEl("h2", { text: this.t("Capture") });
     root.createEl("p", {
-      text: "Choose what this is. Life OS will route it to the right place.",
+      text: this.t("Choose what this is. Life OS will route it to the right place."),
     });
 
     const groups = [
-      { title: "Quick capture", actions: CAPTURE_MENU_ACTIONS.slice(0, 4) },
-      { title: "Ideas", actions: CAPTURE_MENU_ACTIONS.slice(4, 8) },
-      { title: "Create notes", actions: CAPTURE_MENU_ACTIONS.slice(8) },
+      { title: this.t("Quick capture"), actions: CAPTURE_MENU_ACTIONS.slice(0, 4) },
+      { title: this.t("Ideas"), actions: CAPTURE_MENU_ACTIONS.slice(4, 8) },
+      { title: this.t("Create notes"), actions: CAPTURE_MENU_ACTIONS.slice(8) },
     ];
     for (const group of groups) {
       const section = root.createDiv({ cls: "life-os-capture-section" });
-      section.createEl("h3", { text: group.title });
+      section.createEl("h3", { text: this.t(group.title) });
       const grid = section.createDiv({ cls: "life-os-capture-grid" });
       for (const action of group.actions) {
         const button = grid.createEl("button", {
@@ -531,8 +965,8 @@ class LifeOSCaptureModal extends Modal {
         const icon = button.createSpan();
         setIcon(icon, action.icon);
         const copy = button.createSpan();
-        copy.createEl("strong", { text: action.label });
-        copy.createEl("small", { text: action.description });
+        copy.createEl("strong", { text: this.t(action.label) });
+        copy.createEl("small", { text: this.t(action.description) });
         this.registerDomEvent(button, "click", () => {
           this.close();
           this.plugin.runCommand(action.command, action.label);
@@ -562,6 +996,14 @@ class LifeOSHomeView extends ItemView {
     this.focusGroup = "all";
     this.libraryStatus = "all";
     this.compactLayout = false;
+  }
+
+  t(message, values = {}) {
+    return this.plugin?.t?.(message, values) ?? translate(this.plugin?.language || "en", message, values);
+  }
+
+  formatDisplayDate(iso, options) {
+    return new Date(`${iso}T12:00:00Z`).toLocaleDateString(this.plugin.language === "zh-CN" ? "zh-CN" : "en", { ...options, timeZone: "UTC" });
   }
 
   getViewType() {
@@ -631,7 +1073,7 @@ class LifeOSHomeView extends ItemView {
 
     if (this.activeScreen === "brain") {
       const host = main.createDiv({ cls: "life-os-brain-embedded" });
-      this.embeddedBrain = new LifeOSBrainRenderer(this.app, host);
+      this.embeddedBrain = new LifeOSBrainRenderer(this.app, host, false, this.plugin);
       this.addChild(this.embeddedBrain);
       return;
     }
@@ -662,16 +1104,16 @@ class LifeOSHomeView extends ItemView {
     const words = identity.createDiv();
     words.createEl("h1", { text: "LIFE" });
     words.createEl("p", {
-      text: "See clearly. Choose deliberately. Live fully.",
+      text: this.t("See clearly. Choose deliberately. Live fully."),
     });
 
     hero.createDiv({
       cls: "life-os-date",
-      text: moment().format("dddd, D MMMM YYYY"),
+      text: this.formatDisplayDate(moment().format("YYYY-MM-DD"), { weekday: "long", day: "numeric", month: "long", year: "numeric" }),
     });
 
     const status = hero.createDiv({ cls: "life-os-status-row" });
-    this.addStatus(status, "shield-check", "Local-first", true);
+    this.addStatus(status, "shield-check", this.t("Local-first"), true);
 
     const aiReady =
       this.pluginLoaded("agent-client") &&
@@ -680,55 +1122,55 @@ class LifeOSHomeView extends ItemView {
     this.addStatus(
       status,
       "sparkles",
-      aiReady ? "AI tools loaded" : "AI unavailable",
+      aiReady ? this.t("AI tools loaded") : this.t("AI unavailable"),
       aiReady
     );
 
     const heroActions = hero.createDiv({ cls: "life-os-hero-actions" });
     this.addButton(heroActions, {
       icon: "calendar-days",
-      label: "Open today",
-      description: "Start with the current day.",
+      label: this.t("Open today"),
+      description: this.t("Start with the current day."),
       primary: true,
       onClick: () =>
-        this.runCommand("quickadd:choice:lifeos-daily", "Today’s note"),
+        this.runCommand("quickadd:choice:lifeos-daily", this.t("Today’s note")),
     });
 
     this.addButton(heroActions, {
       icon: "sparkles",
-      label: "Ask Life OS",
-      description: "Open the governed AI workspace.",
+      label: this.t("Ask Life OS"),
+      description: this.t("Open the governed AI workspace."),
       onClick: () => this.openPath("00 Dashboards/Assistant.md"),
     });
 
     this.renderSetupBanner(shell);
     const overview = shell.createDiv({ cls: "life-os-home-overview" });
     const now = overview.createEl("section", { cls: "life-os-home-now" });
-    now.createEl("h2", { text: "Now" });
+    now.createEl("h2", { text: this.t("Now") });
     this.renderTaskLive(now, { limit: 3, attention: true });
     if (this.visualEnabled()) {
       const card = overview.createEl("section", { cls: "life-os-brain-card" });
-      card.createEl("h2", { text: "Your connected notes" });
+      card.createEl("h2", { text: this.t("Your connected notes") });
       const host = card.createDiv({ cls: "life-os-brain-preview" });
-      this.previewBrain = new LifeOSBrainRenderer(this.app, host, true);
+      this.previewBrain = new LifeOSBrainRenderer(this.app, host, true, this.plugin);
       this.previewBrain.brainGeometry = this.previewGeometry;
       this.addChild(this.previewBrain);
-      this.addButton(card, { icon: "brain", label: "Explore Brain", description: "Open the full graph in this dashboard.", onClick: () => { this.activeScreen = "brain"; this.render(); } });
+      this.addButton(card, { icon: "brain", label: this.t("Explore Brain"), description: this.t("Open the full graph in this dashboard."), onClick: () => { this.activeScreen = "brain"; this.render(); } });
     }
 
     this.renderActionSection(
       shell,
-      "Capture",
-      "Put something into the system without breaking your flow.",
+      this.t("Capture"),
+      this.t("Put something into the system without breaking your flow."),
       CAPTURE_ACTIONS,
       (action) => this.runCommand(action.command, action.label)
     );
     this.renderPlanLive(shell);
     const signals = shell.createEl("section", { cls: "life-os-signals" });
     const model = this.getAnalytics();
-    signals.createEl("h2", { text: "Recorded signals" });
-    signals.createEl("p", { text: `${model.scored} scored days in ${this.analyticsDays} days · ${model.average === null ? "No effort scores yet" : `${model.average.toFixed(1)} / 10 mean daily effort`}. Missing days are not zero.${this.includeExamples ? " Samples included." : " Samples excluded."}` });
-    this.addButton(signals, { icon: "chart-line", label: "Explore Review", description: "Effort, habit rhythm, and life areas.", onClick: () => { this.activeScreen = "review"; this.render(); } });
+    signals.createEl("h2", { text: this.t("Recorded signals") });
+    signals.createEl("p", { text: this.t("{scored} scored days in {days} days · {effort}. Missing days are not zero. {samples}", { scored: model.scored, days: this.analyticsDays, effort: model.average === null ? this.t("No effort scores yet") : this.t("{value} / 10 mean daily effort", { value: model.average.toFixed(1) }), samples: this.t(this.includeExamples ? "Samples included." : "Samples excluded.") }) });
+    this.addButton(signals, { icon: "chart-line", label: this.t("Explore Review"), description: this.t("Effort, habit rhythm, and life areas."), onClick: () => { this.activeScreen = "review"; this.render(); } });
   }
 
   isExample(data) {
@@ -789,20 +1231,20 @@ class LifeOSHomeView extends ItemView {
     const section = parent.createEl("section", { cls: "life-os-analytics" });
     const heading = section.createDiv({ cls: "life-os-analytics-heading" });
     const copy = heading.createDiv();
-    copy.createEl("h2", { text: "Your life, in view" });
+    copy.createEl("h2", { text: this.t("Your life, in view") });
     copy.createEl("p", { text: this.includeExamples
-      ? "Sample notes included. These charts may contain demonstration data."
-      : "Recorded effort and habits. Blank days mean no data, not zero." });
+      ? this.t("Sample notes included. These charts may contain demonstration data.")
+      : this.t("Recorded effort and habits. Blank days mean no data, not zero.") });
     const controls = heading.createDiv({ cls: "life-os-chart-controls" });
     for (const count of [7, 30, 90]) {
       const button = controls.createEl("button", {
-        text: `${count} days`, attr: { "aria-pressed": String(this.analyticsDays === count) },
+        text: this.t("{count} days", { count }), attr: { "aria-pressed": String(this.analyticsDays === count) },
       });
       button.type = "button";
       button.addEventListener("click", () => { this.analyticsDays = count; this.render(); });
     }
     const sample = controls.createEl("button", {
-      text: this.includeExamples ? "Samples on" : "Include samples",
+      text: this.includeExamples ? this.t("Samples on") : this.t("Include samples"),
       attr: { "aria-pressed": String(this.includeExamples) },
     });
     sample.type = "button";
@@ -810,13 +1252,13 @@ class LifeOSHomeView extends ItemView {
 
     const grid = section.createDiv({ cls: "life-os-chart-grid" });
     const effort = grid.createDiv({ cls: "life-os-chart-card life-os-effort-chart" });
-    effort.createEl("h3", { text: "Daily effort" });
-    effort.createEl("strong", { cls: "life-os-chart-number", text: model.average === null ? "No scores yet" : `${model.average.toFixed(1)} / 10` });
-    effort.createEl("p", { text: `${model.scored} scored days · mean of recorded daily questions` });
-    const plot = effort.createDiv({ cls: "life-os-effort-plot", attr: { role: "list", "aria-label": "Daily effort scores" } });
+    effort.createEl("h3", { text: this.t("Daily effort") });
+    effort.createEl("strong", { cls: "life-os-chart-number", text: model.average === null ? this.t("No scores yet") : `${model.average.toFixed(1)} / 10` });
+    effort.createEl("p", { text: this.t("{count} scored days · mean of recorded daily questions", { count: model.scored }) });
+    const plot = effort.createDiv({ cls: "life-os-effort-plot", attr: { role: "list", "aria-label": this.t("Daily effort scores") } });
     for (const day of model.days) {
-      const label = `${day.date}: ${day.score === null ? "No score recorded" : `${day.score.toFixed(1)} out of 10`}`;
-      const column = plot.createDiv({ cls: "life-os-effort-column", attr: { role: "listitem", "aria-label": label, title: label } });
+      const label = this.t("{date}: {score}", { date: day.date, score: day.score === null ? this.t("No score recorded") : this.t("{value} out of 10", { value: day.score.toFixed(1) }) });
+      const column = plot.createDiv({ cls: "life-os-effort-column", attr: { role: "listitem", "aria-label": this.t(label), title: this.t(label) } });
       column.createDiv({ cls: day.score === null ? "life-os-effort-bar is-missing" : "life-os-effort-bar",
         attr: { style: `height:${day.score === null ? 2 : day.score * 10}%` } });
       if (day.data) {
@@ -831,21 +1273,21 @@ class LifeOSHomeView extends ItemView {
     axis.createSpan({ text: model.days[0].date });
     axis.createSpan({ text: model.days[model.days.length - 1].date });
     const details = effort.createEl("details", { cls: "life-os-chart-details" });
-    details.createEl("summary", { text: "Read daily values" });
+    details.createEl("summary", { text: this.t("Read daily values") });
     const table = details.createEl("table", { cls: "life-os-chart-table" });
     const header = table.createEl("thead").createEl("tr");
-    header.createEl("th", { text: "Date", attr: { scope: "col" } });
-    header.createEl("th", { text: "Effort (1 to 10)", attr: { scope: "col" } });
+    header.createEl("th", { text: this.t("Date"), attr: { scope: "col" } });
+    header.createEl("th", { text: this.t("Effort (1 to 10)"), attr: { scope: "col" } });
     const body = table.createEl("tbody");
     for (const day of model.days) {
       const row = body.createEl("tr");
       row.createEl("th", { text: day.date, attr: { scope: "row" } });
-      row.createEl("td", { text: day.score === null ? "Not recorded" : day.score.toFixed(1) });
+      row.createEl("td", { text: day.score === null ? this.t("Not recorded") : day.score.toFixed(1) });
     }
 
     const wheel = grid.createDiv({ cls: "life-os-chart-card" });
-    wheel.createEl("h3", { text: "Life areas" });
-    wheel.createEl("p", { text: model.retreat ? `Latest scored retreat: ${this.getFileTitle(model.retreat)}` : "Your next retreat will bring this view to life." });
+    wheel.createEl("h3", { text: this.t("Life areas") });
+    wheel.createEl("p", { text: model.retreat ? this.t("Latest scored retreat: {title}", { title: this.getFileTitle(model.retreat) }) : this.t("Your next retreat will bring this view to life.") });
     for (const [key, value] of model.wheel) {
       const row = wheel.createDiv({ cls: "life-os-wheel-row" });
       row.createSpan({ text: this.formatPropertyLabel(key) });
@@ -853,12 +1295,12 @@ class LifeOSHomeView extends ItemView {
       track.createDiv({ cls: "life-os-wheel-fill", attr: { style: `width:${value * 10}%` } });
       row.createSpan({ text: `${value}/10` });
     }
-    if (!model.wheel.length) wheel.createDiv({ cls: "life-os-live-empty", text: "No life-area scores recorded. Open Retreat from Plan to add your own." });
-    if (model.retreat) this.addButton(wheel, { icon: "book-open", label: "Open scored retreat", description: "See the source of these life-area scores.", onClick: () => this.openPath(model.retreat.path) });
+    if (!model.wheel.length) wheel.createDiv({ cls: "life-os-live-empty", text: this.t("No life-area scores recorded. Open Retreat from Plan to add your own.") });
+    if (model.retreat) this.addButton(wheel, { icon: "book-open", label: this.t("Open scored retreat"), description: this.t("See the source of these life-area scores."), onClick: () => this.openPath(model.retreat.path) });
 
     const habits = grid.createDiv({ cls: "life-os-chart-card life-os-habit-chart" });
-    habits.createEl("h3", { text: "Habit rhythm" });
-    habits.createEl("p", { text: "Filled: done · muted: unchecked · outlined: no record. Hover a day for details." });
+    habits.createEl("h3", { text: this.t("Habit rhythm") });
+    habits.createEl("p", { text: this.t("Filled: done · muted: unchecked · outlined: no record. Hover a day for details.") });
     const matrix = habits.createDiv({ cls: "life-os-habit-matrix" });
     for (const key of model.habits) {
       const row = matrix.createDiv({ cls: "life-os-habit-row" });
@@ -869,24 +1311,24 @@ class LifeOSHomeView extends ItemView {
         const value = day.data?.[key];
         if (typeof value === "boolean") recorded += 1;
         if (value === true) done += 1;
-        const label = `${day.date}, ${this.formatPropertyLabel(key)}: ${value === true ? "Done" : value === false ? "Unchecked" : "No record"}`;
+        const label = this.t("{date}, {habit}: {state}", { date: day.date, habit: this.formatPropertyLabel(key), state: this.t(value === true ? "Done" : value === false ? "Unchecked" : "No record") });
         cells.createSpan({ cls: `life-os-habit-cell ${value === true ? "is-done" : value === false ? "is-open" : "is-missing"}`,
           attr: { title: label, "aria-label": label, role: "img" } });
       }
-      row.createSpan({ text: recorded ? `${done}/${recorded}` : "No data" });
+      row.createSpan({ text: recorded ? `${done}/${recorded}` : this.t("No data") });
     }
-    if (!model.habits.length) habits.createDiv({ cls: "life-os-live-empty", text: "Add your habits in Configure to begin." });
+    if (!model.habits.length) habits.createDiv({ cls: "life-os-live-empty", text: this.t("Add your habits in Configure to begin.") });
   }
 
   renderRail(parent) {
     const rail = parent.createEl("aside", {
       cls: "life-os-rail",
-      attr: { "aria-label": "Life OS navigation" },
+      attr: { "aria-label": this.t("Life OS navigation") },
     });
 
     const brand = rail.createEl("button", {
       cls: "life-os-rail-brand",
-      attr: { "aria-label": "Open Life OS home" },
+      attr: { "aria-label": this.t("Open Life OS home") },
     });
     brand.type = "button";
     const mark = brand.createSpan();
@@ -907,13 +1349,13 @@ class LifeOSHomeView extends ItemView {
         attr: {
           "aria-current":
             this.activeScreen === item.id ? "page" : "false",
-          title: item.label,
+          title: this.t(item.label),
         },
       });
       button.type = "button";
       const icon = button.createSpan();
       setIcon(icon, item.icon);
-      button.createSpan({ text: item.label });
+      button.createSpan({ text: this.t(item.label) });
       button.addEventListener("click", () => {
         this.activeScreen = item.id;
         this.render();
@@ -923,7 +1365,7 @@ class LifeOSHomeView extends ItemView {
     const local = rail.createDiv({ cls: "life-os-rail-foot" });
     const localIcon = local.createSpan();
     setIcon(localIcon, "hard-drive");
-    local.createSpan({ text: "Local vault" });
+    local.createSpan({ text: this.t("Local vault") });
   }
 
   renderTopbar(parent) {
@@ -933,36 +1375,44 @@ class LifeOSHomeView extends ItemView {
     context.createEl("strong", { text: this.getScreenTitle() });
 
     const actions = topbar.createDiv({ cls: "life-os-topbar-actions" });
-    this.addTopbarButton(actions, "search", "Search", () => {
-      this.runCommand("global-search:open", "Search");
+    const language = actions.createEl("select", {
+      cls: "life-os-language-select",
+      attr: { "aria-label": this.t("Life OS language"), title: this.t("Language") },
     });
-    this.addTopbarButton(actions, "settings-2", "Configure", () => {
+    language.createEl("option", { text: "English", attr: { value: "en" } });
+    language.createEl("option", { text: "简体中文", attr: { value: "zh-CN" } });
+    language.value = normalizeLanguage(this.plugin.language);
+    this.registerDomEvent(language, "change", () => { void this.plugin.setLanguage(language.value); });
+    this.addTopbarButton(actions, "search", this.t("Search"), () => {
+      this.runCommand("global-search:open", this.t("Search"));
+    });
+    this.addTopbarButton(actions, "settings-2", this.t("Configure"), () => {
       void this.openPath("Meta/Compass Config.md");
     });
     const display = actions.createEl("details", { cls: "life-os-display-options" });
-    display.createEl("summary", { text: "View" });
+    display.createEl("summary", { text: this.t("View") });
     const options = display.createDiv();
-    options.createEl("p", { text: "This view only. No vault settings changed." });
-    const density = options.createEl("button", { text: this.compactLayout ? "Use comfortable spacing" : "Use compact spacing" });
+    options.createEl("p", { text: this.t("This view only. No vault settings changed.") });
+    const density = options.createEl("button", { text: this.compactLayout ? this.t("Use comfortable spacing") : this.t("Use compact spacing") });
     density.type = "button";
     this.registerDomEvent(density, "click", () => { this.compactLayout = !this.compactLayout; this.render(true); });
-    const visuals = options.createEl("button", { text: this.showVisuals ? "Hide optional visuals" : "Show optional visuals" });
+    const visuals = options.createEl("button", { text: this.showVisuals ? this.t("Hide optional visuals") : this.t("Show optional visuals") });
     visuals.type = "button";
     this.registerDomEvent(visuals, "click", () => { this.showVisuals = !this.showVisuals; this.render(true); });
     if (["home", "today", "focus", "projects", "people", "create", "library", "ai"].includes(this.activeScreen)) {
-      const local = options.createEl("button", { text: this.visualOptions[this.activeScreen] === false ? "Show this module's visual" : "Hide this module's visual" });
+      const local = options.createEl("button", { text: this.visualOptions[this.activeScreen] === false ? this.t("Show this module's visual") : this.t("Hide this module's visual") });
       local.type = "button";
       this.registerDomEvent(local, "click", () => { this.visualOptions[this.activeScreen] = this.visualOptions[this.activeScreen] === false; this.render(true); });
     }
-    const label = options.createEl("label", { text: "Items per list " });
-    const limit = label.createEl("select", { attr: { "aria-label": "Items per list" } });
+    const label = options.createEl("label", { text: this.t("Items per list ") });
+    const limit = label.createEl("select", { attr: { "aria-label": this.t("Items per list") } });
     for (const count of [3, 6, 12]) limit.createEl("option", { text: String(count), attr: { value: String(count) } });
     limit.value = String(this.itemLimit);
     this.registerDomEvent(limit, "change", () => { this.itemLimit = Number(limit.value); this.render(true); });
-    const reset = options.createEl("button", { text: "Restore view defaults" });
+    const reset = options.createEl("button", { text: this.t("Restore view defaults") });
     reset.type = "button";
     this.registerDomEvent(reset, "click", () => { this.showVisuals = true; this.visualOptions = {}; this.itemLimit = 6; this.compactLayout = false; this.focusGroup = "all"; this.libraryStatus = "all"; this.libraryType = "all"; this.pipelinePath = null; this.render(true); });
-    this.addTopbarButton(actions, "plus", "Capture", () => {
+    this.addTopbarButton(actions, "plus", this.t("Capture"), () => {
       this.plugin.openCapture();
     }, true);
   }
@@ -971,7 +1421,7 @@ class LifeOSHomeView extends ItemView {
 
   addTopbarButton(parent, iconName, label, onClick, primary = false) {
     const button = parent.createEl("button", {
-      attr: { "aria-label": label, title: label },
+      attr: { "aria-label": this.t(label), title: this.t(label) },
       cls: primary
         ? "life-os-topbar-button is-primary"
         : "life-os-topbar-button",
@@ -979,12 +1429,12 @@ class LifeOSHomeView extends ItemView {
     button.type = "button";
     const icon = button.createSpan();
     setIcon(icon, iconName);
-    button.createSpan({ text: label });
+    button.createSpan({ text: this.t(label) });
     button.addEventListener("click", onClick);
   }
 
   getScreenTitle() {
-    return NAV_ITEMS.find((item) => item.id === this.activeScreen)?.label || "Home";
+    return this.t(NAV_ITEMS.find((item) => item.id === this.activeScreen)?.label || "Home");
   }
 
   renderModule(shell) {
@@ -996,9 +1446,9 @@ class LifeOSHomeView extends ItemView {
     }
 
     const header = shell.createEl("header", { cls: "life-os-module-header" });
-    header.createSpan({ cls: "life-os-eyebrow", text: module.eyebrow });
-    header.createEl("h1", { text: module.title });
-    header.createEl("p", { text: module.description });
+    header.createSpan({ cls: "life-os-eyebrow", text: this.t(module.eyebrow) });
+    header.createEl("h1", { text: this.t(module.title) });
+    header.createEl("p", { text: this.t(module.description) });
 
     if (this.activeScreen === "today") {
       this.renderTodayLive(shell);
@@ -1010,8 +1460,8 @@ class LifeOSHomeView extends ItemView {
     if (this.activeScreen === "ai") this.renderSystemSummary(shell);
     this.renderActionSection(
       shell,
-      "Open and act",
-      "Every control below opens a real note, dashboard, or capture workflow.",
+      this.t("Open and act"),
+      this.t("Every control below opens a real note, dashboard, or capture workflow."),
       module.actions,
       (action) => {
         if (action.command) {
@@ -1027,10 +1477,10 @@ class LifeOSHomeView extends ItemView {
       const icon = note.createSpan();
       setIcon(icon, "shield-check");
       const copy = note.createDiv();
-      copy.createEl("strong", { text: "AI-managed, human-authorized" });
+      copy.createEl("strong", { text: this.t("AI-managed, human-authorized") });
       copy.createEl("p", {
         text:
-          "Life OS can retrieve, summarize, and draft. Review context before sending. Human approval is the operating policy, not a guarantee enforced across every connected tool.",
+          this.t("Life OS can retrieve, summarize, and draft. Review context before sending. Human approval is the operating policy, not a guarantee enforced across every connected tool."),
       });
     }
   }
@@ -1040,28 +1490,28 @@ class LifeOSHomeView extends ItemView {
     const section = parent.createEl("section", { cls: "life-os-today-live" });
     const heading = section.createDiv({ cls: "life-os-today-heading" });
     const copy = heading.createDiv();
-    copy.createEl("h2", { text: "Today at a glance" });
+    copy.createEl("h2", { text: this.t("Today at a glance") });
     copy.createEl("p", {
-      text: "A private view of today’s properties. Journal text stays out of this screen.",
+      text: this.t("A private view of today’s properties. Journal text stays out of this screen."),
     });
 
     if (!data.exists) {
-      heading.createSpan({ cls: "life-os-progress-chip", text: "Not started" });
+      heading.createSpan({ cls: "life-os-progress-chip", text: this.t("Not started") });
       const empty = section.createDiv({ cls: "life-os-today-empty" });
       const icon = empty.createSpan();
       setIcon(icon, "sunrise");
       const emptyCopy = empty.createDiv();
-      emptyCopy.createEl("strong", { text: "Create today’s note" });
+      emptyCopy.createEl("strong", { text: this.t("Create today’s note") });
       emptyCopy.createEl("p", {
-        text: "Life OS will use your configured questions and habits.",
+        text: this.t("Life OS will use your configured questions and habits."),
       });
       this.addButton(empty, {
         icon: "plus",
-        label: "Start today",
-        description: "Create or open today’s daily note.",
+        label: this.t("Start today"),
+        description: this.t("Create or open today’s daily note."),
         primary: true,
         onClick: () =>
-          this.runCommand("quickadd:choice:lifeos-daily", "Today’s note"),
+          this.runCommand("quickadd:choice:lifeos-daily", this.t("Today’s note")),
       });
       return;
     }
@@ -1069,26 +1519,26 @@ class LifeOSHomeView extends ItemView {
     const completed = data.questionRecorded + data.habitRecorded;
     const total = data.questions.length + data.habits.length;
     if (this.visualEnabled() && total) {
-      const meter = section.createEl("progress", { cls: "life-os-checkin-meter", attr: { max: String(total), value: String(completed), "aria-label": `${completed} of ${total} check-in properties recorded, not a completion score` } });
-      meter.textContent = `${completed}/${total} recorded`;
+      const meter = section.createEl("progress", { cls: "life-os-checkin-meter", attr: { max: String(total), value: String(completed), "aria-label": this.t("{completed} of {total} check-in properties recorded, not a completion score", { completed, total }) } });
+      meter.textContent = this.t("{completed}/{total} recorded", { completed, total });
     }
     heading.createSpan({
       cls: "life-os-progress-chip is-active",
-      text: total ? `${completed} of ${total} checked in` : "Ready",
+      text: total ? this.t("{completed} of {total} checked in", { completed, total }) : this.t("Ready"),
     });
 
     const grid = section.createDiv({ cls: "life-os-today-grid" });
     this.renderTodayList(
       grid,
-      "Daily questions",
-      "Rate effort from 1 to 10.",
+      this.t("Daily questions"),
+      this.t("Rate effort from 1 to 10."),
       data.questions,
       "line-chart"
     );
     this.renderTodayList(
       grid,
-      "Habits",
-      "A signal, never a judgment.",
+      this.t("Habits"),
+      this.t("A signal, never a judgment."),
       data.habits,
       "activity"
     );
@@ -1096,19 +1546,19 @@ class LifeOSHomeView extends ItemView {
     const actions = section.createDiv({ cls: "life-os-today-actions" });
     this.addButton(actions, {
       icon: "file-text",
-      label: "Open daily note",
-      description: "See the complete context for today.",
+      label: this.t("Open daily note"),
+      description: this.t("See the complete context for today."),
       onClick: () => this.openPath(data.path),
     });
     this.addButton(actions, {
       icon: "message-circle-question",
-      label: "Daily questions",
-      description: "Run the guided evening check-in.",
+      label: this.t("Daily questions"),
+      description: this.t("Run the guided evening check-in."),
       primary: true,
       onClick: () =>
         this.runCommand(
           "templater-obsidian:Templates/Daily Questions Prompt.md",
-          "Daily questions"
+          this.t("Daily questions")
         ),
     });
   }
@@ -1119,8 +1569,8 @@ class LifeOSHomeView extends ItemView {
     const icon = heading.createSpan();
     setIcon(icon, iconName);
     const copy = heading.createDiv();
-    copy.createEl("h3", { text: title });
-    copy.createEl("p", { text: description });
+    copy.createEl("h3", { text: this.t(title) });
+    copy.createEl("p", { text: this.t(description) });
 
     const list = card.createDiv({ cls: "life-os-today-list" });
     for (const row of rows) {
@@ -1130,7 +1580,7 @@ class LifeOSHomeView extends ItemView {
         cls: row.complete
           ? "life-os-today-value is-complete"
           : "life-os-today-value",
-        text: row.display,
+        text: this.t(row.display),
       });
     }
   }
@@ -1159,8 +1609,8 @@ class LifeOSHomeView extends ItemView {
           display: recorded
             ? `${result.value}/10`
             : result.state === "invalid"
-              ? "Invalid value"
-              : "Not rated",
+              ? this.t("Invalid value")
+              : this.t("Not rated"),
         };
       })
       .filter((question) => question.key);
@@ -1177,12 +1627,12 @@ class LifeOSHomeView extends ItemView {
           complete: state === "done",
           display:
             state === "done"
-              ? "Done"
+              ? this.t("Done")
               : state === "unchecked"
-                ? "Unchecked"
+                ? this.t("Unchecked")
                 : state === "invalid"
-                  ? "Invalid value"
-                  : "Not recorded",
+                  ? this.t("Invalid value")
+                  : this.t("Not recorded"),
         };
       });
 
@@ -1234,32 +1684,32 @@ class LifeOSHomeView extends ItemView {
 
     const collections = {
       focus: {
-        title: "Active commitments",
-        description: "Projects currently asking for attention.",
+        title: this.t("Active commitments"),
+        description: this.t("Projects currently asking for attention."),
         types: ["project"],
         icon: "crosshair",
-        empty: "No active projects yet.",
+        empty: this.t("No active projects yet."),
       },
       projects: {
-        title: "Project pulse",
-        description: "Active project notes from your canonical project folder.",
+        title: this.t("Project pulse"),
+        description: this.t("Active project notes from your canonical project folder."),
         types: ["project"],
         icon: "folder-kanban",
-        empty: "No active project notes yet.",
+        empty: this.t("No active project notes yet."),
       },
       people: {
-        title: "People directory",
-        description: "Relationship notes, kept local and opened in place.",
+        title: this.t("People directory"),
+        description: this.t("Relationship notes, kept local and opened in place."),
         types: ["person"],
         icon: "users",
-        empty: "No people notes yet.",
+        empty: this.t("No people notes yet."),
       },
       library: {
-        title: "Library shelf",
-        description: "Typed library notes, including finished books and sources. Samples excluded.",
+        title: this.t("Library shelf"),
+        description: this.t("Typed library notes, including finished books and sources. Samples excluded."),
         types: ["book"],
         icon: "library",
-        empty: "No typed library notes yet. Add a book or source with a type property.",
+        empty: this.t("No typed library notes yet. Add a book or source with a type property."),
       },
     };
     const collection = collections[this.activeScreen];
@@ -1273,28 +1723,28 @@ class LifeOSHomeView extends ItemView {
     const horizons = [
       {
         icon: "sun",
-        label: "Today",
-        period: moment().format("D MMM"),
+        label: this.t("Today"),
+        period: this.formatDisplayDate(moment().format("YYYY-MM-DD"), { day: "numeric", month: "short" }),
         path: `${paths.daily}/${moment().format("YYYY-MM-DD")}.md`,
         command: "quickadd:choice:lifeos-daily",
       },
       {
         icon: "calendar-range",
-        label: "This week",
-        period: moment().format("[Week] ww"),
+        label: this.t("This week"),
+        period: this.plugin.language === "zh-CN" ? this.t("Week {week}", { week: moment().format("[Week] ww").replace(/^Week\s*/, "") }) : moment().format("[Week] ww"),
         path: `${paths.weekly}/${moment().format("gggg-[W]ww")}.md`,
         command: "quickadd:choice:lifeos-weekly",
       },
       {
         icon: "compass",
-        label: "This quarter",
+        label: this.t("This quarter"),
         period: moment().format("YYYY-[Q]Q"),
         path: `${paths.quarterly}/${moment().format("YYYY-[Q]Q")}.md`,
         command: "quickadd:choice:lifeos-quarterly",
       },
       {
         icon: "tent-tree",
-        label: "Retreat",
+        label: this.t("Retreat"),
         period: moment().format("YYYY-[Q]Q"),
         path: `${paths.retreats}/${moment().format("YYYY-[Q]Q")} Personal Retreat.md`,
         command: "quickadd:choice:lifeos-retreat",
@@ -1303,9 +1753,9 @@ class LifeOSHomeView extends ItemView {
     const section = parent.createEl("section", { cls: "life-os-plan-live" });
     this.renderLiveHeading(
       section,
-      "Connected horizons",
-      "Each layer is ready when its canonical note exists.",
-      `${horizons.filter((item) => this.fileExists(item.path)).length} of ${horizons.length} notes created`
+      this.t("Connected horizons"),
+      this.t("Each layer is ready when its canonical note exists."),
+      this.t("{created} of {total} notes created", { created: horizons.filter((item) => this.fileExists(item.path)).length, total: horizons.length })
     );
     const grid = section.createDiv({ cls: "life-os-horizon-grid" });
     for (const horizon of horizons) {
@@ -1315,11 +1765,11 @@ class LifeOSHomeView extends ItemView {
       const icon = button.createSpan({ cls: "life-os-horizon-icon" });
       setIcon(icon, horizon.icon);
       const copy = button.createDiv();
-      copy.createEl("strong", { text: horizon.label });
+      copy.createEl("strong", { text: this.t(horizon.label) });
       copy.createSpan({ text: horizon.period });
       button.createSpan({
         cls: ready ? "life-os-record-status is-ready" : "life-os-record-status",
-        text: ready ? "Open note" : "Create note",
+        text: ready ? this.t("Open note") : this.t("Create note"),
       });
       this.registerDomEvent(button, "click", () => {
         if (ready) {
@@ -1337,15 +1787,15 @@ class LifeOSHomeView extends ItemView {
     const month = new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth() + (this.calendarOffset || 0), 1, 12));
     const section = parent.createEl("section", { cls: "life-os-calendar" });
     const toolbar = section.createDiv({ cls: "life-os-calendar-toolbar" });
-    toolbar.createEl("h2", { text: month.toLocaleDateString(undefined, { month: "long", year: "numeric", timeZone: "UTC" }) });
-    for (const [label, delta] of [["Previous month", -1], ["This month", 0], ["Next month", 1]]) {
-      const button = toolbar.createEl("button", { text: label });
+    toolbar.createEl("h2", { text: month.toLocaleDateString(this.plugin.language === "zh-CN" ? "zh-CN" : "en", { month: "long", year: "numeric", timeZone: "UTC" }) });
+    for (const [label, delta] of [[this.t("Previous month"), -1], [this.t("This month"), 0], [this.t("Next month"), 1]]) {
+      const button = toolbar.createEl("button", { text: this.t(label) });
       button.type = "button";
       this.registerDomEvent(button, "click", () => { this.calendarOffset = delta ? (this.calendarOffset || 0) + delta : 0; this.render(); });
     }
     const grid = section.createDiv({ cls: "life-os-calendar-grid" });
     const firstDay = moment.localeData?.().firstDayOfWeek?.() ?? 1;
-    for (let i = 0; i < 7; i++) grid.createDiv({ cls: "life-os-calendar-weekday", text: new Date(Date.UTC(2026, 0, 4 + (firstDay + i) % 7)).toLocaleDateString(undefined, { weekday: "short", timeZone: "UTC" }) });
+    for (let i = 0; i < 7; i++) grid.createDiv({ cls: "life-os-calendar-weekday", text: new Date(Date.UTC(2026, 0, 4 + (firstDay + i) % 7)).toLocaleDateString(this.plugin.language === "zh-CN" ? "zh-CN" : "en", { weekday: "short", timeZone: "UTC" }) });
     const offset = (month.getUTCDay() - firstDay + 7) % 7;
     const folder = this.getConfiguredFolders().daily;
     for (let i = 0; i < 42; i++) {
@@ -1353,12 +1803,12 @@ class LifeOSHomeView extends ItemView {
       const iso = date.toISOString().slice(0, 10);
       const path = `${folder}/${iso}.md`;
       const exists = this.fileExists(path);
-      const button = grid.createEl("button", { cls: `life-os-calendar-day${exists ? " is-present" : ""}${date.getUTCMonth() !== month.getUTCMonth() ? " is-outside" : ""}`, text: String(date.getUTCDate()), attr: { "aria-label": `${iso}: ${exists ? "Open daily note" : iso === today ? "Create today's note" : "No daily note"}`, ...(iso === today ? { "aria-current": "date" } : {}) } });
+      const button = grid.createEl("button", { cls: `life-os-calendar-day${exists ? " is-present" : ""}${date.getUTCMonth() !== month.getUTCMonth() ? " is-outside" : ""}`, text: String(date.getUTCDate()), attr: { "aria-label": this.t("{date}: {score}", { date: iso, score: this.t(exists ? "Open daily note" : iso === today ? "Create today's note" : "No daily note") }), ...(iso === today ? { "aria-current": "date" } : {}) } });
       button.type = "button";
       button.disabled = !exists && iso !== today;
-      this.registerDomEvent(button, "click", () => exists ? void this.openPath(path) : this.runCommand("quickadd:choice:lifeos-daily", "Today’s note"));
+      this.registerDomEvent(button, "click", () => exists ? void this.openPath(path) : this.runCommand("quickadd:choice:lifeos-daily", this.t("Today’s note")));
     }
-    section.createEl("p", { cls: "life-os-calendar-help", text: "Highlighted days have notes. Open an existing day, or create today. Other empty days are disabled. No entries are generated automatically." });
+    section.createEl("p", { cls: "life-os-calendar-help", text: this.t("Highlighted days have notes. Open an existing day, or create today. Other empty days are disabled. No entries are generated automatically.") });
   }
 
   renderReviewLive(parent) {
@@ -1376,7 +1826,7 @@ class LifeOSHomeView extends ItemView {
       const data = excluded ? {} : raw;
       const metrics = this.summarizeDailyProperties(data, questionKeys, habitKeys);
       days.push({
-        label: day.format("ddd"),
+        label: this.formatDisplayDate(day.format("YYYY-MM-DD"), { weekday: "short" }),
         exists: file instanceof TFile && !excluded,
         recorded: metrics.recorded,
         habitsDone: metrics.habitsDone,
@@ -1387,9 +1837,9 @@ class LifeOSHomeView extends ItemView {
     const section = parent.createEl("section", { cls: "life-os-review-live" });
     this.renderLiveHeading(
       section,
-      "Seven-day signal",
-      "Property coverage only. Your journal words remain private.",
-      `${activeDays} daily notes`
+      this.t("Seven-day signal"),
+      this.t("Property coverage only. Your journal words remain private."),
+      this.t("{count} daily notes", { count: activeDays })
     );
     const grid = section.createDiv({ cls: "life-os-week-grid" });
     for (const day of days) {
@@ -1398,7 +1848,7 @@ class LifeOSHomeView extends ItemView {
       });
       card.createEl("strong", { text: day.label });
       card.createSpan({
-        text: day.exists ? `${day.recorded}/${day.total} recorded` : "No note",
+        text: day.exists ? this.t("{completed}/{total} recorded", { completed: day.recorded, total: day.total }) : this.t("No note"),
       });
       const meter = card.createDiv({ cls: "life-os-day-meter" });
       const ratio = day.total ? day.recorded / day.total : 0;
@@ -1411,18 +1861,18 @@ class LifeOSHomeView extends ItemView {
 
   renderPipelineLive(parent) {
     const pipelines = [
-      { type: "newsletter", label: "Newsletters", icon: "mail", path: "06 Writing/Newsletters/Newsletter Board.md" },
-      { type: "youtube-script", label: "Videos", icon: "video", path: "06 Writing/YouTube Scripts/YouTube Board.md" },
-      { type: "article", label: "Articles", icon: "newspaper", path: "06 Writing/Articles/Article Board.md" },
-      { type: "course-lesson", label: "Courses", icon: "graduation-cap", path: "06 Writing/Course Content/Course Board.md" },
+      { type: "newsletter", label: this.t("Newsletters"), icon: "mail", path: "06 Writing/Newsletters/Newsletter Board.md" },
+      { type: "youtube-script", label: this.t("Videos"), icon: "video", path: "06 Writing/YouTube Scripts/YouTube Board.md" },
+      { type: "article", label: this.t("Articles"), icon: "newspaper", path: "06 Writing/Articles/Article Board.md" },
+      { type: "course-lesson", label: this.t("Courses"), icon: "graduation-cap", path: "06 Writing/Course Content/Course Board.md" },
     ];
     const files = this.app.vault.getMarkdownFiles();
     const section = parent.createEl("section", { cls: "life-os-pipeline-live" });
     this.renderLiveHeading(
       section,
-      "Creative studio",
-      "Every pipeline stays backed by its Markdown notes and Kanban board.",
-      `${pipelines.reduce((sum, pipeline) => sum + this.countType(files, pipeline.type), 0)} notes`
+      this.t("Creative studio"),
+      this.t("Every pipeline stays backed by its Markdown notes and Kanban board."),
+      this.t("{count} notes", { count: pipelines.reduce((sum, pipeline) => sum + this.countType(files, pipeline.type), 0) })
     );
     const grid = section.createDiv({ cls: "life-os-pipeline-grid" });
     for (const pipeline of pipelines) {
@@ -1431,8 +1881,8 @@ class LifeOSHomeView extends ItemView {
       const icon = button.createSpan();
       setIcon(icon, pipeline.icon);
       const copy = button.createDiv();
-      copy.createEl("strong", { text: pipeline.label });
-      copy.createSpan({ text: `${this.countType(files, pipeline.type)} notes` });
+      copy.createEl("strong", { text: this.t(pipeline.label) });
+      copy.createSpan({ text: this.t("{count} notes", { count: this.countType(files, pipeline.type) }) });
       const selected = (this.pipelinePath || pipelines[0].path) === pipeline.path;
       if (this.visualEnabled()) button.setAttribute("aria-pressed", String(selected));
       this.registerDomEvent(button, "click", () => {
@@ -1445,14 +1895,14 @@ class LifeOSHomeView extends ItemView {
         const cache = file instanceof TFile ? this.app.metadataCache.getFileCache(file) : null;
         const lanes = cache?.headings?.filter(heading => heading.level === 2) || [];
         const flow = section.createDiv({ cls: "life-os-workflow-lanes" });
-        flow.createEl("h3", { text: pipeline.label });
-        this.addButton(flow, { icon: "kanban", label: "Open board", description: "Edit cards in the original board.", onClick: () => this.openPath(pipeline.path) });
+        flow.createEl("h3", { text: this.t(pipeline.label) });
+        this.addButton(flow, { icon: "kanban", label: this.t("Open board"), description: this.t("Edit cards in the original board."), onClick: () => this.openPath(pipeline.path) });
         if (!file || !cache || !lanes.length || !Array.isArray(cache.listItems)) {
-          flow.createEl("p", { text: "Board lane counts unavailable. Open the board to inspect its workflow." });
+          flow.createEl("p", { text: this.t("Board lane counts unavailable. Open the board to inspect its workflow.") });
           continue;
         }
         if (this.isExample(this.getFrontmatter(file))) {
-          flow.createEl("p", { text: "Sample board excluded from workflow counts." });
+          flow.createEl("p", { text: this.t("Sample board excluded from workflow counts.") });
           continue;
         }
         for (let i = 0; i < lanes.length; i++) {
@@ -1469,9 +1919,9 @@ class LifeOSHomeView extends ItemView {
             item.type = "button";
             this.registerDomEvent(item, "click", () => void this.openPath(task.path, task.line));
           }
-          laneBox.createEl("p", { text: !this.taskSnapshot ? "Loading open items" : this.taskSnapshot.error ? "Open-item index unavailable" : `${Math.min(tasks.length, 3)} of ${tasks.length} indexed open items shown${this.taskSnapshot.state === "partial" ? " · partial index" : ""}` });
+          laneBox.createEl("p", { text: !this.taskSnapshot ? this.t("Loading open items") : this.taskSnapshot.error ? this.t("Open-item index unavailable") : this.t("{shown} of {total} indexed open items shown{partial}", { shown: Math.min(tasks.length, 3), total: tasks.length, partial: this.taskSnapshot.state === "partial" ? this.t(" · partial index") : "" }) });
         }
-        flow.createEl("p", { text: "Checkbox items by actual board heading, including checked items. Not a completion percentage." });
+        flow.createEl("p", { text: this.t("Checkbox items by actual board heading, including checked items. Not a completion percentage.") });
       }
     }
   }
@@ -1498,64 +1948,64 @@ class LifeOSHomeView extends ItemView {
         icon: "bot",
         label: "Agent Client",
         ready: agentConfigured,
-        state: agentConfigured ? "Configured" : agentLoaded ? "Installed" : "Unavailable",
+        state: agentConfigured ? this.t("Configured") : agentLoaded ? this.t("Installed") : this.t("Unavailable"),
         detail: agentConfigured
-          ? `${sessionCount} local ${sessionCount === 1 ? "session" : "sessions"}`
-          : "In-vault assistant interface",
+          ? this.t(sessionCount === 1 ? "{count} local session" : "{count} local sessions", { count: sessionCount })
+          : this.t("In-vault assistant interface"),
       },
       {
         icon: "plug-zap",
-        label: "Local MCP bridge",
+        label: this.t("Local MCP bridge"),
         ready: restConfigured,
-        state: restConfigured ? "Configured" : restLoaded ? "Installed" : "Unavailable",
-        detail: restConfigured ? "Local server key present" : "Local tool connection",
+        state: restConfigured ? this.t("Configured") : restLoaded ? this.t("Installed") : this.t("Unavailable"),
+        detail: restConfigured ? this.t("Local server key present") : this.t("Local tool connection"),
       },
       {
         icon: "library",
-        label: "Prompt library",
+        label: this.t("Prompt library"),
         ready: prompts > 0,
-        state: prompts > 0 ? "Available" : "Unavailable",
-        detail: `${prompts} governed workflows`,
+        state: prompts > 0 ? this.t("Available") : this.t("Unavailable"),
+        detail: this.t("{count} governed workflows", { count: prompts }),
       },
       {
         icon: "shield-check",
-        label: "Permission policy",
+        label: this.t("Permission policy"),
         ready: agentLoaded && permissionSetting === false,
         state: !agentLoaded
-          ? "Unavailable"
+          ? this.t("Unavailable")
           : permissionSetting === false
-            ? "Manual prompts"
+            ? this.t("Manual prompts")
             : permissionSetting === true
-              ? "Auto-allow on"
-              : "Unknown",
+              ? this.t("Auto-allow on")
+              : this.t("Unknown"),
         detail:
           permissionSetting === false
-            ? "Client setting is off. This reports policy, not enforcement."
+            ? this.t("Client setting is off. This reports policy, not enforcement.")
             : permissionSetting === true
-              ? "Client may auto-approve requests. This reports policy, not enforcement."
-              : "Permission setting was not observable. No enforcement claim.",
+              ? this.t("Client may auto-approve requests. This reports policy, not enforcement.")
+              : this.t("Permission setting was not observable. No enforcement claim."),
       },
     ];
     const ready = checks.filter((check) => check.ready).length;
     const section = parent.createEl("section", { cls: "life-os-ai-live" });
     this.renderLiveHeading(
       section,
-      "AI control center",
-      "Capability status is local. Installed does not mean authenticated or connected.",
-      `${ready} of ${checks.length} available`
+      this.t("AI control center"),
+      this.t("Capability status is local. Installed does not mean authenticated or connected."),
+      this.t("{ready} of {total} available", { ready, total: checks.length })
     );
     if (this.visualEnabled()) {
-      const flow = section.createEl("section", { cls: "life-os-connection-map", attr: { "aria-label": "AI integration map" } });
-      flow.createEl("h3", { text: "How the parts connect" });
+      const flow = section.createEl("section", { cls: "life-os-connection-map", attr: { "aria-label": this.t("AI integration map") } });
+      flow.createEl("h3", { text: this.t("How the parts connect") });
       const diagram = flow.createDiv({ cls: "life-os-ai-diagram" });
-      diagram.createDiv({ cls: "life-os-ai-node", text: "Life OS · local dashboard" });
-      diagram.createDiv({ cls: "life-os-ai-connector", text: "Selected context →" });
-      const hub = diagram.createDiv({ cls: "life-os-ai-node", text: `Agent Client · ${agentConfigured ? "configured" : agentLoaded ? "loaded, configuration needed" : "unavailable"}` });
-      hub.createDiv({ text: "Two separate integration paths ↓" });
+      diagram.createDiv({ cls: "life-os-ai-node", text: this.t("Life OS · local dashboard") });
+      diagram.createDiv({ cls: "life-os-ai-connector", text: this.t("Selected context →") });
+      const hub = diagram.createDiv({ cls: "life-os-ai-node", text: this.t("Agent Client · {state}", { state: this.t(agentConfigured ? "configured" : agentLoaded ? "loaded, configuration needed" : "unavailable") }) });
+      hub.createDiv({ text: this.t("Two separate integration paths ↓") });
       const branches = diagram.createDiv({ cls: "life-os-ai-branches" });
-      branches.createDiv({ cls: "life-os-ai-node", text: "Provider · authentication not tested here" });
-      branches.createDiv({ cls: "life-os-ai-node", text: `Optional local tools via MCP · ${restConfigured ? "key present, connection not tested" : "not configured"}` });
-      flow.createEl("p", { text: "Integration overview, not a live traffic trace. This screen makes no provider requests. Review selected context and permissions before sending." });
+      branches.createDiv({ cls: "life-os-ai-node", text: this.t("Provider · authentication not tested here") });
+      branches.createDiv({ cls: "life-os-ai-node", text: this.t("Optional local tools via MCP · {state}", { state: this.t(restConfigured ? "key present, connection not tested" : "not configured") }) });
+      flow.createEl("p", { text: this.t("Integration overview, not a live traffic trace. This screen makes no provider requests. Review selected context and permissions before sending.") });
     }
     const grid = section.createDiv({ cls: "life-os-ai-check-grid" });
     for (const check of checks) {
@@ -1565,11 +2015,11 @@ class LifeOSHomeView extends ItemView {
       const icon = card.createSpan();
       setIcon(icon, check.icon);
       const copy = card.createDiv();
-      copy.createEl("strong", { text: check.label });
-      copy.createSpan({ text: check.detail });
+      copy.createEl("strong", { text: this.t(check.label) });
+      copy.createSpan({ text: this.t(check.detail) });
       card.createSpan({
         cls: "life-os-ai-state",
-        text: check.state,
+        text: this.t(check.state),
       });
     }
   }
@@ -1593,31 +2043,31 @@ class LifeOSHomeView extends ItemView {
       section,
       options.title,
       options.description,
-      `${records.length} ${records.length === 1 ? "note" : "notes"}`
+      this.t(records.length === 1 ? "{count} note" : "{count} notes", { count: records.length })
     );
     if (!records.length) {
-      section.createDiv({ cls: "life-os-live-empty", text: options.empty });
+      section.createDiv({ cls: "life-os-live-empty", text: this.t(options.empty) });
       return;
     }
     let visible = records;
     if (this.activeScreen === "library") {
-      const typeLabel = section.createEl("label", { text: "Type " });
-      const typeSelect = typeLabel.createEl("select", { attr: { "aria-label": "Library type" } });
+      const typeLabel = section.createEl("label", { text: this.t("Type ") });
+      const typeSelect = typeLabel.createEl("select", { attr: { "aria-label": this.t("Library type") } });
       const types = [...new Set(records.map(file => String(this.getFrontmatter(file).type)))].sort();
       if (!types.includes(this.libraryType)) this.libraryType = "all";
-      for (const type of ["all", ...types]) typeSelect.createEl("option", { text: type === "all" ? "All types" : type, attr: { value: type } });
+      for (const type of ["all", ...types]) typeSelect.createEl("option", { text: type === "all" ? this.t("All types") : type, attr: { value: type } });
       typeSelect.value = this.libraryType;
       this.registerDomEvent(typeSelect, "change", () => { this.libraryType = typeSelect.value; this.render(); });
-      const label = section.createEl("label", { text: "Library status " });
-      const select = label.createEl("select", { attr: { "aria-label": "Library status" } });
+      const label = section.createEl("label", { text: this.t("Library status ") });
+      const select = label.createEl("select", { attr: { "aria-label": this.t("Library status") } });
       const statuses = [...new Set(records.map(file => String(this.getFrontmatter(file).status || "Not set")))].sort();
-      for (const value of ["all", ...statuses]) select.createEl("option", { text: value === "all" ? "All statuses" : value, attr: { value } });
+      for (const value of ["all", ...statuses]) select.createEl("option", { text: value === "all" ? this.t("All statuses") : value === "Not set" ? this.t("Status not set") : value, attr: { value } });
       if (!statuses.includes(this.libraryStatus)) this.libraryStatus = "all";
       select.value = this.libraryStatus;
       this.registerDomEvent(select, "change", () => { this.libraryStatus = select.value; this.render(); });
       visible = records.filter(file => (this.libraryStatus === "all" || String(this.getFrontmatter(file).status || "Not set") === this.libraryStatus) && (this.libraryType === "all" || String(this.getFrontmatter(file).type) === this.libraryType));
     }
-    section.createEl("p", { text: `Showing ${Math.min(visible.length, this.itemLimit)} of ${visible.length} matching notes.` });
+    section.createEl("p", { text: this.t("Showing {shown} of {total} matching notes.", { shown: Math.min(visible.length, this.itemLimit), total: visible.length }) });
     const grid = section.createDiv({ cls: "life-os-record-grid" });
     for (const file of visible.slice(0, this.itemLimit)) {
       const data = this.getFrontmatter(file);
@@ -1628,16 +2078,16 @@ class LifeOSHomeView extends ItemView {
         const cover = String(data.cover || "").replace(/^!?\[\[/, "").replace(/\]\]$/, "").split("|")[0];
         const imageFile = !/^(?:[a-z]+:|\/)/i.test(cover) && /\.(?:png|jpe?g|webp|gif)$/i.test(cover) ? this.app.metadataCache.getFirstLinkpathDest?.(cover, file.path) : null;
         if (imageFile instanceof TFile && this.app.vault.getResourcePath) button.createEl("img", { cls: "life-os-book-cover", attr: { src: this.app.vault.getResourcePath(imageFile), alt: "", loading: "lazy" } });
-        else button.createDiv({ cls: "life-os-book-cover life-os-book-fallback", text: String(data.type || "Note").toUpperCase() });
+        else button.createDiv({ cls: "life-os-book-cover life-os-book-fallback", text: String(data.type || this.t("Note")).toUpperCase() });
       }
       const icon = button.createSpan({ cls: "life-os-record-icon" });
       setIcon(icon, options.icon);
       const copy = button.createDiv();
       copy.createEl("strong", { text: this.getFileTitle(file) });
-      copy.createSpan({ text: String(data.status || "Status not set") });
+      copy.createSpan({ text: String(data.status || this.t("Status not set")) });
       if (this.visualEnabled() && ["projects", "people"].includes(this.activeScreen)) {
         const tasks = this.tasksForRecord(file, this.activeScreen === "projects" ? "project" : "p");
-        copy.createSpan({ cls: "life-os-record-metrics", attr: { title: "Counts use explicit routing tags, not inferred ownership." }, text: !this.taskSnapshot || this.taskSnapshot.error ? "Task index unavailable" : `${tasks.length} tagged open · ${tasks.filter(task => task.overdue).length} overdue${this.taskSnapshot.state === "partial" ? " · partial index" : ""}` });
+        copy.createSpan({ cls: "life-os-record-metrics", attr: { title: this.t("Counts use explicit routing tags, not inferred ownership.") }, text: !this.taskSnapshot || this.taskSnapshot.error ? this.t("Task index unavailable") : this.t("{count} tagged open · {overdue} overdue{partial}", { count: tasks.length, overdue: tasks.filter(task => task.overdue).length, partial: this.taskSnapshot.state === "partial" ? this.t(" · partial index") : "" }) });
       }
       const arrow = button.createSpan({ cls: "life-os-record-arrow" });
       setIcon(arrow, "arrow-up-right");
@@ -1645,9 +2095,9 @@ class LifeOSHomeView extends ItemView {
     }
     if (this.visualEnabled() && this.activeScreen === "people") {
       const discussion = section.createDiv({ cls: "life-os-discussion-queue" });
-      discussion.createEl("h3", { text: "Open conversations" });
+      discussion.createEl("h3", { text: this.t("Open conversations") });
       const entries = visible.flatMap(file => this.tasksForRecord(file, "p").filter(task => task.discuss).map(task => ({ file, task })));
-      discussion.createEl("p", { text: this.taskSnapshot && !this.taskSnapshot.error ? `${entries.length} indexed person-discussion links${this.taskSnapshot.state === "partial" ? " · partial index" : ""}. Explicit person tags only.` : "Task index unavailable." });
+      discussion.createEl("p", { text: this.taskSnapshot && !this.taskSnapshot.error ? this.t("{count} indexed person-discussion links{partial}. Explicit person tags only.", { count: entries.length, partial: this.taskSnapshot.state === "partial" ? this.t(" · partial index") : "" }) : this.t("Task index unavailable.") });
       for (const {file, task} of entries.slice(0, this.itemLimit)) {
         const button = discussion.createEl("button", { text: `${this.getFileTitle(file)} · ${task.text}` });
         button.type = "button";
@@ -1665,9 +2115,9 @@ class LifeOSHomeView extends ItemView {
   renderLiveHeading(parent, title, description, status) {
     const heading = parent.createDiv({ cls: "life-os-live-heading" });
     const copy = heading.createDiv();
-    copy.createEl("h2", { text: title });
-    copy.createEl("p", { text: description });
-    heading.createSpan({ cls: "life-os-progress-chip is-active", text: status });
+    copy.createEl("h2", { text: this.t(title) });
+    copy.createEl("p", { text: this.t(description) });
+    heading.createSpan({ cls: "life-os-progress-chip is-active", text: this.t(status) });
   }
 
   getFrontmatter(file) {
@@ -1927,21 +2377,21 @@ class LifeOSHomeView extends ItemView {
 
   renderFocusGroups(parent) {
     const section = parent.createDiv({ cls: "life-os-focus-groups" });
-    section.createEl("h2", { text: "Where your attention goes" });
-    section.createEl("p", { text: "One group per indexed open task. Past scheduled dates without a current due date fall under Other. Partial indexing may omit tasks." });
-    for (const [id, label] of [["all", "All"], ["overdue", "Overdue"], ["today", "Today"], ["upcoming", "Upcoming"], ["unscheduled", "Unscheduled / other"]]) {
+    section.createEl("h2", { text: this.t("Where your attention goes") });
+    section.createEl("p", { text: this.t("One group per indexed open task. Past scheduled dates without a current due date fall under Other. Partial indexing may omit tasks.") });
+    for (const [id, label] of [["all", this.t("All")], ["overdue", this.t("Overdue")], ["today", this.t("Today")], ["upcoming", this.t("Upcoming")], ["unscheduled", this.t("Unscheduled / other")]]) {
       const count = this.taskSnapshot?.tasks.filter(task => id === "all" || this.taskGroup(task) === id).length;
-      const button = section.createEl("button", { text: `${label} · ${count ?? "Loading"}`, attr: { "aria-pressed": String(this.focusGroup === id) } });
+      const button = section.createEl("button", { text: this.t("{label} · {count}", { label: this.t(label), count: count ?? this.t("Loading") }), attr: { "aria-pressed": String(this.focusGroup === id) } });
       button.type = "button";
       this.registerDomEvent(button, "click", () => { this.focusGroup = id; this.render(); });
     }
     const total = this.taskSnapshot?.tasks.length || 0;
     if (total) {
-      const bar = section.createDiv({ cls: "life-os-workload-bar", attr: { "aria-label": "Distribution of indexed open tasks" } });
-      for (const [id, label] of [["overdue", "Overdue"], ["today", "Today"], ["upcoming", "Upcoming"], ["unscheduled", "Unscheduled / other"]]) {
+      const bar = section.createDiv({ cls: "life-os-workload-bar", attr: { "aria-label": this.t("Distribution of indexed open tasks") } });
+      for (const [id, label] of [["overdue", this.t("Overdue")], ["today", this.t("Today")], ["upcoming", this.t("Upcoming")], ["unscheduled", this.t("Unscheduled / other")]]) {
         const count = this.taskSnapshot.tasks.filter(task => this.taskGroup(task) === id).length;
         if (!count) continue;
-        const segment = bar.createEl("button", { cls: `life-os-workload-segment is-${id}`, attr: { style: `flex:${count}`, "aria-label": `${label}: ${count} of ${total}`, title: `${label}: ${count} of ${total}` } });
+        const segment = bar.createEl("button", { cls: `life-os-workload-segment is-${id}`, attr: { style: `flex:${count}`, "aria-label": this.t("{label}: {count} of {total}", { label: this.t(label), count, total }), title: this.t("{label}: {count} of {total}", { label: this.t(label), count, total }) } });
         segment.type = "button";
         this.registerDomEvent(segment, "click", () => { this.focusGroup = id; this.render(); });
       }
@@ -1953,36 +2403,36 @@ class LifeOSHomeView extends ItemView {
     const section = parent.createEl("section", { cls: "life-os-task-live" });
     const coverage = snapshot
       ? [
-          `${snapshot.tasks.length} open`,
+          this.t("{count} open", { count: snapshot.tasks.length }),
           snapshot.skipped - snapshot.missingMetadata > 0
-            ? `${snapshot.skipped - snapshot.missingMetadata} unreadable`
+            ? this.t("{count} unreadable", { count: snapshot.skipped - snapshot.missingMetadata })
             : "",
           snapshot.missingMetadata
-            ? `${snapshot.missingMetadata} metadata pending`
+            ? this.t("{count} metadata pending", { count: snapshot.missingMetadata })
             : "",
           snapshot.unresolvedStatuses
-            ? `${snapshot.unresolvedStatuses} unresolved status`
+            ? this.t("{count} unresolved status", { count: snapshot.unresolvedStatuses })
             : "",
           snapshot.examplesExcluded
-            ? `${snapshot.examplesExcluded} sample excluded`
+            ? this.t("{count} sample excluded", { count: snapshot.examplesExcluded })
             : "",
         ]
           .filter(Boolean)
           .join(", ")
-      : "Loading";
+      : this.t("Loading");
     this.renderLiveHeading(
       section,
-      attention ? "Needs attention" : "Commitment feed",
-      attention ? "Overdue, due today, scheduled today, or high priority. Open a task at its source." : "Open tasks from the master inbox, projects, people, and writing notes.",
+      attention ? this.t("Needs attention") : this.t("Commitment feed"),
+      attention ? this.t("Overdue, due today, scheduled today, or high priority. Open a task at its source.") : this.t("Open tasks from the master inbox, projects, people, and writing notes."),
       coverage
     );
 
     if (!snapshot) {
-      section.createDiv({ cls: "life-os-live-empty", text: "Loading local tasks..." });
+      section.createDiv({ cls: "life-os-live-empty", text: this.t("Loading local tasks...") });
       return;
     }
     if (snapshot.error) {
-      section.createDiv({ cls: "life-os-live-empty", text: snapshot.error });
+      section.createDiv({ cls: "life-os-live-empty", text: this.t(snapshot.error) });
       return;
     }
     if (!snapshot.tasks.length) {
@@ -1990,14 +2440,14 @@ class LifeOSHomeView extends ItemView {
         cls: "life-os-live-empty",
         text:
           snapshot.state === "partial"
-            ? "No open tasks indexed. Some task data could not be classified."
-            : "No open tasks found.",
+            ? this.t("No open tasks indexed. Some task data could not be classified.")
+            : this.t("No open tasks found."),
       });
       return;
     }
 
     const selected = attention ? snapshot.tasks.filter(task => task.overdue || task.dueToday || task.scheduledToday || task.high) : snapshot.tasks.filter(task => group === "all" || this.taskGroup(task) === group);
-    if (!selected.length) section.createDiv({ cls: "life-os-live-empty", text: attention ? "Nothing urgent in the indexed tasks. Other open tasks remain available below." : "No indexed tasks in this group." });
+    if (!selected.length) section.createDiv({ cls: "life-os-live-empty", text: attention ? this.t("Nothing urgent in the indexed tasks. Other open tasks remain available below.") : this.t("No indexed tasks in this group.") });
     const list = section.createDiv({ cls: "life-os-task-list" });
     for (const task of selected.slice(0, limit)) {
       const button = list.createEl("button", {
@@ -2014,28 +2464,28 @@ class LifeOSHomeView extends ItemView {
       copy.createEl("strong", { text: task.text });
       copy.createSpan({ text: this.getTaskContext(task) });
       if (task.high) {
-        button.createSpan({ cls: "life-os-task-priority", text: "High" });
+        button.createSpan({ cls: "life-os-task-priority", text: this.t("High") });
       }
       this.registerDomEvent(button, "click", () => void this.openPath(task.path, task.line));
     }
-    this.addButton(section, { icon: "list-checks", label: "All tasks", description: !selected.length ? `View all ${snapshot.tasks.length} indexed open tasks.` : `Showing ${Math.min(selected.length, limit)} of ${selected.length} matching tasks.`, onClick: () => this.openPath("00 Dashboards/Task Dashboard.md") });
+    this.addButton(section, { icon: "list-checks", label: this.t("All tasks"), description: !selected.length ? this.t("View all {count} indexed open tasks.", { count: snapshot.tasks.length }) : this.t("Showing {shown} of {total} matching tasks.", { shown: Math.min(selected.length, limit), total: selected.length }), onClick: () => this.openPath("00 Dashboards/Task Dashboard.md") });
   }
 
   getTaskContext(task) {
     if (task.overdue) {
-      return `Overdue · ${task.due}`;
+      return this.t("Overdue · {date}", { date: task.due });
     }
     if (task.dueToday) {
-      return "Due today";
+      return this.t("Due today");
     }
     if (task.scheduledToday) {
-      return "Scheduled today";
+      return this.t("Scheduled today");
     }
     if (task.due) {
-      return `Due ${task.due}`;
+      return this.t("Due {date}", { date: task.due });
     }
     if (task.scheduled) {
-      return `Scheduled ${task.scheduled}`;
+      return this.t("Scheduled {date}", { date: task.scheduled });
     }
     return this.getFileTitle({ path: task.path });
   }
@@ -2043,7 +2493,7 @@ class LifeOSHomeView extends ItemView {
   renderSystemSummary(parent) {
     const stats = this.getSystemStats();
     const section = parent.createEl("section", { cls: "life-os-summary" });
-    section.createEl("h2", { text: "Live system" });
+    section.createEl("h2", { text: this.t("Live system") });
     const grid = section.createDiv({ cls: "life-os-stat-grid" });
 
     for (const stat of stats) {
@@ -2051,8 +2501,8 @@ class LifeOSHomeView extends ItemView {
       const icon = card.createSpan({ cls: "life-os-stat-icon" });
       setIcon(icon, stat.icon);
       const copy = card.createDiv();
-      copy.createEl("strong", { text: String(stat.value) });
-      copy.createSpan({ text: stat.label });
+      copy.createEl("strong", { text: this.t(String(stat.value)) });
+      copy.createSpan({ text: this.t(stat.label) });
     }
   }
 
@@ -2068,14 +2518,14 @@ class LifeOSHomeView extends ItemView {
     const icon = banner.createSpan({ cls: "life-os-setup-icon" });
     setIcon(icon, "route");
     const copy = banner.createDiv();
-    copy.createEl("strong", { text: "Finish your Life OS setup" });
+    copy.createEl("strong", { text: this.t("Finish your Life OS setup") });
     copy.createEl("p", {
-      text: "Complete the guided checklist before depending on automations or AI connections.",
+      text: this.t("Complete the guided checklist before depending on automations or AI connections."),
     });
     this.addButton(banner, {
       icon: "arrow-right",
-      label: "Continue setup",
-      description: "Review the checklist.",
+      label: this.t("Continue setup"),
+      description: this.t("Review the checklist."),
       onClick: () => this.openPath(setupPath),
     });
   }
@@ -2106,25 +2556,25 @@ class LifeOSHomeView extends ItemView {
     return [
       {
         icon: "calendar-check",
-        value: this.app.vault.getAbstractFileByPath(todayPath) ? "Ready" : "Not created",
-        label: "Today",
+        value: this.app.vault.getAbstractFileByPath(todayPath) ? this.t("Ready") : this.t("Not created"),
+        label: this.t("Today"),
       },
       {
         icon: "calendar-range",
-        value: this.app.vault.getAbstractFileByPath(weekPath) ? "Ready" : "Not created",
-        label: "This week",
+        value: this.app.vault.getAbstractFileByPath(weekPath) ? this.t("Ready") : this.t("Not created"),
+        label: this.t("This week"),
       },
-      { icon: "folder-kanban", value: activeProjects, label: "Active projects" },
-      { icon: "users", value: typeCount(["person"]), label: "People" },
+      { icon: "folder-kanban", value: activeProjects, label: this.t("Active projects") },
+      { icon: "users", value: typeCount(["person"]), label: this.t("People") },
       {
         icon: "pen-tool",
         value: typeCount(["newsletter", "youtube-script", "article", "course-lesson"]),
-        label: "Creative notes",
+        label: this.t("Creative notes"),
       },
       {
         icon: "sparkles",
-        value: aiReady ? "Loaded" : "Unavailable",
-        label: "AI tools",
+        value: aiReady ? this.t("Loaded") : this.t("Unavailable"),
+        label: this.t("AI tools"),
       },
     ];
   }
@@ -2135,8 +2585,8 @@ class LifeOSHomeView extends ItemView {
     });
 
     const heading = section.createDiv({ cls: "life-os-section-heading" });
-    heading.createEl("h2", { text: title });
-    heading.createEl("p", { text: description });
+    heading.createEl("h2", { text: this.t(title) });
+    heading.createEl("p", { text: this.t(description) });
 
     const grid = section.createDiv({ cls: "life-os-grid" });
 
@@ -2165,11 +2615,11 @@ class LifeOSHomeView extends ItemView {
     const copy = button.createSpan({ cls: "life-os-action-copy" });
     copy.createSpan({
       cls: "life-os-action-label",
-      text: options.label,
+      text: this.t(options.label),
     });
     copy.createSpan({
       cls: "life-os-action-description",
-      text: options.description,
+      text: this.t(options.description),
     });
 
     this.registerDomEvent(button, "click", () => {
@@ -2188,7 +2638,7 @@ class LifeOSHomeView extends ItemView {
 
     const icon = chip.createSpan();
     setIcon(icon, iconName);
-    chip.createSpan({ text: label });
+    chip.createSpan({ text: this.t(label) });
   }
 
   runCommand(commandId, label) {
@@ -2202,7 +2652,7 @@ class LifeOSHomeView extends ItemView {
     const file = this.app.vault.getAbstractFileByPath(path);
 
     if (!(file instanceof TFile)) {
-      new Notice(`Life OS could not find ${path}.`);
+      new Notice(this.t("Life OS could not find {path}.", { path }));
       return;
     }
 
@@ -2229,11 +2679,12 @@ class LifeOSHomeView extends ItemView {
 // Original Canvas renderer inspired by SEO OS's brain-shaped knowledge map.
 // Positions are decorative; every displayed edge comes from resolved vault links.
 class LifeOSBrainRenderer extends Component {
-  constructor(app, contentEl, compact = false) {
+  constructor(app, contentEl, compact = false, plugin = null) {
     super();
     this.app = app;
     this.contentEl = contentEl;
     this.compact = compact;
+    this.plugin = plugin;
     this.panX = 0;
     this.panY = 0;
     this.yaw = 0.28;
@@ -2248,38 +2699,41 @@ class LifeOSBrainRenderer extends Component {
     this.edges = [];
     this.projected = [];
     this.regions = [
-      { id: "direction", name: "Direction & projects", color: "#ff906b" },
-      { id: "memory", name: "Journal & reflection", color: "#c095e8" },
-      { id: "people", name: "People", color: "#e5b96a" },
-      { id: "knowledge", name: "Knowledge & ideas", color: "#6fbdd8" },
-      { id: "practice", name: "Tasks & systems", color: "#82c3a5" },
+      { id: "direction", name: this.t("Direction & projects"), color: "#ff906b" },
+      { id: "memory", name: this.t("Journal & reflection"), color: "#c095e8" },
+      { id: "people", name: this.t("People"), color: "#e5b96a" },
+      { id: "knowledge", name: this.t("Knowledge & ideas"), color: "#6fbdd8" },
+      { id: "practice", name: this.t("Tasks & systems"), color: "#82c3a5" },
     ];
   }
+  t(message, values = {}) {
+    return this.plugin?.t?.(message, values) ?? translate(this.plugin?.language || "en", message, values);
+  }
   getViewType() { return "life-os-brain"; }
-  getDisplayText() { return "Life OS Brain"; }
+  getDisplayText() { return this.t("Life OS Brain"); }
   getIcon() { return "brain"; }
   async onOpen() {
     const root = this.contentEl;
     root.empty(); root.addClass("life-os-brain");
     const header = root.createDiv({ cls: "life-os-brain-header" });
     const title = header.createDiv();
-    title.createEl("h2", { text: "Your connected brain" });
-    this.summary = title.createEl("p", { text: "Reading vault links…", attr: { "aria-live": "polite" } });
+    title.createEl("h2", { text: this.t("Your connected brain") });
+    this.summary = title.createEl("p", { text: this.t("Reading vault links…"), attr: { "aria-live": "polite" } });
     const controls = header.createDiv({ cls: "life-os-brain-controls" });
-    const search = controls.createEl("input", { attr: { type: "search", placeholder: "Find a note…", "aria-label": "Search brain notes" } });
+    const search = controls.createEl("input", { attr: { type: "search", placeholder: this.t("Find a note…"), "aria-label": this.t("Search brain notes") } });
     this.registerDomEvent(search, "input", () => { this.query = search.value.toLowerCase(); this.update(); });
-    const reset = controls.createEl("button", { text: "Reset view" });
+    const reset = controls.createEl("button", { text: this.t("Reset view") });
     this.registerDomEvent(reset, "click", () => { this.panX = 0; this.panY = 0; this.yaw = 0.28; this.pitch = -0.12; this.zoom = 1; this.clearHover(); });
-    const labels = controls.createEl("select", { attr: { "aria-label": "Note labels" } });
-    for (const [value, text] of [["auto", "Labels: Auto"], ["all", "Labels: All"], ["off", "Labels: Hover only"]]) labels.createEl("option", { text, attr: { value } });
+    const labels = controls.createEl("select", { attr: { "aria-label": this.t("Note labels") } });
+    for (const [value, text] of [["auto", this.t("Labels: Auto")], ["all", this.t("Labels: All")], ["off", this.t("Labels: Hover only")]]) labels.createEl("option", { text: this.t(text), attr: { value } });
     this.registerDomEvent(labels, "change", () => { this.labelMode = labels.value; this.draw(); });
-    const standard = controls.createEl("button", { text: "Standard graph" });
+    const standard = controls.createEl("button", { text: this.t("Standard graph") });
     this.registerDomEvent(standard, "click", () => {
-      if (!this.app.commands.executeCommandById("graph:open")) new Notice("Enable Obsidian's Graph view core plugin first.");
+      if (!this.app.commands.executeCommandById("graph:open")) new Notice(this.t("Enable Obsidian's Graph view core plugin first."));
     });
-    this.filters = root.createDiv({ cls: "life-os-brain-filters", attr: { "aria-label": "Brain regions" } });
-    for (const region of [{ id: "all", name: "All regions", color: "#c4cecc" }, ...this.regions]) {
-      const button = this.filters.createEl("button", { text: region.name, attr: { "aria-pressed": String(region.id === this.region), style: `--region-color:${region.color}` } });
+    this.filters = root.createDiv({ cls: "life-os-brain-filters", attr: { "aria-label": this.t("Brain regions") } });
+    for (const region of [{ id: "all", name: this.t("All regions"), color: "#c4cecc" }, ...this.regions]) {
+      const button = this.filters.createEl("button", { text: this.t(region.name), attr: { "aria-pressed": String(region.id === this.region), style: `--region-color:${region.color}` } });
       this.registerDomEvent(button, "click", () => {
         this.region = region.id;
         [...this.filters.children].forEach((child) => child.setAttribute("aria-pressed", String(child === button)));
@@ -2288,13 +2742,13 @@ class LifeOSBrainRenderer extends Component {
     }
     const body = root.createDiv({ cls: "life-os-brain-body" });
     this.stage = body.createDiv({ cls: "life-os-brain-stage" });
-    this.canvas = this.stage.createEl("canvas", { attr: { tabindex: "0", "aria-label": "3D brain graph. Drag to rotate, Shift-drag to pan, scroll to zoom. Arrow keys rotate. Browse notes in the adjacent list." } });
-    this.caption = this.stage.createDiv({ cls: "life-os-brain-caption", text: "Drag to rotate · Shift-drag to pan · Scroll to zoom" });
+    this.canvas = this.stage.createEl("canvas", { attr: { tabindex: "0", "aria-label": this.t("3D brain graph. Drag to rotate, Shift-drag to pan, scroll to zoom. Arrow keys rotate. Browse notes in the adjacent list.") } });
+    this.caption = this.stage.createDiv({ cls: "life-os-brain-caption", text: this.t("Drag to rotate · Shift-drag to pan · Scroll to zoom") });
     this.tooltip = this.stage.createDiv({ cls: "life-os-brain-tooltip", attr: { role: "tooltip" } });
     this.tooltip.hidden = true;
-    this.panel = body.createEl("aside", { cls: "life-os-brain-panel", attr: { "aria-label": "Notes and connections" } });
+    this.panel = body.createEl("aside", { cls: "life-os-brain-panel", attr: { "aria-label": this.t("Notes and connections") } });
     this.ctx = this.canvas.getContext("2d");
-    if (!this.ctx) this.caption.setText("Canvas is unavailable. Browse and open notes in the list.");
+    if (!this.ctx) this.caption.setText(this.t("Canvas is unavailable. Browse and open notes in the list."));
     let drag = null;
     this.registerDomEvent(this.canvas, "pointerdown", (event) => {
       this.clearHover();
@@ -2313,8 +2767,8 @@ class LifeOSBrainRenderer extends Component {
         if (hit) {
           this.tooltip.createEl("strong", { text: hit.node.title });
           this.tooltip.createDiv({ text: hit.node.path });
-          this.tooltip.createDiv({ text: `${this.regions.find((r) => r.id === hit.node.region).name} · ${hit.node.degree} connections${hit.node.sample ? " · Sample note" : ""}` });
-          this.tooltip.createDiv({ text: "Click to explore linked notes" });
+          this.tooltip.createDiv({ text: this.t("{region} · {count} connections{sample}", { region: this.t(this.regions.find((r) => r.id === hit.node.region).name), count: hit.node.degree, sample: hit.node.sample ? this.t(" · Sample note") : "" }) });
+          this.tooltip.createDiv({ text: this.t("Click to explore linked notes") });
           this.tooltip.style.left = `${Math.max(8, Math.min(x + 16, rect.width - this.tooltip.offsetWidth - 8))}px`;
           this.tooltip.style.top = `${Math.max(8, Math.min(y + 16, rect.height - this.tooltip.offsetHeight - 8))}px`;
         }
@@ -2372,7 +2826,7 @@ class LifeOSBrainRenderer extends Component {
     this.refresh();
     if (this.compact) {
       this.canvas.setAttribute("tabindex", "-1");
-      this.canvas.setAttribute("aria-label", "Preview of connected notes. Use Explore Brain for interactive navigation.");
+      this.canvas.setAttribute("aria-label", this.t("Preview of connected notes. Use Explore Brain for interactive navigation."));
     }
   }
   regionFor(path) {
@@ -2522,7 +2976,7 @@ class LifeOSBrainRenderer extends Component {
   matches(node) { return (this.region === "all" || node.region === this.region) && node.path.toLowerCase().includes(this.query); }
   async openNote(node) {
     const file = this.app.vault.getAbstractFileByPath(node.path);
-    if (!(file instanceof TFile)) { new Notice("This note is no longer available."); return; }
+    if (!(file instanceof TFile)) { new Notice(this.t("This note is no longer available.")); return; }
     const leaf = this.app.workspace.getLeaf("tab"); await leaf.openFile(file); await this.app.workspace.revealLeaf(leaf);
   }
   update() {
@@ -2532,29 +2986,29 @@ class LifeOSBrainRenderer extends Component {
     const visible = this.nodes.filter((node) => this.matches(node));
     const paths = new Set(visible.map((node) => node.path));
     const edgeCount = this.edges.filter(([a, b]) => paths.has(a) && paths.has(b)).length;
-    this.summary.setText(`${visible.length} notes · ${edgeCount} links · ${visible.filter((node) => node.sample).length} sample notes${this.total > this.nodes.length ? ` · showing ${this.nodes.length} of ${this.total}` : ""}`);
+    this.summary.setText(this.t("{notes} notes · {links} links · {samples} sample notes{limit}", { notes: visible.length, links: edgeCount, samples: visible.filter((node) => node.sample).length, limit: this.total > this.nodes.length ? this.t(" · showing {shown} of {total}", { shown: this.nodes.length, total: this.total }) : "" }));
     if (this.compact) { this.draw(); return; }
     this.panel.empty();
     const selected = this.nodes.find((node) => node.path === this.selected);
     if (selected) {
       this.panel.createEl("h3", { text: selected.title });
-      this.panel.createEl("p", { text: `${selected.path}${selected.sample ? " · Sample note" : ""}` });
-      const open = this.panel.createEl("button", { text: "Open note", cls: "life-os-brain-open" });
+      this.panel.createEl("p", { text: `${selected.path}${selected.sample ? this.t(" · Sample note") : ""}` });
+      const open = this.panel.createEl("button", { text: this.t("Open note"), cls: "life-os-brain-open" });
       open.addEventListener("click", () => void this.openNote(selected));
     }
     const connected = new Set(this.edges.flatMap(([a, b]) => a === this.selected ? [b] : b === this.selected ? [a] : []));
     const list = selected ? this.nodes.filter((node) => connected.has(node.path)) : visible;
-    this.panel.createEl("h3", { text: selected ? `Connected notes (${list.length})` : `Browse notes (${visible.length})` });
-    if (!list.length) this.panel.createEl("p", { text: selected ? "No linked notes yet. Add a wikilink in this note to connect it." : "No matching notes." });
+    this.panel.createEl("h3", { text: selected ? this.t("Connected notes ({count})", { count: list.length }) : this.t("Browse notes ({count})", { count: visible.length }) });
+    if (!list.length) this.panel.createEl("p", { text: selected ? this.t("No linked notes yet. Add a wikilink in this note to connect it.") : this.t("No matching notes.") });
     for (const node of [...list].sort((a, b) => b.degree - a.degree || a.path.localeCompare(b.path)).slice(0, 60)) {
       const button = this.panel.createEl("button", { cls: "life-os-brain-note", attr: { title: node.path } });
       button.createSpan({ text: node.title });
-      button.createEl("small", { text: `${node.degree} links${node.sample ? " · Sample" : ""}` });
+      button.createEl("small", { text: this.t("{count} links{sample}", { count: node.degree, sample: node.sample ? this.t(" · Sample") : "" }) });
       button.addEventListener("click", () => { this.selected = node.path; this.update(); });
     }
-    if (list.length > 60) this.panel.createEl("p", { text: "Showing the 60 most connected notes. Search to narrow the list." });
+    if (list.length > 60) this.panel.createEl("p", { text: this.t("Showing the 60 most connected notes. Search to narrow the list.") });
     if (selected) {
-      const clear = this.panel.createEl("button", { text: "Clear selection" });
+      const clear = this.panel.createEl("button", { text: this.t("Clear selection") });
       clear.addEventListener("click", () => { this.selected = null; this.update(); });
     }
     this.draw();
@@ -2605,7 +3059,7 @@ class LifeOSBrainRenderer extends Component {
     }
     ctx.globalAlpha = 1;
     this.drawLabels(ctx, width, height, focus, connected);
-    this.caption.setText(edges.length > 10000 ? "10,000 links drawn. Select a note to isolate its connections." : "Drag to rotate · Shift-drag to pan · Scroll to zoom · Hover or click a note");
+    this.caption.setText(edges.length > 10000 ? this.t("10,000 links drawn. Select a note to isolate its connections.") : this.t("Drag to rotate · Shift-drag to pan · Scroll to zoom · Hover or click a note"));
   }
   drawLabels(ctx, width, height, focus, connected) {
     const occupied = [];
@@ -2635,52 +3089,107 @@ class LifeOSBrainRenderer extends Component {
 
 // Retain compatibility with already-open standalone Brain tabs.
 class LifeOSBrainView extends ItemView {
+  constructor(leaf, plugin = null) {
+    super(leaf);
+    this.plugin = plugin;
+  }
   async onOpen() {
-    this.renderer = new LifeOSBrainRenderer(this.app, this.contentEl);
+    this.render();
+  }
+  render() {
+    if (this.renderer) this.removeChild(this.renderer);
+    this.renderer = new LifeOSBrainRenderer(this.app, this.contentEl, false, this.plugin);
     this.addChild(this.renderer);
   }
+  t(message, values = {}) {
+    return this.plugin?.t?.(message, values) ?? translate(this.plugin?.language || "en", message, values);
+  }
   getViewType() { return "life-os-brain"; }
-  getDisplayText() { return "Life OS Brain"; }
+  getDisplayText() { return this.t("Life OS Brain"); }
   getIcon() { return "brain"; }
   async onClose() { if (this.renderer) this.removeChild(this.renderer); this.renderer = null; }
 }
 
 module.exports = class LifeOSPlugin extends Plugin {
+  constructor(...args) {
+    super(...args);
+    this.language = "en";
+    this.settings = {};
+    this.localizedCommands = [];
+    this.languageSave = Promise.resolve();
+  }
+
+  t(message, values = {}) {
+    return translate(this.language, message, values);
+  }
+
+  addLocalizedCommand(command, message, values = {}) {
+    const name = this.t(message, Object.fromEntries(Object.entries(values).map(([key, value]) => [key, this.t(value)])));
+    command.name = name;
+    const registered = this.addCommand(command);
+    const stored = registered || command;
+    const prefix = stored.name.endsWith(name) ? stored.name.slice(0, -name.length) : "";
+    this.localizedCommands.push({ command: stored, message, values, prefix });
+  }
+
+  async setLanguage(language) {
+    this.language = normalizeLanguage(language);
+    this.settings = { ...this.settings, language: this.language };
+    for (const entry of this.localizedCommands) {
+      const values = Object.fromEntries(Object.entries(entry.values).map(([key, value]) => [key, this.t(value)]));
+      entry.command.name = entry.prefix + this.t(entry.message, values);
+    }
+    this.ribbonIcon?.setAttribute("aria-label", this.t("Open Life OS"));
+    this.ribbonIcon?.setAttribute("data-tooltip", this.t("Open Life OS"));
+    for (const type of [VIEW_TYPE, "life-os-brain"]) {
+      for (const leaf of this.app.workspace.getLeavesOfType(type)) leaf.view?.render?.(true);
+    }
+    if (typeof this.saveData === "function") {
+      const settings = { ...this.settings };
+      this.languageSave = this.languageSave.catch(() => {}).then(() => this.saveData(settings));
+      try { await this.languageSave; }
+      catch { new Notice(this.t("Life OS could not save language preference.")); }
+    }
+  }
+
   async onload() {
-    this.registerView("life-os-brain", (leaf) => new LifeOSBrainView(leaf));
+    if (typeof this.loadData === "function") {
+      try {
+        const data = await this.loadData();
+        this.settings = data && typeof data === "object" && !Array.isArray(data) ? data : {};
+        this.language = normalizeLanguage(this.settings.language);
+      } catch { new Notice(this.t("Life OS could not load language preference. Using English.")); }
+    }
+    this.registerView("life-os-brain", (leaf) => new LifeOSBrainView(leaf, this));
     this.registerView(
       VIEW_TYPE,
       (leaf) => new LifeOSHomeView(leaf, this)
     );
 
-    this.addRibbonIcon("compass", "Open Life OS", () => {
+    this.ribbonIcon = this.addRibbonIcon("compass", this.t("Open Life OS"), () => {
       void this.activateView();
     });
 
-    this.addCommand({
+    this.addLocalizedCommand({
       id: "open-home",
-      name: "Open Life OS home",
       callback: () => this.activateView("home"),
-    });
+    }, "Open Life OS home");
 
-    this.addCommand({
+    this.addLocalizedCommand({
       id: "open-capture",
-      name: "Open Life OS capture",
       callback: () => this.openCapture(),
-    });
+    }, "Open Life OS capture");
 
-    this.addCommand({
+    this.addLocalizedCommand({
       id: "open-configuration",
-      name: "Open Life OS configuration",
       callback: () => this.app.workspace.openLinkText("Meta/Compass Config", "", true),
-    });
+    }, "Open Life OS configuration");
 
     for (const item of NAV_ITEMS.filter((item) => item.id !== "home")) {
-      this.addCommand({
+      this.addLocalizedCommand({
         id: `open-${item.id}`,
-        name: `Open Life OS ${item.label}`,
         callback: () => this.activateView(item.id),
-      });
+      }, "Open Life OS {screen}", { screen: item.label });
     }
 
     this.app.workspace.onLayoutReady(() => {
@@ -2716,7 +3225,7 @@ module.exports = class LifeOSPlugin extends Plugin {
 
     if (!ran) {
       new Notice(
-        `${label} is unavailable. Check that its supporting plugin is enabled.`
+        this.t("{label} is unavailable. Check that its supporting plugin is enabled.", { label: this.t(label) })
       );
     }
 

@@ -100,6 +100,12 @@ def main():
         check("Life OS application gate", r.returncode == 0, (r.stdout + r.stderr)[-500:])
     else:
         check("Life OS application gate", False, "scripts/verify_life_os_app.mjs missing")
+    localization_verify = os.path.join(root, "scripts", "verify_localization.mjs")
+    if os.path.exists(localization_verify):
+        r = subprocess.run(["node", localization_verify, root], capture_output=True, text=True)
+        check("Life OS localization gate", r.returncode == 0, (r.stdout + r.stderr)[-500:])
+    else:
+        check("Life OS localization gate", False, "Localization verifier missing")
     assistant_verify = os.path.join(root, "scripts", "verify_assistant_contracts.mjs")
     if os.path.exists(assistant_verify):
         r = subprocess.run(["node", assistant_verify, root], capture_output=True, text=True)

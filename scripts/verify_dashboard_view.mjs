@@ -1,8 +1,12 @@
 // Real browser DOM, synthetic vault only. No personal notes or providers.
 import fs from "node:fs";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
+const screenshotDir = path.resolve(process.env.SCREENSHOT_DIR || "/tmp");
+fs.mkdirSync(screenshotDir, { recursive: true });
+const screenshotPath = (name) => path.join(screenshotDir, name);
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
 try {
@@ -45,9 +49,19 @@ try {
     const plugins={'agent-client':{settings:{autoAllowPermissions:false}},'obsidian-local-rest-api':{settings:{}}};
     const app={vault:{getMarkdownFiles:()=>[...files.values()],getAbstractFileByPath:p=>files.get(p),cachedRead:async f=>contents.get(f.path)||'',on(){}},metadataCache:{getFileCache:f=>metadata.get(f.path),on(){}},plugins:{getPlugin:id=>plugins[id]},workspace:{getLeaf:()=>({openFile:async(f,o)=>window.opened.push({path:f.path,options:o})}),revealLeaf:async()=>{}},commands:{commands:{}}};
     const module={exports:{}};
-    const View=new Function('require','module',`${source};return LifeOSHomeView;`)(()=>({Component,ItemView,TFile,Plugin:class{},Modal:class{},Notice:class{},moment,setIcon(){}}),module);
-    const plugin={runCommand:(id)=>{window.commands.push(id);return true;},openCapture(){window.commands.push('capture');},activateView(){}};
-    window.view=new View({app},plugin);await window.view.onOpen();
+    const {View,navItems,modules}=new Function('require','module',`${source};return {View:LifeOSHomeView,navItems:NAV_ITEMS,modules:MODULES};`)(()=>({Component,ItemView,TFile,Plugin:class{},Modal:class{},Notice:class{},moment,setIcon(){}}),module);
+    window.uiMessages={navItems,modules};
+    const plugin=new module.exports();plugin.app=app;plugin.language='en';
+    plugin.runCommand=(id)=>{window.commands.push(id);return true;};plugin.openCapture=()=>window.commands.push('capture');plugin.activateView=()=>{};
+    window.savedLanguages=[];plugin.saveData=async data=>window.savedLanguages.push({...data});
+    window.plugin=plugin;window.view=new View({app},plugin);
+    app.workspace.getLeavesOfType=type=>type==='life-os-home'?[{view:window.view}]:[];
+    window.addLocalizedFixture=()=>{
+      add('04 Projects/Today.md',{type:'project',status:'active'},'- [ ] Today #project/today 📅 2026-09-09');
+      add('05 People/Home.md',{type:'person'});
+      metadata.get('Meta/Compass Config.md').frontmatter.questions=[{key:'dq_focus',text:'Home'}];
+    };
+    await window.view.onOpen();
   }, fs.readFileSync('.obsidian/plugins/life-os-app/main.js','utf8'));
   assert.equal(await page.getByRole('note').count(),1);
   assert.equal(await page.locator('.life-os-analytics').count(),0);
@@ -60,7 +74,7 @@ try {
   for(const screen of ['home','today','plan','review','focus','projects','people','create','library','ai']){
     await page.evaluate((s)=>{window.view.activeScreen=s;window.view.render();},screen);
     assert.ok(await page.locator('.life-os-shell').innerText());
-    await page.screenshot({path:`/tmp/life-os-${screen}-candidate.png`,fullPage:true});
+    await page.screenshot({path:screenshotPath(`life-os-${screen}-candidate.png`),fullPage:true});
     if(screen==='home'){
       assert.equal(await page.locator('.life-os-shell > .life-os-summary, .life-os-shell > .life-os-ai-panel').count(),0);
       assert.ok(await page.evaluate(()=>{
@@ -68,7 +82,7 @@ try {
         return children.slice(1).every((child,i)=>child.getBoundingClientRect().top-children[i].getBoundingClientRect().bottom>=19);
       }));
       await page.evaluate(()=>{const root=document.querySelector('#root');root.scrollTop=root.scrollHeight;});
-      await page.screenshot({path:'/tmp/life-os-home-lower-candidate.png'});
+      await page.screenshot({path:screenshotPath('life-os-home-lower-candidate.png')});
       await page.evaluate(()=>document.querySelector('#root').scrollTop=0);
     }
     if(screen==='today')assert.equal(await page.locator('.life-os-checkin-meter').getAttribute('max'),'3');
@@ -91,7 +105,7 @@ try {
       assert.equal(await page.getByRole('button',{name:'Ideas · 1',exact:true}).count(),1);
       await page.getByRole('button',{name:'Drafting · 2',exact:true}).click();
       assert.equal(await page.evaluate(()=>window.opened.at(-1).options.eState.line),2);
-      await page.screenshot({path:'/tmp/life-os-create-candidate.png',fullPage:true});
+      await page.screenshot({path:screenshotPath('life-os-create-candidate.png'),fullPage:true});
     }
     if(screen==='library'){
       assert.equal(await page.locator('.life-os-record-card').count(),3);
@@ -161,7 +175,7 @@ try {
     const canvas=page.locator('.life-os-brain-embedded canvas');
     await canvas.press('ArrowRight');
     assert.ok(await page.evaluate(()=>window.view.embeddedBrain.yaw>0.28));
-    if(pass===0)await page.screenshot({path:'/tmp/life-os-brain-sidebar.png',fullPage:true});
+    if(pass===0)await page.screenshot({path:screenshotPath('life-os-brain-sidebar.png'),fullPage:true});
     await page.getByRole('button',{name:'Home',exact:true}).click();
     assert.equal(await page.locator('.life-os-brain-embedded').count(),0);
     assert.ok(await page.evaluate(()=>window.previousBrain.ctx===null && window.view.embeddedBrain===null));
@@ -179,7 +193,141 @@ try {
     window.view.activeScreen='home';window.view.visualOptions={};window.view.render();
   });
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-  await page.screenshot({path:'/tmp/life-os-home-light-candidate.png'});
+  await page.screenshot({path:screenshotPath('life-os-home-light-candidate.png')});
+  await page.evaluate(async()=>{
+    const theme={'--background-primary':'#17191c','--background-secondary':'#202328','--text-normal':'#ddd','--text-muted':'#a5abb3','--text-faint':'#777','--background-modifier-border':'#393d44'};
+    for(const [key,value] of Object.entries(theme))document.documentElement.style.setProperty(key,value);
+    window.addLocalizedFixture();window.view.compactLayout=false;window.view.visualOptions={};
+    await window.view.refreshLiveData();await window.plugin.setLanguage('zh-CN');
+  });
+  assert.equal(await page.evaluate(()=>window.savedLanguages.at(-1).language),'zh-CN');
+  assert.equal(await page.getByRole('button',{name:'首页',exact:true}).count(),1);
+  assert.equal(await page.getByRole('button',{name:'今天',exact:true}).count(),1);
+  for(const screen of ['home','today','plan','review','focus','projects','people','create','library','ai']){
+    await page.evaluate(s=>{window.view.activeScreen=s;window.view.render();},screen);
+    assert.ok(await page.locator('.life-os-shell').innerText(),`Chinese ${screen} module renders`);
+    const expected=await page.evaluate(s=>({label:window.plugin.t(window.uiMessages.navItems.find(item=>item.id===s).label),title:window.plugin.t(window.uiMessages.modules[s]?.title||'LIFE'),description:window.plugin.t(s==='home'?'See clearly. Choose deliberately. Live fully.':window.uiMessages.modules[s].description)}),screen);
+    assert.equal(await page.locator('.life-os-nav-button[aria-current="page"]').innerText(),expected.label,`Chinese ${screen} selected navigation`);
+    assert.match(expected.description,/[\u3400-\u9fff]/u,`Chinese ${screen} owns a translated description`);
+    if(screen==='home')assert.equal(await page.locator('.life-os-identity p').innerText(),expected.description);
+    else{
+      assert.equal(await page.locator('.life-os-module-header h1').innerText(),expected.title,`Chinese ${screen} module title`);
+      assert.equal(await page.locator('.life-os-module-header > p').innerText(),expected.description,`Chinese ${screen} module description`);
+    }
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`Chinese ${screen} desktop overflow`);
+    await page.screenshot({path:screenshotPath(`life-os-${screen}-zh-CN.png`),fullPage:true});
+    if(screen==='today'){
+      assert.ok((await page.locator('.life-os-today-row').allTextContents()).some(text=>text.includes('Home')),'User question remains Home');
+      assert.ok((await page.locator('.life-os-task-row').allTextContents()).some(text=>text.includes('Today')),'User task remains Today');
+      assert.match(await page.locator('.life-os-checkin-meter').getAttribute('aria-label'),/[\u3400-\u9fff]/u);
+    }
+    if(screen==='projects'){
+      const card=page.locator('.life-os-record-card').filter({has:page.getByText('Today',{exact:true})});
+      assert.equal(await card.count(),1,'User note title remains Today');
+      await card.click();assert.equal(await page.evaluate(()=>window.opened.at(-1).path),'04 Projects/Today.md');
+    }
+  }
+  await page.getByRole('button',{name:await page.evaluate(()=>window.plugin.t('Brain')),exact:true}).click();
+  const brainSearchLabel=await page.evaluate(()=>window.plugin.t('Search brain notes'));
+  assert.match(brainSearchLabel,/[\u3400-\u9fff]/u);
+  assert.equal(await page.getByRole('searchbox',{name:brainSearchLabel}).count(),1);
+  assert.equal(await page.locator('.life-os-brain-note').filter({has:page.getByText('Today',{exact:true})}).count(),1);
+  await page.screenshot({path:screenshotPath('life-os-brain-zh-CN.png'),fullPage:true});
+  await page.getByRole('button',{name:'首页',exact:true}).click();
+  await page.locator('.life-os-action').filter({has:page.getByText('日记',{exact:true})}).click();
+  assert.equal(await page.evaluate(()=>window.commands.at(-1)),'quickadd:choice:lifeos-journal');
+  await page.setViewportSize({width:390,height:900});
+  for(const screen of ['home','today','plan','review','focus','projects','people','create','library','ai']){
+    await page.evaluate(s=>{window.view.activeScreen=s;window.view.render();},screen);
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`Chinese ${screen} document overflow at 390`);
+  }
+  await page.evaluate(()=>{window.view.activeScreen='home';window.view.render();});
+  await page.screenshot({path:screenshotPath('life-os-home-zh-CN-narrow.png'),fullPage:true});
+  await page.setViewportSize({width:1440,height:1000});
+  await page.getByRole('combobox',{name:await page.evaluate(()=>window.plugin.t('Life OS language'))}).selectOption('en');
+  await page.getByRole('button',{name:'Home',exact:true}).waitFor();
+  assert.equal(await page.evaluate(()=>window.savedLanguages.at(-1).language),'en');
+
+  // Obsidian panes can be narrow inside a wide application window. Testing only
+  // the viewport's width would exercise media queries and miss this regression.
+  await page.evaluate(()=>{
+    const root=document.querySelector('#root');
+    root.style.width='390px';root.style.marginInlineStart='auto';
+    document.querySelector('[role="note"]').style.right='0';
+  });
+  for(const locale of ['en','zh-CN']){
+    const languageLabel=await page.evaluate(()=>window.plugin.t('Life OS language'));
+    await page.getByRole('combobox',{name:languageLabel,exact:true}).selectOption(locale);
+    assert.equal(await page.evaluate(()=>window.plugin.language),locale);
+    for(const screen of ['home','today','plan','review','focus','projects','people','create','library','ai']){
+      await page.evaluate(s=>{window.view.activeScreen=s;window.view.render();},screen);
+      const layout=await page.evaluate(()=>{
+        const root=document.querySelector('#root');root.scrollTop=0;root.scrollLeft=0;
+        // Preserve native setIcon's SVG footprint in this otherwise iconless stub.
+        for(const button of document.querySelectorAll('.life-os-topbar-button')){
+          const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+          svg.setAttribute('width','24');svg.setAttribute('height','24');
+          button.firstElementChild.replaceChildren(svg);
+        }
+        const bounds=root.getBoundingClientRect();
+        const controls=[...document.querySelectorAll('.life-os-language-select,.life-os-topbar-button,.life-os-display-options > summary')];
+        const nav=document.querySelector('.life-os-nav');
+        return {
+          viewport:innerWidth,width:bounds.width,clientWidth:root.clientWidth,scrollWidth:root.scrollWidth,
+          documentOverflow:document.documentElement.scrollWidth>innerWidth,
+          controls:controls.map(control=>{
+            const rect=control.getBoundingClientRect();
+            return {label:control.getAttribute('aria-label')||control.textContent.trim(),visible:rect.width>0&&rect.height>0&&rect.left>=bounds.left-1&&rect.right<=bounds.right+1&&rect.top>=bounds.top&&rect.bottom<=bounds.bottom};
+          }),
+          navScrolls:nav.scrollWidth>nav.clientWidth,
+          navOverflow:getComputedStyle(nav).overflowX,
+        };
+      });
+      assert.equal(layout.viewport,1440);
+      assert.equal(layout.width,390);
+      assert.equal(layout.documentOverflow,false,`${locale} ${screen} wide-window document overflow`);
+      assert.ok(layout.scrollWidth<=layout.clientWidth+1,`${locale} ${screen} outer pane overflow: ${layout.scrollWidth}/${layout.clientWidth}`);
+      assert.equal(layout.controls.length,5);
+      assert.ok(layout.controls.every(control=>control.visible),`${locale} ${screen} clipped toolbar controls: ${JSON.stringify(layout.controls)}`);
+      assert.ok(!layout.navScrolls||['auto','scroll'].includes(layout.navOverflow),`${locale} ${screen} navigation must scroll within its own container`);
+    }
+    const brainLabel=await page.evaluate(()=>window.plugin.t('Brain'));
+    await page.getByRole('button',{name:brainLabel,exact:true}).click();
+    const graph=await page.evaluate(()=>{
+      const root=document.querySelector('#root');
+      const body=document.querySelector('.life-os-brain-embedded .life-os-brain-body');
+      const stage=body.querySelector('.life-os-brain-stage').getBoundingClientRect();
+      const canvas=body.querySelector('canvas').getBoundingClientRect();
+      const panel=body.querySelector('.life-os-brain-panel').getBoundingClientRect();
+      return {paneWidth:root.clientWidth,scrollWidth:root.scrollWidth,direction:getComputedStyle(body).flexDirection,stageWidth:stage.width,stageHeight:stage.height,canvasWidth:canvas.width,canvasHeight:canvas.height,panelWidth:panel.width,stageBottom:stage.bottom,panelTop:panel.top};
+    });
+    assert.ok(graph.scrollWidth<=graph.paneWidth+1,`${locale} embedded Brain outer pane overflow`);
+    assert.ok(graph.stageWidth>=300&&graph.canvasWidth>=300,`${locale} embedded Brain drawing area is squeezed: ${JSON.stringify(graph)}`);
+    assert.ok(graph.stageHeight>=360&&graph.canvasHeight>=360,`${locale} embedded Brain drawing area is too short`);
+    assert.equal(graph.direction,'column',`${locale} embedded Brain panel must stack below the canvas`);
+    assert.ok(Math.abs(graph.panelWidth-graph.stageWidth)<=1&&Math.abs(graph.stageWidth-graph.paneWidth)<=1,`${locale} embedded Brain panel and canvas must use the pane width`);
+    assert.ok(graph.panelTop>=graph.stageBottom-1,`${locale} embedded Brain panel must not occupy the canvas's side`);
+    await page.locator('.life-os-brain-embedded canvas').press('ArrowRight');
+    assert.ok(await page.evaluate(()=>window.view.embeddedBrain.yaw>0.28));
+    await page.locator('#root').screenshot({path:screenshotPath(`life-os-brain-${locale}-390-pane-wide-window.png`)});
+    const labels=await page.evaluate(()=>Object.fromEntries(['Search','Configure','Capture'].map(key=>[key,window.plugin.t(key)])));
+    await page.getByRole('button',{name:labels.Search,exact:true}).click();
+    assert.equal(await page.evaluate(()=>window.commands.at(-1)),'global-search:open');
+    await page.getByRole('button',{name:labels.Configure,exact:true}).click();
+    assert.equal(await page.evaluate(()=>window.opened.at(-1).path),'Meta/Compass Config.md');
+    await page.getByRole('button',{name:labels.Capture,exact:true}).click();
+    assert.equal(await page.evaluate(()=>window.commands.at(-1)),'capture');
+    await page.locator('.life-os-display-options summary').click();
+    assert.equal(await page.locator('.life-os-display-options').evaluate(element=>element.open),true);
+    await page.locator('.life-os-display-options summary').click();
+    await page.evaluate(()=>{window.view.activeScreen='home';window.view.render();});
+    await page.locator('#root').screenshot({path:screenshotPath(`life-os-${locale}-390-pane-wide-window.png`)});
+  }
+  await page.evaluate(()=>{
+    const root=document.querySelector('#root');root.style.width='';root.style.marginInlineStart='';
+    document.querySelector('[role="note"]').style.right='';
+  });
+  assert.deepEqual(errors,[]);
   await page.evaluate(()=>window.view.onClose());
-  console.log('Dashboard browser checks passed: ten modules, Home spacing, preview/full Brain navigation, workload groups, project counts, discussion links, board previews, Library filters and remote-cover rejection, AI branches, per-module controls, narrow widths and light-theme smoke check. Synthetic fixture only.');
+  console.log('Dashboard browser checks passed: ten modules in English and Chinese, language persistence, preserved user titles and routing, localized Brain accessibility, Home spacing, preview/full Brain navigation, workload groups, project counts, discussion links, board previews, Library filters and remote-cover rejection, AI branches, per-module controls, narrow viewports and 390px panes in a wide window, visible and usable toolbar controls, full-width embedded Brain with details below its drawing area, and light-theme smoke check. Synthetic fixture only.');
 }finally{await browser.close();}

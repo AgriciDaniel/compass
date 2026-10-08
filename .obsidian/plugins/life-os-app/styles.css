@@ -281,6 +281,17 @@
   gap: 7px;
 }
 
+.life-os-language-select {
+  min-height: 34px;
+  max-width: 112px;
+  padding: 5px 8px;
+  color: var(--text-normal);
+  border: 1px solid var(--life-os-line);
+  border-radius: 9px;
+  background: var(--background-secondary);
+  font-size: 0.76rem;
+}
+
 .life-os-topbar-button {
   display: inline-flex;
   align-items: center;
@@ -1583,13 +1594,24 @@
   .life-os-home .life-os-rail-brand, .life-os-home .life-os-rail-foot { display: none; }
   .life-os-home .life-os-nav { display: flex; overflow-x: auto; }
   .life-os-home .life-os-nav-button { flex: 0 0 auto; width: auto; }
-  .life-os-home .life-os-topbar { position: relative; top: 0; padding: 10px; }
+  .life-os-home .life-os-topbar { position: relative; top: 0; padding: 10px; flex-wrap: wrap; gap: 8px; }
+  .life-os-home .life-os-topbar-actions { min-width: 0; max-width: 100%; flex-wrap: wrap; align-items: center; }
+  .life-os-home .life-os-language-select { flex-shrink: 0; }
+  .life-os-home .life-os-brain-embedded .life-os-brain-body { flex-direction: column; overflow: auto; }
+  .life-os-home .life-os-brain-embedded .life-os-brain-stage { min-height: 360px; flex: 0 0 55vh; }
+  .life-os-home .life-os-brain-embedded .life-os-brain-panel { width: 100%; flex: 0 0 auto; max-height: 300px; border-left: 0; }
+  .life-os-home .life-os-brain-embedded .life-os-brain-header,
+  .life-os-home .life-os-brain-embedded .life-os-brain-filters { padding-left: 14px; padding-right: 14px; }
   .life-os-home .life-os-shell { width: calc(100% - 24px); padding-top: 12px; }
   .life-os-home .life-os-grid, .life-os-home .life-os-today-grid, .life-os-home .life-os-today-actions { grid-template-columns: minmax(0, 1fr); }
   .life-os-chart-card { padding: 16px; }
   .life-os-home .life-os-ai-panel { flex-direction: column; align-items: stretch; }
   .life-os-home .life-os-ai-panel .life-os-action { flex-basis: auto; }
   .life-os-home .life-os-hero-actions .life-os-action { width: 100%; }
+}
+@container (max-width: 620px) {
+  .life-os-home .life-os-topbar-context > span,
+  .life-os-home .life-os-topbar-button span:last-child { display: none; }
 }
 
 /* Shared spacing and quiet emphasis across dashboard modules. */
