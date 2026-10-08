@@ -161,6 +161,7 @@ class FakeElement {
     this.options = options;
     this.children = [];
     this.handlers = {};
+    this.listeners = {};
   }
 
   empty() {
@@ -191,7 +192,11 @@ class FakeElement {
   }
 
   addEventListener(name, handler) {
-    this.handlers[name] = handler;
+    const listeners = this.listeners[name] ||= new Set();
+    listeners.add(handler);
+    this.handlers[name] = (...args) => {
+      for (const listener of listeners) listener.apply(this, args);
+    };
   }
 }
 
@@ -217,11 +222,12 @@ class ItemView extends Component {
   }
 }
 
-class Modal extends Component {
+// Obsidian Modal does not inherit Component or its event-registration methods.
+class Modal {
   constructor(app) {
-    super();
     this.app = app;
     this.contentEl = new FakeElement();
+    this.closeCount = 0;
     Modal.lastOpened = this;
   }
 
@@ -230,6 +236,7 @@ class Modal extends Component {
   }
 
   close() {
+    this.closeCount += 1;
     this.onClose();
   }
 }
@@ -756,13 +763,77 @@ try {
       editorCalls[0]?.[1]?.line === 6
   );
 
-  plugin.openCapture();
+  const captureCommand = plugin.commands.find((command) => command.id === "open-capture");
+  captureCommand.callback();
+  const captureModal = Modal.lastOpened;
+  const walk = (element) => [element, ...element.children.flatMap(walk)];
+  const captureChoices = (modal) => walk(modal.contentEl).filter((element) =>
+    String(element.options.cls || "").split(/\s+/).includes("life-os-capture-choice")
+  );
+  // The configured QuickAdd captures and record templates are independent of
+  // the application's menu, so omissions or incorrect routes fail this check.
+  const configuredCaptureChoices = quickAdd.choices.filter((choice) =>
+    choice.id.startsWith("lifeos-") &&
+    (choice.type === "Capture" || choice.id.startsWith("lifeos-new-"))
+  );
+  const buttons = captureChoices(captureModal);
+  const labelFor = (button) => walk(button).find((element) => element.tag === "strong")?.options.text || "";
+  const labels = buttons.map(labelFor);
   check(
-    "capture modal renders three action groups",
-    (Modal.lastOpened?.contentEl.children || []).filter((child) =>
+    "capture command renders all configured actions in three groups",
+    buttons.length === configuredCaptureChoices.length &&
+    new Set(labels).size === labels.length &&
+    captureModal.contentEl.children.filter((child) =>
       treeHasClass(child, "life-os-capture-section")
     ).length === 3
   );
+  const dispatches = [];
+  const executeCommand = fakeApp.commands.executeCommandById;
+  fakeApp.commands.executeCommandById = (id) => {
+    dispatches.push({ id, cleared: captureModal.contentEl.children.length === 0 });
+    return true;
+  };
+  const normalizeCaptureLabel = (label) => label.toLowerCase().replace(/^add a /, "add ");
+  let routesCorrect = true;
+  let closesOnce = true;
+  let reopensCleanly = true;
+  for (const [index, label] of labels.entries()) {
+    if (index) captureModal.open();
+    const current = captureChoices(captureModal);
+    reopensCleanly &&= current.length === buttons.length &&
+      current.every((button) => index === 0 || !buttons.includes(button));
+    const choice = current.find((button) => labelFor(button) === label);
+    const configured = configuredCaptureChoices.filter((item) =>
+      normalizeCaptureLabel(item.name.replace(/^[^A-Za-z]+/, ""))
+        .startsWith(normalizeCaptureLabel(label))
+    );
+    const previousDispatches = dispatches.length;
+    const previousCloses = captureModal.closeCount;
+    choice?.handlers.click?.();
+    routesCorrect &&= configured.length === 1 &&
+      dispatches.length === previousDispatches + 1 &&
+      dispatches.at(-1)?.id === `quickadd:choice:${configured[0].id}`;
+    closesOnce &&= captureModal.closeCount === previousCloses + 1 &&
+      captureModal.contentEl.children.length === 0 && dispatches.at(-1)?.cleared;
+  }
+  fakeApp.commands.executeCommandById = executeCommand;
+  check("every capture choice dispatches its configured QuickAdd command once", routesCorrect &&
+    new Set(dispatches.map(({ id }) => id)).size === configuredCaptureChoices.length);
+  check("capture choices close and clear the modal before dispatch", closesOnce);
+  check("capture modal reopens with fresh controls and no duplicate dispatch", reopensCleanly &&
+    dispatches.length === configuredCaptureChoices.length);
+
+  view.activeScreen = "home";
+  view.render();
+  const topbarCapture = walk(view.contentEl).find((element) =>
+    element.tag === "button" && element.options.attr?.["aria-label"] === "Capture"
+  );
+  topbarCapture?.handlers.click?.();
+  check("topbar capture opens a fresh modal with every configured action",
+    Modal.lastOpened !== captureModal &&
+    captureChoices(Modal.lastOpened).length === configuredCaptureChoices.length);
+  Modal.lastOpened.close();
+
   fakeLeaf.view = view;
   fakeApp.workspace.getLeavesOfType = () => [fakeLeaf];
   await plugin.activateView("today");

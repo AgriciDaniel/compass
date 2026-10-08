@@ -53,6 +53,7 @@ Format: Added, Changed, Templates (manual merge notes), Plugins, Breaking. Semve
 - `scripts/verify_life_os_app.mjs` validates the application manifest, command and path contracts, styles, capabilities, screen rendering, capture modal, and view activation. The release gate now runs it against every built template.
 
 ### Fixed
+- Universal Capture no longer fails while opening its menu. All 16 actions retain their existing QuickAdd commands.
 - Restored `04 Projects` as a top-level folder so Templater, QuickAdd, dashboard links, Kanban note creation, and the documented folder contract agree again. Existing project content was moved without rewriting it.
 
 ## 1.0.2 (2026-08-27)

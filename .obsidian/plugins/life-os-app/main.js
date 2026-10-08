@@ -533,7 +533,7 @@ class LifeOSCaptureModal extends Modal {
         const copy = button.createSpan();
         copy.createEl("strong", { text: action.label });
         copy.createEl("small", { text: action.description });
-        this.registerDomEvent(button, "click", () => {
+        button.addEventListener("click", () => {
           this.close();
           this.plugin.runCommand(action.command, action.label);
         });
