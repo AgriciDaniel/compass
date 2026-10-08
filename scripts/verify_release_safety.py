@@ -10,6 +10,7 @@ import unittest
 import hashlib
 import zipfile
 from verify_archive_restore import verify_archive, safe_name
+from verify_template import fixed_capture_heading_present
 
 HERE = pathlib.Path(__file__).resolve().parent
 PRIVATE_SENTINEL = "SYNTHETIC_PRIVATE_SENTINEL"
@@ -84,6 +85,57 @@ class ReleaseSafety(unittest.TestCase):
         builder.copy_tree(str(self.live), str(self.output))
         self.assertFalse((self.output / "04 Projects/Private Board.md").exists())
         self.assertNotIn("SYNTHETIC_PRIVATE_SENTINEL", (self.output / "04 Projects/Projects Board.md").read_text())
+    def test_packaged_boards_support_fixed_capture_anchors(self):
+        routes = [
+            ("lifeos-project-idea", "04 Projects/Projects Board.md", "## Ideas"),
+            ("lifeos-newsletter-idea", "06 Writing/Newsletters/Newsletter Board.md", "## Backlog"),
+            ("lifeos-video-idea", "06 Writing/YouTube Scripts/YouTube Board.md", "## Backlog"),
+            ("lifeos-article-idea", "06 Writing/Articles/Article Board.md", "## Backlog"),
+        ]
+        choices = []
+        for identifier, relative, anchor in routes:
+            board = self.live / relative
+            board.parent.mkdir(parents=True, exist_ok=True)
+            board.write_text("## Private lane\n- [ ] SYNTHETIC_PRIVATE_SENTINEL")
+            choices.append({"id": identifier, "captureTo": relative, "insertAfter": {
+                "enabled": True, "after": anchor, "createIfNotFound": False,
+            }})
+        settings = self.live / ".obsidian/plugins/quickadd/data.json"
+        settings.parent.mkdir(parents=True)
+        settings.write_text(json.dumps({"choices": choices}))
+        self.output.mkdir()
+        builder.copy_tree(str(self.live), str(self.output))
+        packaged = json.loads((self.output / ".obsidian/plugins/quickadd/data.json").read_text())
+        for choice in packaged["choices"]:
+            with self.subTest(choice=choice["id"]):
+                body = (self.output / choice["captureTo"]).read_text()
+                self.assertIn(choice["insertAfter"]["after"], body.splitlines())
+                self.assertNotIn("SYNTHETIC_PRIVATE_SENTINEL", body)
+                self.assertNotIn("- [ ]", body)
+                self.assertIn("## In progress", body)
+                self.assertIn("## Done", body)
+    def test_fixed_capture_heading_gate_matches_quickadd_context(self):
+        choice = {"captureTo": "Board.md", "insertAfter": {
+            "enabled": True, "after": "## Backlog   ", "createIfNotFound": False,
+        }}
+        self.assertTrue(fixed_capture_heading_present(choice, {"Board.md": "  ## Backlog\n"}))
+        self.assertTrue(fixed_capture_heading_present(choice, {"Board.md": "## Backlog (ideas)\n"}))
+        self.assertFalse(fixed_capture_heading_present(choice, {"Board.md": "## Ideas\n"}))
+        contexts = [
+            {**choice, "captureToActiveFile": True},
+            {**choice, "insertAfter": {**choice["insertAfter"], "promptHeading": True}},
+            {**choice, "insertAfter": {**choice["insertAfter"], "createIfNotFound": True}},
+            {**choice, "insertAfter": {**choice["insertAfter"], "after": "## {{VALUE:lane}}"}},
+            {**choice, "captureTo": "{{DATE:YYYY-MM-DD}}.md"},
+            {**choice, "captureTo": "<% tp.date.now() %>.md"},
+            {**choice, "insertAfter": {**choice["insertAfter"], "inline": True}},
+            {**choice, "insertAfter": {**choice["insertAfter"], "after": "## Backlog\\nDetails"}},
+            {**choice, "insertAfter": {**choice["insertAfter"], "after": "## Backlog\\Other"}},
+        ]
+        for contextual in contexts:
+            with self.subTest(choice=contextual):
+                texts = {contextual["captureTo"]: "## Ideas\n"}
+                self.assertIsNone(fixed_capture_heading_present(contextual, texts))
     def test_archive_path_rules(self):
         for path in ["../escape", "/absolute", "root/../escape", "root\\escape", "C:/escape", "root//file"]:
             self.assertFalse(safe_name(path))

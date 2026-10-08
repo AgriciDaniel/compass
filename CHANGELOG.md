@@ -53,6 +53,7 @@ Format: Added, Changed, Templates (manual merge notes), Plugins, Breaking. Semve
 - `scripts/verify_life_os_app.mjs` validates the application manifest, command and path contracts, styles, capabilities, screen rendering, capture modal, and view activation. The release gate now runs it against every built template.
 
 ### Fixed
+- Sanitized writing boards keep an empty Backlog lane for the existing newsletter, video, and article idea captures. Fixed capture headings are verified in every built template. Manual merge for existing vaults: add an empty Backlog lane to these three boards if missing, preserving existing lanes and cards.
 - Restored `04 Projects` as a top-level folder so Templater, QuickAdd, dashboard links, Kanban note creation, and the documented folder contract agree again. Existing project content was moved without rewriting it.
 
 ## 1.0.2 (2026-08-27)

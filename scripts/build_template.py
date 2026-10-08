@@ -30,11 +30,11 @@ USER_CONTENT = ["01 Journal/", "02 Retreats/", "04 Projects/", "05 People/", "06
                 "09 Reading/Chapters/", "09 Reading/Verses/", "09 Reading/Study Notes/", "09 Reading/Topics/"]
 KEEP_IN_USER_FOLDERS = re.compile(r".* Board\.md$")
 BOARD_DEFAULTS = {
-    "04 Projects/Projects Board.md": "Projects Board",
-    "06 Writing/Newsletters/Newsletter Board.md": "Newsletter Board",
-    "06 Writing/YouTube Scripts/YouTube Board.md": "YouTube Board",
-    "06 Writing/Articles/Article Board.md": "Article Board",
-    "06 Writing/Course Content/Course Board.md": "Course Board",
+    "04 Projects/Projects Board.md": ("Projects Board", "Ideas"),
+    "06 Writing/Newsletters/Newsletter Board.md": ("Newsletter Board", "Backlog"),
+    "06 Writing/YouTube Scripts/YouTube Board.md": ("YouTube Board", "Backlog"),
+    "06 Writing/Articles/Article Board.md": ("Article Board", "Backlog"),
+    "06 Writing/Course Content/Course Board.md": ("Course Board", "Ideas"),
 }
 READING_PATHS = ["09 Reading", "Guide/07 Workflow - Daily Reading.md", "scripts/generate_reading_plan.py", "scripts/split_bible.py", "Templates/Study Note.md"]
 
@@ -99,7 +99,8 @@ def copy_tree(live, out):
             if rel in BOARD_DEFAULTS:
                 target = Path(out, rel)
                 target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_text("---\nkanban-plugin: board\n---\n\n# " + BOARD_DEFAULTS[rel] + "\n\n## Ideas\n\n## In progress\n\n## Done\n", encoding="utf-8")
+                title, first_lane = BOARD_DEFAULTS[rel]
+                target.write_text(f"---\nkanban-plugin: board\n---\n\n# {title}\n\n## {first_lane}\n\n## In progress\n\n## Done\n", encoding="utf-8")
                 continue
             if rel.startswith(".obsidian/plugins/") and f != "data.json" and f not in ("main.js", "manifest.json", "styles.css", "LICENSE"):
                 continue

@@ -15,6 +15,21 @@ ALLOW_FILES = {"scripts/verify_template.py", "scripts/build_template.py", "scrip
 SKIP_DIR_PARTS = ("/.obsidian/plugins/",)
 DATE_LINK = re.compile(r"^\d{4}-(\d\d-\d\d|W\d\d|Q\d( Personal Retreat)?)$")
 
+def fixed_capture_heading_present(choice, texts):
+    target = choice.get("captureTo", "")
+    insert_after = choice.get("insertAfter") or {}
+    anchor = insert_after.get("after") or ""
+    if (not choice.get("captureToActiveFile") and insert_after.get("enabled")
+            and not insert_after.get("createIfNotFound") and not insert_after.get("promptHeading")
+            and not insert_after.get("inline")
+            and target in texts and isinstance(anchor, str)
+            and re.fullmatch(r"#{1,6} [^\r\n]+", anchor)
+            and "\\" not in anchor
+            and not any(token in anchor or token in target for token in ("{{", "<%"))):
+        # QuickAdd permits trailing anchor whitespace and matches within a line.
+        return any(anchor.rstrip() in line.lstrip() for line in texts[target].splitlines())
+    return None
+
 def main():
     root = sys.argv[1] if len(sys.argv) > 1 else "build/Compass"
     as_json = "--json" in sys.argv
@@ -123,6 +138,9 @@ def main():
         target = re.sub(r"\{\{DATE:[^}]*\}\}", "2000-01-01", ch.get("captureTo", ""))
         ok = (not target) or exists(target) or (ch.get("createFileIfItDoesntExist", {}).get("enabled") and exists(os.path.dirname(target)))
         check("quickadd capture target %s" % ch.get("name"), ok, target)
+        heading_present = fixed_capture_heading_present(ch, texts)
+        if heading_present is not None:
+            check("quickadd fixed capture heading %s" % ch.get("id"), heading_present, target)
         t = ch.get("createFileIfItDoesntExist", {}).get("template", "")
         if t: check("quickadd template %s" % t, exists(t))
     for rel, t in texts.items():
